@@ -4,6 +4,13 @@ from glob import glob
 
 package_name = 'delto_3f_description'
 
+current_dir = os.path.dirname(os.path.realpath(__file__))
+ur3_dir = os.path.join(current_dir, 'ur3')
+
+ur3_rel_dir = os.path.relpath(ur3_dir)
+config_ur3_rel_dir = os.path.relpath(os.path.join(current_dir, 'config', 'ur3'))
+
+
 setup(
     name=package_name,
     version='0.0.1',
@@ -19,8 +26,9 @@ setup(
         (os.path.join('share', package_name, 'meshes'), glob('meshes/*.stl')),
         (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
-        # (os.path.join('share', package_name, 'config','ur3'), glob('ur3/*.yaml')),
-        (os.path.join('share', package_name, 'config','ur3'), glob('ur3/*')),
+        (os.path.join('share', package_name, 'config','ur3'), glob('config/ur3/*')),
+        (os.path.join('share', package_name, 'config','ur3'), glob(os.path.join(ur3_rel_dir, '*.yaml'))),
+        (os.path.join('share', package_name, 'config','ur3'), glob(os.path.join(config_ur3_rel_dir, '*'))),
     ],
 
     install_requires=['setuptools'],
