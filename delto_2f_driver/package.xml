@@ -5,7 +5,7 @@
   <version>0.0.1</version>
   <description>Tesollo 3 Finger Gripper ROS2 package </description>
   <maintainer email="khc@tesollo.com">hong</maintainer>
-  <license>TODO: License declaration</license>
+  <license>LSD</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
   <buildtool_depend>ament_cmake_python</buildtool_depend>

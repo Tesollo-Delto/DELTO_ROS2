@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(delto_3f_driver)
+project(delto_2f_driver)
 
 # Specify C++ Standard
 if(NOT CMAKE_CXX_STANDARD)
@@ -26,10 +26,10 @@ find_package(control_msgs REQUIRED)
 
 # Include C++ directories
 include_directories(include)
-include_directories(include/delto_3f_driver)
+include_directories(include/delto_2f_driver)
 include_directories(src)
 # Declare a C++ library
-add_library(delto_3f_driver src/delto_3f_external_driver.cpp)
+add_library(delto_2f_driver src/delto_3f_external_driver.cpp)
 
 # Declare a C++ executable
 add_executable(delto_3f_external_driver_node src/delto_3f_external_driver.cpp)
@@ -40,7 +40,7 @@ add_executable(delto_3f_external_driver_node src/delto_3f_external_driver.cpp)
 target_include_directories(delto_3f_external_driver_node 
   PUBLIC
   /include
-  /include/delto_3f_driver
+  /include/delto_2f_driver
 )
 target_link_libraries(delto_3f_external_driver_node ${PROJECT_NAME})
 
@@ -52,7 +52,7 @@ ament_target_dependencies(delto_3f_external_driver_node
   trajectory_msgs
   control_msgs
 )
-ament_target_dependencies(delto_3f_driver
+ament_target_dependencies(delto_2f_driver
   rclcpp
   rclcpp_action
   sensor_msgs
@@ -84,17 +84,17 @@ install(DIRECTORY
 )
 
 install(PROGRAMS
-  ${PROJECT_NAME}/delto_3f_driver.py
+  ${PROJECT_NAME}/delto_2f_driver.py
   DESTINATION lib/${PROJECT_NAME}/
 )
 
 
-target_include_directories(delto_3f_driver PUBLIC
+target_include_directories(delto_2f_driver PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
 
 set (SOURCES src/delto_3f_external_driver.cpp)
-set (HEADERS include/delto_3f_driver/delto_3f_external_driver.hpp )
+set (HEADERS include/delto_2f_driver/delto_3f_external_driver.hpp )
 ament_python_install_package(${PROJECT_NAME}) 
 
 if(BUILD_TESTING)

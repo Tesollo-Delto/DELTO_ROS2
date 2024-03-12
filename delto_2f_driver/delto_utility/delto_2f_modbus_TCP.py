@@ -7,7 +7,7 @@ import struct
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from delto_utility.delto_3f_enum import Delto3F, Delto3FCoils, Delto3FHoldingRegisters, Delto3FInputRegisters
+from delto_2f_driver.delto_utility.delto_2f_enum import Delto2FCoils, Delto2FHoldingRegisters, Delto2FInputRegisters    
 
 '''
 default values

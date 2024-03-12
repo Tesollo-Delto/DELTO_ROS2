@@ -139,9 +139,6 @@ def main(args=None):
         delto_driver.get_logger().error("network connection failed.")
         return
     
-    if not(delto_driver.is_dummy):  
-        delto_driver.delto_client.SetFree(False)
-
     time.sleep(0.1)
 
     delto_driver.get_logger().info("delto_driver initialized")
