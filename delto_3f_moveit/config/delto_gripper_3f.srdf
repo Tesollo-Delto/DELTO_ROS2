@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--This does not replace URDF, and is not an extension of URDF.
+    This is a format for representing semantic information about the robot structure.
+    A URDF file must exist for this robot as well, where the joints and the links that are referenced are defined
+-->
+<robot name="delto_gripper_3f">
+    <!--GROUPS: Representation of a set of joints and links. This can be useful for specifying DOF to plan for, defining arms, end effectors, etc-->
+    <!--LINKS: When a link is specified, the parent joint of that link (if it exists) is automatically included-->
+    <!--JOINTS: When a joint is specified, the child link of that joint (which will always exist) is automatically included-->
+    <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
+    <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
+    <group name="delto">
+        <joint name="F1M1"/>
+        <joint name="F1M2"/>
+        <joint name="F1M3"/>
+        <joint name="F1M4"/>
+        <joint name="TIP1"/>
+        <joint name="F2M1"/>
+        <joint name="F2M2"/>
+        <joint name="F2M3"/>
+        <joint name="F2M4"/>
+        <joint name="TIP2"/>
+        <joint name="F3M1"/>
+        <joint name="F3M2"/>
+        <joint name="F3M3"/>
+        <joint name="F3M4"/>
+        <joint name="TIP3"/>
+    </group>
+
+    <disable_collisions link1="F1_01" link2="delto_base_link" reason="Never"/>
+    <disable_collisions link1="F2_01" link2="delto_base_link" reason="Never"/>
+    <disable_collisions link1="F3_01" link2="delto_base_link" reason="Never"/>
+
+    <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
+
+    <disable_collisions link1="F1_01" link2="F1_02" reason="Adjacent"/>
+    <disable_collisions link1="F1_01" link2="F1_03" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F1_04" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F1_TIP" reason="Never"/>
+    <!-- <disable_collisions link1="F1_01" link2="F2_01" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F2_02" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F2_TIP" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F3_01" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F3_02" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F3_03" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F3_04" reason="Never"/>
+    <disable_collisions link1="F1_01" link2="F3_TIP" reason="Never"/> -->
+    <disable_collisions link1="F1_01" link2="delto_base_link" reason="Adjacent"/>
+    <disable_collisions link1="F1_02" link2="F1_03" reason="Adjacent"/>
+    <disable_collisions link1="F1_02" link2="F1_04" reason="Never"/>
+    <disable_collisions link1="F1_02" link2="F1_TIP" reason="Never"/>
+    <!-- <disable_collisions link1="F1_02" link2="F2_01" reason="Never"/>
+    <disable_collisions link1="F1_02" link2="F2_02" reason="Never"/>
+    <disable_collisions link1="F1_02" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F1_02" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F1_02" link2="F2_TIP" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_02" link2="F3_01" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_02" link2="F3_02" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_02" link2="F3_03" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_02" link2="F3_04" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_02" link2="F3_TIP" reason="Never"/> -->
+    <disable_collisions link1="F1_02" link2="delto_base_link" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F1_04" reason="Adjacent"/>
+    <disable_collisions link1="F1_03" link2="F1_TIP" reason="Never"/>
+    <!-- <disable_collisions link1="F1_03" link2="F2_01" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F2_02" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F2_TIP" reason="Never"/>
+    <disable_collisions link1="F1_03" link2="F3_01" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_03" link2="F3_02" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_03" link2="F3_03" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_03" link2="F3_04" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_03" link2="F3_TIP" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_03" link2="delto_base_link" reason="Never"/> -->
+    <disable_collisions link1="F1_04" link2="F1_TIP" reason="Adjacent"/>
+    <!-- <disable_collisions link1="F1_04" link2="F2_01" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F2_02" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F2_TIP" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F3_01" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F3_02" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F3_03" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F3_04" reason="Never"/>
+    <disable_collisions link1="F1_04" link2="F3_TIP" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_04" link2="delto_base_link" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_TIP" link2="F2_01" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F2_02" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F2_TIP" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F3_01" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F3_02" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F3_03" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F3_04" reason="Never"/>
+    <disable_collisions link1="F1_TIP" link2="F3_TIP" reason="Never"/> -->
+    <!-- <disable_collisions link1="F1_TIP" link2="delto_base_link" reason="Never"/> -->
+    <disable_collisions link1="F2_01" link2="F2_02" reason="Adjacent"/>
+    <disable_collisions link1="F2_01" link2="F2_03" reason="Never"/>
+    <disable_collisions link1="F2_01" link2="F2_04" reason="Never"/>
+    <!-- <disable_collisions link1="F2_01" link2="F2_TIP" reason="Never"/> -->
+    <disable_collisions link1="F2_01" link2="F3_01" reason="Never"/>
+    <disable_collisions link1="F2_01" link2="F3_04" reason="Never"/>
+    <!-- <disable_collisions link1="F2_01" link2="F3_TIP" reason="Never"/> -->
+    <disable_collisions link1="F2_01" link2="delto_base_link" reason="Adjacent"/>
+    <disable_collisions link1="F2_02" link2="F2_03" reason="Adjacent"/>
+    <disable_collisions link1="F2_02" link2="F2_04" reason="Never"/>
+    <disable_collisions link1="F2_02" link2="F2_TIP" reason="Never"/>
+    <!-- <disable_collisions link1="F2_02" link2="F3_TIP" reason="Never"/> -->
+    <disable_collisions link1="F2_03" link2="F2_04" reason="Adjacent"/>
+    <disable_collisions link1="F2_03" link2="F2_TIP" reason="Never"/>
+    <disable_collisions link1="F2_04" link2="F2_TIP" reason="Adjacent"/>
+    <!-- <disable_collisions link1="F2_04" link2="F3_01" reason="Never"/> -->
+    <!-- <disable_collisions link1="F2_04" link2="delto_base_link" reason="Never"/> -->
+    <disable_collisions link1="F2_TIP" link2="F3_01" reason="Never"/>
+    <disable_collisions link1="F2_TIP" link2="F3_02" reason="Never"/>
+    <!-- <disable_collisions link1="F2_TIP" link2="delto_base_link" reason="Never"/> -->
+    <disable_collisions link1="F3_01" link2="F3_02" reason="Adjacent"/>
+    <disable_collisions link1="F3_01" link2="F3_03" reason="Never"/>
+    <disable_collisions link1="F3_01" link2="F3_04" reason="Never"/>
+    <disable_collisions link1="F3_01" link2="F3_TIP" reason="Never"/>
+    <disable_collisions link1="F3_01" link2="delto_base_link" reason="Adjacent"/>
+    <disable_collisions link1="F3_02" link2="F3_03" reason="Adjacent"/>
+    <disable_collisions link1="F3_02" link2="F3_04" reason="Never"/>
+    <disable_collisions link1="F3_02" link2="F3_TIP" reason="Never"/>
+    <disable_collisions link1="F3_03" link2="F3_04" reason="Adjacent"/>
+    <disable_collisions link1="F3_03" link2="F3_TIP" reason="Never"/>
+    <disable_collisions link1="F3_04" link2="F3_TIP" reason="Adjacent"/>
+    <disable_collisions link1="F3_04" link2="delto_base_link" reason="Never"/>
+    <disable_collisions link1="F3_TIP" link2="delto_base_link" reason="Never"/>
+</robot>

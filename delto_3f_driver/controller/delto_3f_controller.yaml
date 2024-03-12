@@ -1,0 +1,90 @@
+controller_manager:
+    ros__parameters:
+
+        update_rate: 20 # Hz
+
+        joint_state_broadcaster:
+            type: joint_state_broadcaster/JointStateBroadcaster
+
+        joint_trajectory_controller:
+            type: joint_trajectory_controller/JointTrajectoryController
+
+        forward_velocity_controller:
+            type: velocity_controllers/JointGroupVelocityController
+
+        forward_position_controller:
+            type: position_controllers/JointGroupPositionController
+
+joint_trajectory_controller:
+    ros__parameters:
+        joints:
+            - F1M1
+            - F1M2
+            - F1M3
+            - F1M4
+            - F2M1
+            - F2M2
+            - F2M3
+            - F2M4
+            - F3M1
+            - F3M2
+            - F3M3
+            - F3M4
+        command_interfaces:
+            - position
+        state_interfaces:
+            - position
+            - velocity
+        state_publish_rate: 20.0
+        action_monitor_rate: 20.0
+        allow_partial_joints_goal: false
+        constraints:
+            stopped_velocity_tolerance: 0.2
+            goal_time: 10.0
+            F1M1: { trajectory: 0.5, goal: 0.2 }
+            F1M2: { trajectory: 0.5, goal: 0.2 }
+            F1M3: { trajectory: 0.5, goal: 0.2 }
+            F1M4: { trajectory: 0.5, goal: 0.2 }
+            F2M1: { trajectory: 0.5, goal: 0.2 }
+            F2M2: { trajectory: 0.5, goal: 0.2 }
+            F2M3: { trajectory: 0.5, goal: 0.2 }
+            F2M4: { trajectory: 0.5, goal: 0.2 }
+            F3M1: { trajectory: 0.5, goal: 0.2 }
+            F3M2: { trajectory: 0.5, goal: 0.2 }
+            F3M3: { trajectory: 0.5, goal: 0.2 }
+            F3M4: { trajectory: 0.5, goal: 0.2 }
+
+
+forward_velocity_controller:
+    ros__parameters:
+        joints:
+            - F1M1
+            - F1M2
+            - F1M3
+            - F1M4
+            - F2M1
+            - F2M2
+            - F2M3
+            - F2M4
+            - F3M1
+            - F3M2
+            - F3M3
+            - F3M4
+        interface_name: velocity
+
+forward_position_controller:
+    ros__parameters:
+        joints:
+            - F1M1
+            - F1M2
+            - F1M3
+            - F1M4
+            - F2M1
+            - F2M2
+            - F2M3
+            - F2M4
+            - F3M1
+            - F3M2
+            - F3M3
+            - F3M4
+        interface_name: position

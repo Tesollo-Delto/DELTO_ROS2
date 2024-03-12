@@ -1,0 +1,31 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 50  # Hz
+
+    delto_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+delto_controller:
+  ros__parameters:
+    joints:
+      - F1M1
+      - F1M2
+      - F1M3
+      - F1M4
+      - F2M1
+      - F2M2
+      - F2M3
+      - F2M4
+      - F3M1
+      - F3M2
+      - F3M3
+      - F3M4
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

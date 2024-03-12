@@ -1,0 +1,15 @@
+# Default initial positions for delto_gripper_3f's ros2_control fake system
+
+initial_positions:
+  F1M1: 0
+  F1M2: 0
+  F1M3: 0
+  F1M4: 0
+  F2M1: 0
+  F2M2: 0
+  F2M3: 0
+  F2M4: 0
+  F3M1: 0
+  F3M2: 0
+  F3M3: 0
+  F3M4: 0

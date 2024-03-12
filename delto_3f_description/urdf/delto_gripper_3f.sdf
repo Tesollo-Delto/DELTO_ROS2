@@ -1,0 +1,940 @@
+<sdf version='1.7'>
+
+ <!-- Materials -->
+    silver: <ambient>0.700 0.700 0.700 1.000</ambient><diffuse>0.700 0.700 0.700 1.000</diffuse>
+    black: <ambient>0.245 0.245 0.245 1.0</ambient><diffuse>0.245 0.245 0.245 1.0</diffuse>
+    white: <ambient>1.0 1.0 1.0 1.0</ambient><diffuse>1.0 1.0 1.0 1.0</diffuse>
+
+##
+
+<world name="default">
+
+  <model name='delto_gripper_3f'>
+    
+   
+    <link name='delto_base_link'>
+      <inertial>
+        <pose>0.000455 -2e-06 -0.052186 6e-06 0.003295 -0.000449</pose>
+        <mass>0.370</mass>
+        <inertia>
+          <ixx>0.00099359</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000980252</iyy>
+          <iyz>0</iyz>
+          <izz>0.00031782</izz>
+        </inertia>
+      </inertial>
+      <collision name='delto_base_link_collision'>
+        <pose>0.000455 -2e-06 -0.052186 6e-06 0.003295 -0.000449</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/delto_base_link.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='delto_base_link_visual'>
+        <pose>0.000455 -2e-06 -0.052186 6e-06 0.003295 -0.000449</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/delto_base_link.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+        <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    
+    <joint name="delto_base_link_fixed" type="fixed">
+    <parent>world</parent>
+    <child>delto_base_link</child>
+    </joint>
+    
+    <joint name='F1M1' type='revolute'>
+      <pose relative_to='delto_base_link'>0.0265 0 0 0 -0 0</pose>
+      <parent>delto_base_link</parent>
+      <child>F1_01</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.0472</lower>
+          <upper>1.0472</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F1_01'>
+      <pose relative_to='F1M1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.000391 0 -0.014 -0.176624 -2e-06 1.57079</pose>
+        <mass>0.061</mass>
+        <inertia>
+          <ixx>1.924e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.70941e-05</iyy>
+          <iyz>0</iyz>
+          <izz>5.94788e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F1_01_collision'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F1_01_visual'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F1M2' type='revolute'>
+      <pose relative_to='F1_01'>0 0 0 -3.14159 -1.5708 0</pose>
+      <parent>F1_01</parent>
+      <child>F1_02</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.76278</lower>
+          <upper>1.76278</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F1_02'>
+      <pose relative_to='F1M2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01 3e-06 0.016 -0.003689 0.316886 -0.002774</pose>
+        <mass>0.025</mass>
+        <inertia>
+          <ixx>7.1648e-06</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>6.31302e-06</iyy>
+          <iyz>0</iyz>
+          <izz>3.27418e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F1_02_collision'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F1_02_visual'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F1M3' type='revolute'>
+      <pose relative_to='F1_02'>0.02022 0 0.03136 -1.5708 -1.5708 0</pose>
+      <parent>F1_02</parent>
+      <child>F1_03</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.15708</lower>
+          <upper>2.53073</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F1_03'>
+      <pose relative_to='F1M3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.014 -0.000453 -4e-05 1.56511 -0.000858 1.55626</pose>
+        <mass>0.051</mass>
+        <inertia>
+          <ixx>1.69122e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.49403e-05</iyy>
+          <iyz>0</iyz>
+          <izz>6.50553e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F1_03_collision'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F1_03_fixed_joint_lump__link_03_visual'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F1M4' type='revolute'>
+      <pose relative_to='F1_03'>0.0434 0 0 0 -0 0</pose>
+      <parent>F1_03</parent>
+      <child>F1_04</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.226893</lower>
+          <upper>2.02458</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F1_04'>
+      <pose relative_to='F1M4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.018042 -0.000265 -3.8e-05 1.56685 -0.000869 1.58297</pose>
+        <mass>0.073</mass>
+        <inertia>
+          <ixx>2.40164e-05</ixx>
+          <ixy>-9.38541e-10</ixy>
+          <ixz>2.53327e-07</ixz>
+          <iyy>2.27674e-05</iyy>
+          <iyz>3.04026e-08</iyz>
+          <izz>6.29671e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F1_04_collision'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='F1_04_fixed_joint_lump__F1_TIP_collision_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F1_04_fixed_joint_lump__link_04_visual'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+      <visual name='F1_04_fixed_joint_lump__link_tip_high_visual_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.90 0.90 0.90 1.00</ambient>
+        <diffuse>0.95 0.95 0.95 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F2M1' type='revolute'>
+      <pose relative_to='delto_base_link'>-0.01334 0.023 0 0 0 -3.14</pose>
+      <parent>delto_base_link</parent>
+      <child>F2_01</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.91986</lower>
+          <upper>0.139626</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F2_01'>
+      <pose relative_to='F2M1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.000391 0 -0.014 -0.176624 -2e-06 1.57079</pose>
+        <mass>0.061</mass>
+        <inertia>
+          <ixx>1.924e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.70941e-05</iyy>
+          <iyz>0</iyz>
+          <izz>5.94788e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F2_01_collision'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F2_01_visual'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F2M2' type='revolute'>
+      <pose relative_to='F2_01'>0 0 0 -3.14 -1.57 -0</pose>
+      <parent>F2_01</parent>
+      <child>F2_02</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.76278</lower>
+          <upper>1.76278</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F2_02'>
+      <pose relative_to='F2M2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01 3e-06 0.016 -0.003689 0.316886 -0.002774</pose>
+        <mass>0.025</mass>
+        <inertia>
+          <ixx>7.1648e-06</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>6.31302e-06</iyy>
+          <iyz>0</iyz>
+          <izz>3.27418e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F2_02_collision'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F2_02_fixed_joint_lump__link_02_visual'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F2M3' type='revolute'>
+      <pose relative_to='F2_02'>0.02022 0 0.03136 -1.57 -1.57 0</pose>
+      <parent>F2_02</parent>
+      <child>F2_03</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.15708</lower>
+          <upper>2.53073</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F2_03'>
+      <pose relative_to='F2M3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.014 -0.000453 -4e-05 1.56511 -0.000858 1.55626</pose>
+        <mass>0.051</mass>
+        <inertia>
+          <ixx>1.69122e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.49403e-05</iyy>
+          <iyz>0</iyz>
+          <izz>6.50553e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F2_03_collision'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F2_03_fixed_joint_lump__link_03_visual'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F2M4' type='revolute'>
+      <pose relative_to='F2_03'>0.0434 0 0 0 -0 0</pose>
+      <parent>F2_03</parent>
+      <child>F2_04</child>
+      <axis>
+        <xyz>0.0434 0 1</xyz>
+        <limit>
+          <lower>-0.226893</lower>
+          <upper>2.02458</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F2_04'>
+      <pose relative_to='F2M4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.018042 -0.000265 -3.8e-05 1.56685 -0.000869 1.58297</pose>
+        <mass>0.073</mass>
+        <inertia>
+          <ixx>2.40164e-05</ixx>
+          <ixy>-9.38541e-10</ixy>
+          <ixz>2.53327e-07</ixz>
+          <iyy>2.27674e-05</iyy>
+          <iyz>3.04026e-08</iyz>
+          <izz>6.29671e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F2_04_collision'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='F2_04_fixed_joint_lump__F2_TIP_collision_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F2_04_fixed_joint_lump__link_04_visual'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+      <visual name='F2_04_fixed_joint_lump__link_tip_high_visual_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.90 0.90 0.90 1.00</ambient>
+        <diffuse>0.95 0.95 0.95 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F3M1' type='revolute'>
+      <pose relative_to='delto_base_link'>-0.01334 -0.023 0 0 0 -3.14</pose>
+      <parent>delto_base_link</parent>
+      <child>F3_01</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.0872665</lower>
+          <upper>2.00713</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F3_01'>
+      <pose relative_to='F3M1'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.000391 0 -0.014 -0.176624 -2e-06 1.57079</pose>
+        <mass>0.061</mass>
+        <inertia>
+          <ixx>1.924e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.70941e-05</iyy>
+          <iyz>0</iyz>
+          <izz>5.94788e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F3_01_collision'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F3_01_fixed_joint_lump__link_01_visual'>
+        <pose>0.001898 -1e-06 -0.022984 -0.144392 2e-05 1.57092</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_01.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F3M2' type='revolute'>
+      <pose relative_to='F3_01'>0 0 0 -3.14 -1.57 -0</pose>
+      <parent>F3_01</parent>
+      <child>F3_02</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1.76278</lower>
+          <upper>1.76278</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F3_02'>
+      <pose relative_to='F3M2'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.01 3e-06 0.016 -0.003689 0.316886 -0.002774</pose>
+        <mass>0.025</mass>
+        <inertia>
+          <ixx>7.1648e-06</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>6.31302e-06</iyy>
+          <iyz>0</iyz>
+          <izz>3.27418e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F3_02_collision'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F3_02_fixed_joint_lump__link_02_visual'>
+        <pose>0.010322 0.000268 0.013591 -0.031181 0.375739 -0.024334</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_02.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F3M3' type='revolute'>
+      <pose relative_to='F3_02'>0.02022 0 0.03136 -1.57 -1.57 0</pose>
+      <parent>F3_02</parent>
+      <child>F3_03</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.15708</lower>
+          <upper>2.53073</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F3_03'>
+      <pose relative_to='F3M3'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.014 -0.000453 -4e-05 1.56511 -0.000858 1.55626</pose>
+        <mass>0.051</mass>
+        <inertia>
+          <ixx>1.69122e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.49403e-05</iyy>
+          <iyz>0</iyz>
+          <izz>6.50553e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F3_03_collision'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F3_03_fixed_joint_lump__link_03_visual'>
+        <pose>0.019035 -0.000761 0.000157 1.54055 -0.002363 1.59946</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_03.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+    <joint name='F3M4' type='revolute'>
+      <pose relative_to='F3_03'>0.0434 0 0 0 -0 0</pose>
+      <parent>F3_03</parent>
+      <child>F3_04</child>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-0.226893</lower>
+          <upper>2.02458</upper>
+          <effort>10</effort>
+          <velocity>5</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.1</damping>
+          <friction>0.1</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='F3_04'>
+      <pose relative_to='F3M4'>0 0 0 0 -0 0</pose>
+      <inertial>
+        <pose>0.018042 -0.000265 -3.8e-05 1.56685 -0.000869 1.58297</pose>
+        <mass>0.073</mass>
+        <inertia>
+          <ixx>2.40164e-05</ixx>
+          <ixy>-9.38541e-10</ixy>
+          <ixz>2.53327e-07</ixz>
+          <iyy>2.27674e-05</iyy>
+          <iyz>3.04026e-08</iyz>
+          <izz>6.29671e-06</izz>
+        </inertia>
+      </inertial>
+      <collision name='F3_04_collision'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <collision name='F3_04_fixed_joint_lump__F3_TIP_collision_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='F3_04_fixed_joint_lump__link_04_visual'>
+        <pose>0.011992 -0.000773 -5e-06 1.57453 0.003601 1.66504</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_04.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.050 0.050 0.050 1.00</ambient>
+        <diffuse>0.10 0.10 0.100 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+      <visual name='F3_04_fixed_joint_lump__link_tip_high_visual_1'>
+        <pose>0.044959 -0.000423 0 1.57088 -1e-05 1.52041</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>../meshes/link_tip_high.stl</uri>
+          </mesh>
+        </geometry>
+      <material>
+      <ambient>0.90 0.90 0.90 1.00</ambient>
+        <diffuse>0.95 0.95 0.950 1.00</diffuse>
+        <specular>0.1 0.1 0.1 1</specular>
+      </material>
+      </visual>
+    </link>
+
+
+<plugin filename="libignition-gazebo-joint-state-publisher-system.so"
+        name="ignition::gazebo::systems::JointStatePublisher">
+</plugin>
+
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F1M1</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+</plugin>
+		
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F1M2</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>0.0</i_max>
+			<i_min>-0.0</i_min>
+</plugin>
+
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F1M3</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>25.0</i_max>
+			<i_min>-25.0</i_min>
+		</plugin>
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F1M4</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+		</plugin>
+
+
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F2M1</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+</plugin>
+		
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F2M2</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>50.0</i_max>
+			<i_min>-50.0</i_min>
+</plugin>
+
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F2M3</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>25.0</i_max>
+			<i_min>-25.0</i_min>
+		</plugin>
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F2M4</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+		</plugin>
+
+
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F3M1</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+</plugin>
+		
+<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F3M2</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>50.0</i_max>
+			<i_min>-50.0</i_min>
+</plugin>
+
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F3M3</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>25.0</i_max>
+			<i_min>-25.0</i_min>
+		</plugin>
+
+		<plugin filename="ignition-gazebo-joint-position-controller-system" name="ignition::gazebo::systems::JointPositionController">
+			<joint_name>F3M4</joint_name>
+			<p_gain>10.0</p_gain>
+			<i_gain>0.0</i_gain>
+			<d_gain>80.0</d_gain>
+			<i_max>1.0</i_max>
+			<i_min>-1.0</i_min>
+		</plugin>
+
+	
+  </model>
+  </world>
+</sdf>

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+<name>delto_3f_description</name>
+  <version>0.0.1</version>
+<description>The delto_description package</description>
+  <maintainer email="khc@tesollo.com">hong</maintainer>
+  <license>BSD</license>
+
+  <depend>xacro</depend>
+  <depend>rviz2</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>joint_state_publisher</depend>
+  <depend>joint_state_publisher_gui</depend>
+  <depend>gazebo_ros</depend>
+  <depend>gazebo_ros_control</depend>
+  <depend>controller_manager</depend>
+  <depend>ros2_control</depend>
+  <depend>ros2_controllers</depend>
+  <depend>ros2_control_test_assets</depend>
+  <depend>ros2_control_demos</depend>
+  <depend>ros2_control_utils</depend>
+
+  <test_depend>ament_copyright</test_depend>
+  <test_depend>ament_flake8</test_depend>
+  <test_depend>ament_pep257</test_depend>
+  <test_depend>python3-pytest</test_depend>
+
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>
