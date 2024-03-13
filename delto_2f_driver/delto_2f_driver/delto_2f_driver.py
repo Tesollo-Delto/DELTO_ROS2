@@ -28,7 +28,7 @@ class DeltoROSDriver(Node):
     def __init__(self):
 
         # ROS2 Node Initialize
-        super().__init__('delto_3f_driver')
+        super().__init__('delto_2f_driver')
 
         qos_profile = QoSProfile( depth = 2, reliability = QoSReliabilityPolicy.RELIABLE)
 
@@ -58,9 +58,9 @@ class DeltoROSDriver(Node):
 
         self.open_position_sub = self.create_subscription(Int32,'gripper/open_position',self.open_position_callback,qos_profile)
         self.close_position_sub = self.create_subscription(Int32,'gripper/close_position',self.close_position_callback,qos_profile)
+        self.get_data_timer = self.create_timer(1.0 / self.publish_rate, self.get_data_timer_callback)
 
-        self.get_data_timer = self.create_timer(1.0 / self.publish_rate, self.get_data)
-
+        self.joint_state_msg = JointState()
     
     # Connect to the delto gripper
     def connect(self)->bool:
@@ -78,58 +78,81 @@ class DeltoROSDriver(Node):
     # Publish joint state
     def joint_state_publisher(self):
 
-        joint_state_msg = JointState()
-        joint_state_msg.header.stamp = self.get_clock().now().to_msg()
+        self.joint_state_msg.header.stamp = self.get_clock().now().to_msg()
 
-        joint_state_msg.name = ['Distance']
+        self.joint_state_msg.name = ['Distance']
 
-        position = self.get_position()
+        self.joint_state_msg.position = self.current_position
 
-        joint_state_msg.position = position
-
-        self.joint_state_pub.publish(joint_state_msg)
+        self.joint_state_pub.publish(self.joint_state_msg)
 
     # Get current position
-    def get_open_position(self):
-
-       pass
+    def get_open_position(self):       
+        return self.open_position
     
     def get_close_position(self):
+       return self.close_position 
+    
+    def get_current_position(self):
+        return self.current_position
+    
+    def get_electric_current(self):
+        return self.electric_current
 
-        if self.is_dummy:
-            return self.current_joint_state
-        
-        pass
+    def set_ip(self, ip):
+        self.delto_client.set_ip(ip)
+
     
     def set_open_position(self, position):
        
-        pass
+         self.open_position = position
+         self.delto_client.set_open_position(self.open_position)
 
     def set_close_position(self, position):
        
-        pass
+        self.close_position = position
+        self.delto_client.set_close_position(self.close_position)
 
+    def set_high_force(self, force):
+        self.high_force = force
+        self.delto_client.set_high_force(self.high_force)
+
+    def set_low_force(self, force):
+        self.low_force = force
+        self.delto_client.set_low_force(self.low_force)
 
     def high_force_callback(self,msg):
 
-        self.high_force = msg.data 
+        self.set_high_force(msg.data)
 
     def low_force_callback(self,msg):
 
-        self.low_force = msg.data
-        pass
+        self.set_low_force(msg.data)
 
     def open_position_callback(self,msg):
         
-        self.open_position = msg.data
-        pass
+        self.set_open_position(msg.data)
 
     def close_position_callback(self,msg):
             
-        self.close_position = msg.data
-        pass
+        self.set_close_position(msg.data)
+
+    def get_data_timer_callback(self):
+            
+            if self.is_dummy:
+                return
+    
+            self.lock.acquire()
+            data = self.delto_client.get_data()
+            self.lock.release()
+
+            self.current_position = data[0]
+            self.electric_current = data[1]
+
+            self.joint_state_publisher()
 
 def main(args=None):
+    
     rclpy.init(args=args)
     
     delto_driver = DeltoROSDriver()
@@ -141,7 +164,7 @@ def main(args=None):
     
     time.sleep(0.1)
 
-    delto_driver.get_logger().info("delto_driver initialized")
+    delto_driver.get_logger().info("delto_2f_driver initialized")
     executor = MultiThreadedExecutor(num_threads=8)
     executor.add_node(delto_driver)
     executor.spin()
