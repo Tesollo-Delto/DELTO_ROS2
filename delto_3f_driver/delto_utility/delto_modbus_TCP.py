@@ -59,7 +59,7 @@ class Communication:
         
         self.client.close()
 
-    def sendData(self,address,count,data):
+    def send_data(self,address,count,data):
 
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
@@ -76,7 +76,7 @@ class Communication:
                 elif(count > 1):
                     self.client.write_registers(address = address, count = count, values = data)
 
-    def getPosition(self):
+    def get_position(self):
         
         if self.dummy:
             status = [0]*12
@@ -99,7 +99,7 @@ class Communication:
 
         return status
     
-    def SetPosition(self,position : list[float]):
+    def set_position(self,position : list[float]):
 
         if(self.dummy):
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
@@ -120,7 +120,7 @@ class Communication:
             intPosion = list(map(lambda x : struct.unpack('H', struct.pack('h',int((x*10))))[0],position))
             self.client.write_registers(address = 72, values = intPosion,slave=self.slaveID)
 
-    def GetPGain(self):
+    def get_pgain(self):
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
                                          ": " +
@@ -134,12 +134,12 @@ class Communication:
                                                         slave=self.slaveID).registers
         return pGain
     
-    def SetPGain(self, pGain : list[int]):
+    def set_pgain(self, pGain : list[int]):
         print("setPGain", pGain)
         self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
                                     values=pGain,slave=self.slaveID)
 
-    def GetDGain(self):
+    def get_dgain(self):
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
                                          ": " +
@@ -153,18 +153,18 @@ class Communication:
                                                         slave=self.slaveID).registers
         return dGain
     
-    def SetDGain(self, dGain: list[int]):
+    def set_dgain(self, dGain: list[int]):
         self.client.write_registers(address= Delto3FHoldingRegisters.MOTOR1_DGAIN,
                                      values= dGain,
                                      slave=self.slaveID)
         
-    def SetFree(self, isFree : bool):
+    def set_free(self, isFree : bool):
         
         self.client.write_coil(address = Delto3FCoils.JOINT_CUSTOM_MODE.value
                                ,value = isFree
                                ,slave = self.slaveID)
 
-    def GraspMode(self,mode):
+    def grasp_mode(self,mode):
         if(mode == 0):
             self.Grasp(False)
         else:
@@ -174,7 +174,7 @@ class Communication:
             
             self.Grasp(True)
 
-    def GetGraspMode(self):
+    def get_grasp_mode(self):
 
         with self.lock:
             mode = self.client.read_input_registers(address=Delto3FHoldingRegisters.GRASP_MODE.value,
@@ -183,14 +183,14 @@ class Communication:
         
         return mode
 
-    def Grasp(self,isGrasp : bool):
+    def grasp(self,isGrasp : bool):
         with self.lock:
             print("Grasp", isGrasp)
             self.client.write_coil(address=Delto3FCoils.GRASP.value,
                                 value=isGrasp,
                                 slave=self.slaveID)
         
-    def SetStep(self,step):
+    def set_step(self,step):
         
         if(step < 1):
             step = 1
@@ -199,12 +199,6 @@ class Communication:
 
         self.client.write_register(address = Delto3FHoldingRegisters.MOTION_STEP.value,
                                     value = step, slave = self.slaveID)
-
-    def test(self):
-        self.client.write_register(address=Delto3FHoldingRegisters.ETHERNET_GATEWAY_C.value,
-                                   value=0,
-                                   slave=self.slaveID)
-        self.RomWrite()
 
     def RomWrite(self):
         self.client.write_coil(address = Delto3FCoils.EEPROM_WRITE.value,

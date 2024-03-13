@@ -112,7 +112,7 @@ class DeltoROSDriver(Node):
         if self.is_dummy:
             return self.current_joint_state
         
-        status = self.delto_client.getPosition()
+        status = self.delto_client.get_position()
         return status
     
     def set_position(self, position):
@@ -121,23 +121,23 @@ class DeltoROSDriver(Node):
             self.current_joint_state = position
             return
         
-        self.delto_client.SetPosition(position)
+        self.delto_client.set_position(position)
 
     def set_motion_step(self, step):
         
         if self.is_dummy:
             return
         
-        self.delto_client.SetStep(step)
+        self.delto_client.set_step(step)
 
     def grasp_mode_callback(self, mode: Int32):
-        self.delto_client.GraspMode(mode.data)
+        self.delto_client.grasp_mode(mode.data)
 
     def grasp_callback(self, grasp : Bool):
         with self.lock:
             print('check {}'.format(grasp.data))
             self.get_logger().info('check {}'.format(grasp.data))
-            self.delto_client.GraspMode(grasp.data)
+            self.delto_client.grasp_mode(grasp.data)
 
     def timer_callback(self):
             self.joint_state_publisher()
@@ -214,7 +214,7 @@ class DeltoROSDriver(Node):
 
         self.target_joint_state = msg.data
         print("target_joint_state: ", self.target_joint_state)
-        self.delto_client.SetPosition(self.target_joint_state)
+        self.delto_client.set_position(self.target_joint_state)
 
     def waypointMove(self, waypointList, threshold):
         self.stop_thread = False
@@ -222,7 +222,7 @@ class DeltoROSDriver(Node):
         self.waypoint_thread.start()
 
     def stop_motion(self):
-        self.delto_client.SetPosition(self.delto_client.get_position())
+        self.delto_client.set_position(self.delto_client.get_position())
         self.stop_thread = True
 
     def _waypointMove(self, waypointList, threshold = 0.3):
@@ -241,13 +241,13 @@ class DeltoROSDriver(Node):
 
             if(move_flag == False): 
                 #move to the next waypoint
-                self.delto_client.SetPosition(waypointList[i])
+                self.delto_client.set_position(waypointList[i])
                 move_flag = True
                 first_input_flag = True
             
        
 
-            current_position = self.delto_client.getPosition()
+            current_position = self.delto_client.get_position()
 
             if (first_input_flag):
                 first_current_position = current_position
@@ -289,7 +289,7 @@ def main(args=None):
         return
     
     if not(delto_driver.is_dummy):  
-        delto_driver.delto_client.SetFree(False)
+        delto_driver.delto_client.set_free(False)
 
     time.sleep(0.1)
     delto_driver.get_logger().info("delto_driver initialized")
