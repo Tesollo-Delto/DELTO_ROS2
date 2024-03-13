@@ -2,7 +2,13 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'delto_3f_description'
+package_name = 'delto_description'
+
+current_dir = os.path.dirname(os.path.realpath(__file__))
+
+config_ur3_rel_dir = os.path.relpath(os.path.join(current_dir, 'config', 'ur3'))
+mesh_DG2F_rel_dir = os.path.relpath(os.path.join(current_dir, 'meshes', 'DG2F'))
+mesh_DG3F_rel_dir =  os.path.relpath(os.path.join(current_dir, 'meshes', 'DG2F'))
 
 setup(
     name=package_name,
@@ -16,11 +22,13 @@ setup(
         (os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')),
         (os.path.join('share', package_name, 'urdf'), glob('urdf/*')),
         # (os.path.join('share', package_name, 'urdf'), glob('srdf/*')),
-        (os.path.join('share', package_name, 'meshes'), glob('meshes/*.stl')),
+        (os.path.join('share', package_name, 'meshes','DG2F'), glob(os.path.join(mesh_DG2F_rel_dir, '*'))),
+        (os.path.join('share', package_name, 'meshes','DG3F'), glob(os.path.join(mesh_DG3F_rel_dir, '*'))),
+
         (os.path.join('share', package_name, 'config'), glob('config/*.rviz')),
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
-        # (os.path.join('share', package_name, 'config','ur3'), glob('ur3/*.yaml')),
         (os.path.join('share', package_name, 'config','ur3'), glob('ur3/*')),
+        (os.path.join('share', package_name, 'config','ur3'), glob(os.path.join(config_ur3_rel_dir, '*'))),
     ],
 
     install_requires=['setuptools'],
@@ -28,10 +36,11 @@ setup(
     maintainer='hong',
     maintainer_email='khc@tesollo.com',
     description='The ' + package_name + 'package',
-    license='TODO: License declaration',
+    license='BSD',
     tests_require=['pytest'],
     entry_points={
-        'console_scripts': [
+        'console_scripts': 
+        [
         ],
     },
 )
