@@ -59,7 +59,7 @@ class Communication:
         
         self.client.close()
 
-    def sendData(self,address,count,data):
+    def send_data(self,address,count,data):
 
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
@@ -76,139 +76,119 @@ class Communication:
                 elif(count > 1):
                     self.client.write_registers(address = address, count = count, values = data)
 
-    def getPosition(self):
-        
+    def get_data(self,address,count):
+        '''
+        Get data from Delto Gripper
+        '''
         if self.dummy:
-            status = [0]*12
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
                                          ": " +
-                                         sys._getframe().f_code.co_name)
-            
-            return status
+                                         sys._getframe().f_code.co_name)            
+            return
         
-        status =[]
 
-        for i in range(Delto3F.MOTOR_NUM.value):
-            stats = self.client.read_input_registers(
-                address = Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value + i,
-                count=1,
-                slave=self.slaveID).registers
-            
-            #unsigned 8bit to singed 8 bit
-            status.append(struct.unpack('h', struct.pack('H',stats[0]))[0]/10)
-
+        ## Position and Current
+        status = self.client.read_input_registers(
+            address = Delto2FInputRegisters.CURRENT_POSITION, count = 2).registers
+        
         return status
     
-    def SetPosition(self,position : list[float]):
+    def set_open_position(self, value):
 
-        if(self.dummy):
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)
-            
-            return
-        
-        if(len(position) != 12):
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name +
-                                         " position size is not 12")
-            return
-        
-        with self.lock:
-
-            intPosion = list(map(lambda x : struct.unpack('H', struct.pack('h',int((x*10))))[0],position))
-            self.client.write_registers(address = 72, values = intPosion,slave=self.slaveID)
-
-    def GetPGain(self):
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
                                          ": " +
-                                         sys._getframe().f_code.co_name)
-            
+                                         sys._getframe().f_code.co_name)            
             return
         
-        with self.lock:
-            pGain = self.client.read_holding_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
-                                                        count= Delto3F.MOTOR_NUM.value,
-                                                        slave=self.slaveID).registers
-        return pGain
-    
-    def SetPGain(self, pGain : list[int]):
-        print("setPGain", pGain)
-        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
-                                    values=pGain,slave=self.slaveID)
+        self.send_data(Delto2FHoldingRegisters.OPEN_POSITION, 1, [value]) 
 
-    def GetDGain(self):
+    def set_close_position(self, value):
+            
+            if self.dummy:
+                rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                            ": " +
+                                            sys._getframe().f_code.co_name)            
+                return
+            
+            self.send_data(Delto2FHoldingRegisters.CLOSE_POSITION, 1, [value])
+
+    def set_low_force(self, value):
+
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
                                          ": " +
-                                         sys._getframe().f_code.co_name)
-            
+                                         sys._getframe().f_code.co_name)            
             return
         
-        with self.lock:
-            dGain = self.client.read_holding_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN.value,
-                                                        count= Delto3F.MOTOR_NUM.value, 
-                                                        slave=self.slaveID).registers
-        return dGain
-    
-    def SetDGain(self, dGain: list[int]):
-        self.client.write_registers(address= Delto3FHoldingRegisters.MOTOR1_DGAIN,
-                                     values= dGain,
-                                     slave=self.slaveID)
+        self.send_data(Delto2FHoldingRegisters.LOW_FORCE, 1, [value])
+
+    def set_high_force(self, value):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": " +
+                                         sys._getframe().f_code.co_name)            
+            return
         
-    def SetFree(self, isFree : bool):
+        self.send_data(Delto2FHoldingRegisters.HIGH_FORCE, 1, [value])
+
+    def set_ip(self,ip :str):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": " +
+                                         sys._getframe().f_code.co_name)            
+            return
         
-        self.client.write_coil(address = Delto3FCoils.JOINT_CUSTOM_MODE.value
-                               ,value = isFree
-                               ,slave = self.slaveID)
+        ip = ip.split('.')
 
-    def GraspMode(self,mode):
-        if(mode == 0):
-            self.Grasp(False)
-        else:
-            self.client.write_register(address=int(Delto3FHoldingRegisters.GRASP_MODE.value),
-                                    value=mode,
-                                    slave=self.slaveID)
-            
-            self.Grasp(True)
+        if len(ip) != 4:
 
-    def GetGraspMode(self):
-
-        with self.lock:
-            mode = self.client.read_input_registers(address=Delto3FHoldingRegisters.GRASP_MODE.value,
-                                                     count=1,
-                                                     slave=self.slaveID).registers
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid IP address")
+            return
         
-        return mode
+        ip = list(map(int,ip))
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_IP_CLASS_A, 4, ip)
 
-    def Grasp(self,isGrasp : bool):
-        with self.lock:
-            print("Grasp", isGrasp)
-            self.client.write_coil(address=Delto3FCoils.GRASP.value,
-                                value=isGrasp,
-                                slave=self.slaveID)
+    def set_subnet_mask(self,subnet_mask :str):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": "
+                                         sys._getframe().f_code.co_name)            
+            return
         
-    def SetStep(self,step):
+        subnet_mask = subnet_mask.split('.')
+
+        if len(subnet_mask) != 4:
+
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid subnet mask")
+            return
         
-        if(step < 1):
-            step = 1
-        elif(step > 32767):
-            step = 32767
+        subnet_mask = list(map(int,subnet_mask))
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_SUBNET_MASK_A, 4, subnet_mask)
 
-        self.client.write_register(address = Delto3FHoldingRegisters.MOTION_STEP.value,
-                                    value = step, slave = self.slaveID)
+    def set_gate_way(self,gateway :str):
 
-    def test(self):
-        self.client.write_register(address=Delto3FHoldingRegisters.ETHERNET_GATEWAY_C.value,
-                                   value=0,
-                                   slave=self.slaveID)
-        self.RomWrite()
-
-    def RomWrite(self):
-        self.client.write_coil(address = Delto3FCoils.EEPROM_WRITE.value,
-                               value = True,
-                               slave = self.slaveID)
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": " +
+                                         sys._getframe().f_code.co_name)            
+            return
         
+        gateway = gateway.split('.')
 
+        if len(gateway) != 4:
+
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid gateway")
+            return
+        
+        gateway = list(map(int,gateway))
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_GATEWAY_A, 4, gateway)

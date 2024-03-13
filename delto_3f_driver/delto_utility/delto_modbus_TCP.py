@@ -211,4 +211,64 @@ class Communication:
                                value = True,
                                slave = self.slaveID)
         
+    def set_ip(self,ip :str):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": " +
+                                         sys._getframe().f_code.co_name)            
+            return
+        
+        ip = ip.split('.')
+
+        if len(ip) != 4:
+
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid IP address")
+            return
+        
+        ip = list(map(int,ip))
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A, 4, ip)
+
+    def set_subnet_mask(self,subnet_mask :str):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": "
+                                         sys._getframe().f_code.co_name)            
+            return
+        
+        subnet_mask = subnet_mask.split('.')
+
+        if len(subnet_mask) != 4:
+
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid subnet mask")
+            return
+        
+        subnet_mask = list(map(int,subnet_mask))
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A, 4, subnet_mask)
+
+    def set_gate_way(self,gateway :str):
+
+        if self.dummy:
+            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+                                         ": " +
+                                         sys._getframe().f_code.co_name)            
+            return
+        
+        gateway = gateway.split('.')
+
+        if len(gateway) != 4:
+
+            rclpy.Node.get_logger().error(rclpy.Node.get_name() +
+                                          ": " +
+                                          "Invalid gateway")
+            return
+        
+        gateway = list(map(int,gateway))
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A, 4, gateway)
+        
 

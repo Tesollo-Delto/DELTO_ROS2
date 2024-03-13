@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    share_dir = get_package_share_directory('delto_3f_description')
+    share_dir = get_package_share_directory('delto_description')
 
     urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_3f.urdf')
     with open(urdf_file, 'r') as file:

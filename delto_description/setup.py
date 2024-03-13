@@ -8,7 +8,7 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 
 config_ur3_rel_dir = os.path.relpath(os.path.join(current_dir, 'config', 'ur3'))
 mesh_DG2F_rel_dir = os.path.relpath(os.path.join(current_dir, 'meshes', 'DG2F'))
-mesh_DG3F_rel_dir =  os.path.relpath(os.path.join(current_dir, 'meshes', 'DG2F'))
+mesh_DG3F_rel_dir =  os.path.relpath(os.path.join(current_dir, 'meshes', 'DG3F'))
 
 setup(
     name=package_name,

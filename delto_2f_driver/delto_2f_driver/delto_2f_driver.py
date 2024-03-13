@@ -21,7 +21,7 @@ from sensor_msgs.msg import JointState
 import rclpy
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from delto_utility import delto_modbus_TCP as delto_TCP
+from delto_utility import delto_2f_modbus_TCP as delto_TCP
 
 class DeltoROSDriver(Node):
 

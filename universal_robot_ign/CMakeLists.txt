@@ -56,7 +56,6 @@ target_link_libraries(joint_state_publisher ${PROJECT_NAME})
 add_executable(joint_controller src/joint_controller_main.cpp)
 target_link_libraries(joint_controller ${PROJECT_NAME})
 
-# for ignition-gazebo plugin RobotiqController
 add_library(DeltoController SHARED plugins/delto_controller/DeltoController.cpp)
 
 target_link_libraries(DeltoController
