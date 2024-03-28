@@ -31,11 +31,13 @@ Check also [Delto Gripper Manual](https://www.tesollo.com/Community/?q=YToyOntzO
 
   - `delto_3f_description` - URDF, mesh file
 
-  - `delto_3f_driver` - Delto Gripper ROS2 driver
+  - `delto_3f_driver` - Delto Gripper 3F ROS2 driver
 
   - `delto_3f_moveit` - example MoveIt configuration for Delto Gripper.
 
-  - `universal_robot_ign` - example Gazebo Ignition (Simulation) for Delto, UR3.
+  - `delto_2f_driver` - Delto Gripper 2F ROS2 driver
+
+  - `universal_robot_ign` - example Gazebo Ignition (Simulation) for Delto3F, UR3.
 
   - `ur_pick_and_place_moveit` - example MoveIt! pick and place application for Delto Gripper and UR3.
 
@@ -77,6 +79,9 @@ sudo apt install ros-humble-moveit
 Delto_3f_driver subscribes to the topic /gripper_cmd and /target_joint.
 
 - Check this [Delto Driver](https://github.com/Tesollo-Delto/DELTO_ROS2/tree/main/delto_3f_driver)
+
+
+[![DG3F](https://img.youtube.com/vi/cFbdHVstmg4/0.jpg)](https://www.youtube.com/watch?v=cFbdHVstmg4)
 
   
 ## How to Connect Delto Gripper with Robot Arm
