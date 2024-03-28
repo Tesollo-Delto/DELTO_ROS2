@@ -7,10 +7,10 @@ class GraspMode(Enum):
 
 class Delto2FCoils(Enum):
     """Enumeration of coils addresses of the Delto 2f"""
-    REVERSE_MODE = 1
-    GRASP = 2
-    TORQUE = 3
-    EEPROM_WRITE = 4
+    REVERSE_MODE = 0
+    GRASP = 1
+    TORQUE = 2
+    EEPROM_WRITE = 3
 
 class Delto2FHoldingRegisters(Enum):
     """Enumeration of the holding registers addresses of the Delto 2f"""
@@ -38,10 +38,10 @@ class Delto2FHoldingRegisters(Enum):
     MOTOR_PGAIN = 15
     MOTOR_DGAIN = 16
 
-    OPEN_POSITION = 17
-    CLOSE_POSITION = 18
-    LOW_FORCE = 19
-    HIGH_FORCE = 20
+    OPEN_POSITION = 18
+    CLOSE_POSITION = 19
+    LOW_FORCE = 20
+    HIGH_FORCE = 21
 
    
 

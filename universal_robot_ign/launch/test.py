@@ -12,7 +12,7 @@ from launch_ros.actions import Node
 from xmacro.xmacro4sdf import XMLMacro4sdf
 
 
-pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
+# pkg_ros_ign_gazebo = get_package_share_directory('ros_ign_gazebo')
 pkg_universal_robot_ign = get_package_share_directory('universal_robot_ign')
 #data
 world_sdf_path=os.path.join(pkg_universal_robot_ign, 'resource', 'worlds', 'test_world.sdf') 

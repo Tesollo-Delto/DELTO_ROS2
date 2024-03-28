@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot
-  name="delto_3f_description">
+  name="delto_description">
   <link
     name="delto_base_link">
     <inertial>
@@ -24,7 +24,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/delto_base_link.STL" />
+          filename="package://delto_description/meshes/DG2F/delto_base_link.stl" />
       </geometry>
       <material
         name="">
@@ -38,7 +38,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/delto_base_link.STL" />
+          filename="package://delto_description/meshes/DG2F/delto_base_link.stl" />
       </geometry>
     </collision>
   </link>
@@ -64,7 +64,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/TIP1.STL" />
+          filename="package://delto_description/meshes/DG2F/TIP.stl" />
       </geometry>
       <material
         name="">
@@ -78,12 +78,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/TIP1.STL" />
+          filename="package://delto_description/meshes/DG2F/TIP.stl" />
       </geometry>
     </collision>
   </link>
   <joint
-    name="JOINT1"
+    name="Distance"
     type="prismatic">
 
     <limit effort="1000.0" lower="0.0" upper="0.025" velocity="0.5"/>
@@ -91,7 +91,7 @@
       xyz="0 0 0.113"
       rpy="1.5708 0 -3.1345" />
     <parent
-      link="delto_delto_base_link" />
+      link="delto_base_link" />
     <child
       link="TIP1" />
     <axis
@@ -120,7 +120,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/TIP1.STL" />
+          filename="package://delto_description/meshes/DG2F/TIP.stl" />
       </geometry>
       <material
         name="">
@@ -134,7 +134,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://delto_3f_description/meshes/DGF2/TIP1.STL" />
+          filename="package://delto_description/meshes/DG2F/TIP.stl" />
       </geometry>
     </collision>
   </link>
@@ -144,7 +144,7 @@
     
     <limit effort="1000.0" lower="0.0" upper="0.025" velocity="0.5"/>
     <mimic
-      joint="JOINT1"
+      joint="Distance"
       multiplier="1"/>
     <origin
       xyz="0 0 0.113"

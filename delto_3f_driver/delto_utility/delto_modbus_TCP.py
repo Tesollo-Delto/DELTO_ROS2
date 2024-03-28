@@ -57,7 +57,7 @@ class Communication:
                                          sys._getframe().f_code.co_name)            
             return
         
-        self.client.close()
+        # self.client.di()
 
     def send_data(self,address,count,data):
 
@@ -98,6 +98,23 @@ class Communication:
             status.append(struct.unpack('h', struct.pack('H',stats[0]))[0]/10)
 
         return status
+    
+    def get_high_force(self):
+
+        
+        with self.lock:
+            high_force = self.client.read_input_registers(address = Delto3FInputRegisters.HIGH_FORCE.value,
+                                                          count = 1,
+                                                          slave = self.slaveID).registers
+        return high_force[0]
+    
+    def get_low_force(self):
+
+        with self.lock:
+            low_force = self.client.read_input_registers(address = Delto3FInputRegisters.LOW_FORCE.value,
+                                                         count = 1,
+                                                         slave = self.slaveID).registers
+        return low_force[0]
     
     def set_position(self,position : list[float]):
 

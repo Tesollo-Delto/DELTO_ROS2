@@ -1,4 +1,5 @@
 from pymodbus.client.tcp import ModbusTcpClient 
+# from pymodbus.diag_message import DiagnosticRequest
 import rclpy
 import sys
 import os
@@ -7,7 +8,7 @@ import struct
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from delto_2f_driver.delto_utility.delto_2f_enum import Delto2FCoils, Delto2FHoldingRegisters, Delto2FInputRegisters    
+from delto_utility.delto_2f_enum import Delto2FCoils, Delto2FHoldingRegisters, Delto2FInputRegisters    
 
 '''
 default values
@@ -24,25 +25,20 @@ class Communication:
     
     def __init__(self, dummy=False):
         self.client = None
-        self.slaveID = 0
+        self.slaveID = 1
         self.dummy = dummy
         self.lock = threading.Lock()
 
     def __del__(self):
         self.disconnect()
 
-    def connect(self, ip, port, slaveID = 1):
+    def connect(self, ip, port, slaveID = None):
         '''
         Connect to Delto Gripper
         '''
-
-        self.slaveID = slaveID
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)
-            
-            return
+        if slaveID is None:
+            self.slaveID = slaveID
+       
         
         self.client = ModbusTcpClient(ip, port)
         return self.client.connect()
@@ -51,96 +47,65 @@ class Communication:
         '''
         Disconnect from Delto Gripper
         '''
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
-        
-        self.client.close()
+        if self.client is not None:
+            self.client.close()
+    
+    def send_data(self,address,count,data,slave = None):
 
-    def send_data(self,address,count,data):
-
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)          
-            return
-        
         if data != []:
             with self.lock:
                 #singe write register
-                if(count == 1):
-                    self.client.write_register(address = address, count = count, values = data)
-                #multiple write register
-                elif(count > 1):
-                    self.client.write_registers(address = address, count = count, values = data)
+                # if(count == 1):
+                #     self.client.write_register(address = address, count = count, value = data[-1], slave=slave)
+                # #multiple write register
+                if(count >= 1):
+                    self.client.write_registers(address = address, count = count, values = data, slave=slave)
 
-    def get_data(self,address,count):
+    def get_data(self):
         '''
         Get data from Delto Gripper
         '''
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
-        
-
+        address_ =Delto2FInputRegisters.CURRENT_POSITION.value
         ## Position and Current
         status = self.client.read_input_registers(
-            address = Delto2FInputRegisters.CURRENT_POSITION, count = 2).registers
-        
+            address = address_, count = 2, slave=self.slaveID).registers
+
         return status
     
     def set_open_position(self, value):
 
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
         
-        self.send_data(Delto2FHoldingRegisters.OPEN_POSITION, 1, [value]) 
+        self.send_data(Delto2FHoldingRegisters.OPEN_POSITION.value, 1, [value],slave=self.slaveID) 
 
     def set_close_position(self, value):
             
-            if self.dummy:
-                rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                            ": " +
-                                            sys._getframe().f_code.co_name)            
-                return
             
-            self.send_data(Delto2FHoldingRegisters.CLOSE_POSITION, 1, [value])
+            self.send_data(Delto2FHoldingRegisters.CLOSE_POSITION.value, 1, [value],slave=self.slaveID)
 
     def set_low_force(self, value):
 
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
         
-        self.send_data(Delto2FHoldingRegisters.LOW_FORCE, 1, [value])
+        self.send_data(Delto2FHoldingRegisters.LOW_FORCE.value, 1, [value],slave=self.slaveID)
 
     def set_high_force(self, value):
 
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
-        
-        self.send_data(Delto2FHoldingRegisters.HIGH_FORCE, 1, [value])
+        response = self.client.write_registers(Delto2FHoldingRegisters.HIGH_FORCE.value,values= [value], slave=self.slaveID)
+        if response.isError():
+            print("Failed to set high force")
+        # # else:
+        # self.send_data(Delto2FHoldingRegisters.HIGH_FORCE.value, 1, [value],slave=self.slaveID)
 
+    def get_high_force(self):
+            
+            return self.client.read_holding_registers(Delto2FHoldingRegisters.HIGH_FORCE.value,1,slave=self.slaveID).registers[0]
+        
+    def get_low_force(self):
+                
+                return self.client.read_holding_registers(Delto2FHoldingRegisters.LOW_FORCE.value,1,slave=self.slaveID).registers[0]
+    
     def set_ip(self,ip :str):
 
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)            
-            return
-        
+
         ip = ip.split('.')
 
         if len(ip) != 4:
@@ -151,15 +116,16 @@ class Communication:
             return
         
         ip = list(map(int,ip))
-        self.send_data(Delto2FHoldingRegisters.ETHERNET_IP_CLASS_A, 4, ip)
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_IP_CLASS_A.value, 4, ip,slave=self.slaveID)
 
     def set_subnet_mask(self,subnet_mask :str):
 
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": "
-                                         sys._getframe().f_code.co_name)            
-            return
+        #TO DO
+        # if self.dummy:
+        #     rclpy.Node.get_logger().info(rclpy.Node.get_name() +
+        #                                  ": "
+        #                                  sys._getframe().f_code.co_name)            
+            # return
         
         subnet_mask = subnet_mask.split('.')
 
@@ -171,7 +137,7 @@ class Communication:
             return
         
         subnet_mask = list(map(int,subnet_mask))
-        self.send_data(Delto2FHoldingRegisters.ETHERNET_SUBNET_MASK_A, 4, subnet_mask)
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value, 4, subnet_mask,slave=self.slaveID)
 
     def set_gate_way(self,gateway :str):
 
@@ -191,4 +157,18 @@ class Communication:
             return
         
         gateway = list(map(int,gateway))
-        self.send_data(Delto2FHoldingRegisters.ETHERNET_GATEWAY_A, 4, gateway)
+        self.send_data(Delto2FHoldingRegisters.ETHERNET_GATEWAY_A.value, 4, gateway,)
+
+    def grasp(self, is_grasp: bool):
+
+        self.lock = threading.Lock();
+        
+        with self.lock:
+            # self.client.write_coil(Delto2FCoils.REVERSE_MODE.value,
+            #                         value= True,
+            #                         slave=1)
+            response= self.client.write_coil(Delto2FCoils.GRASP.value,
+                                    value= is_grasp,
+                                    slave=self.slaveID)
+            if response.isError():
+                print("Failed to send TCP grasp command")
