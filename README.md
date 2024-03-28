@@ -2,6 +2,8 @@
 
 <center><img src="https://cdn.imweb.me/thumbnail/20240102/cc620fcfefe42.png" style="width: 80%;"/></center>
 
+<center><img src="https://cdn.imweb.me/thumbnail/20240102/4404e0bb0eae6.png" style="width: 80%;"/></center>
+
 This is Delto Gripper ROS 2 package.
 
 Some of the new features are enabled by ROS2 and include 
@@ -115,7 +117,11 @@ make new joint (robot_arm_end_link - gripper_base_link)
 ## visualizing the robot arm with delto gripper
 
 ```bash
-ros2 launch delto_3f_description display.launch.py
+ros2 launch delto_description dg3f_display.launch.py
+```
+
+```bash
+ros2 launch delto_description dg2f_display.launch.py
 ```
 
 
