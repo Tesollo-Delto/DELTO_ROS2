@@ -11,7 +11,7 @@ from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
-    description_package = FindPackageShare('delto_3f_description')
+    description_package = FindPackageShare('delto_description')
     delto_driver_package = FindPackageShare('delto_3f_driver')
 
     # Initialize Arguments
@@ -27,7 +27,7 @@ def launch_setup(context, *args, **kwargs):
             [delto_driver_package, "controller", "delto_3f_controller.yaml"])
 
 
-    share_dir = get_package_share_directory('delto_3f_description')
+    share_dir = get_package_share_directory('delto_description')
 
     urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_3f.urdf')
 

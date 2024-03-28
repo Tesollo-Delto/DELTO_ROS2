@@ -23,7 +23,7 @@ def get_robot_description():
         [
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
-            PathJoinSubstitution([FindPackageShare("delto_3f_description"), "urdf", "ur.urdf.xacro"]),
+            PathJoinSubstitution([FindPackageShare("delto_description"), "urdf", "ur.urdf.xacro"]),
             " ",
             "robot_ip:=192.168.0.150",
             " ",

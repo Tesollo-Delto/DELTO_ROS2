@@ -11,13 +11,13 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     share_dir = get_package_share_directory('delto_3f_description')
 
-    urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_3f.urdf')
+    urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_2f.urdf')
     with open(urdf_file, 'r') as file:
         robot_description_content = file.read()
 
     params = {'robot_description': robot_description_content}
 
-    rviz_config_file = os.path.join(share_dir, 'config', 'display.rviz')
+    rviz_config_file = os.path.join(share_dir, 'config', 'display2.rviz')
 
     gui_arg = DeclareLaunchArgument(
         name='gui',
@@ -31,21 +31,30 @@ def generate_launch_description():
         executable='robot_state_publisher',
         name='robot_state_publisher',
         parameters=[params],
-        remappings=[('robot_description', '/gripper_description')]
     )
 
     joint_state_publisher_node = Node(
         condition=UnlessCondition(show_gui),
         package='joint_state_publisher',
         executable='joint_state_publisher',
-        name='joint_state_publisher'
+        name='joint_state_publisher',
+        output='screen',
+        parameters=[params],
     )
-
+    
+    # static_tf_publisher_node = Node(
+    #     package='tf2_ros',
+    #     executable='static_transform_publisher',
+    #     name='static_transform_publisher',
+    #     arguments=['0', '0', '0', '0', '0', '0', 'base_link', 'F1']
+    # )
     joint_state_publisher_gui_node = Node(
         condition=IfCondition(show_gui),
         package='joint_state_publisher_gui',
         executable='joint_state_publisher_gui',
-        name='joint_state_publisher_gui'
+        name='joint_state_publisher_gui',
+        output='screen',
+
     )
 
     rviz_node = Node(
@@ -61,5 +70,6 @@ def generate_launch_description():
         robot_state_publisher_node,
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
-        rviz_node
+        rviz_node,
+        # static_tf_publisher_node
     ])

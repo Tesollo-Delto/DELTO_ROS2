@@ -1,0 +1,38 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/hong/ros2_ws/install/realsense2_camera_msgs/local/lib/python3.10/dist-packages",
+        "/home/hong/ros2_ws/install/delto_ur_can_python/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_node/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_control/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_interface/local/lib/python3.10/dist-packages",
+        "/home/hong/ros2_ws/install/delto_driver/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_description2/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_description/lib/python3.10/site-packages",
+        "/home/hong/delto_ws/install/ur_delto_moveit_config/local/lib/python3.10/dist-packages",
+        "/home/hong/delto_ws/build/sdformat_tools",
+        "/home/hong/delto_ws/install/sdformat_tools/lib/python3.10/site-packages",
+        "/home/hong/delto_ws/install/delto_3f_driver/local/lib/python3.10/dist-packages",
+        "/home/hong/delto_ws/build/delto_3f_description",
+        "/home/hong/delto_ws/install/delto_3f_description/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/hong/ros2_ws/install/realsense2_camera_msgs/local/lib/python3.10/dist-packages",
+        "/home/hong/ros2_ws/install/delto_ur_can_python/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_node/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_control/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_interface/local/lib/python3.10/dist-packages",
+        "/home/hong/ros2_ws/install/delto_driver/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_description2/lib/python3.10/site-packages",
+        "/home/hong/ros2_ws/install/delto_description/lib/python3.10/site-packages",
+        "/home/hong/delto_ws/install/ur_delto_moveit_config/local/lib/python3.10/dist-packages",
+        "/home/hong/delto_ws/build/sdformat_tools",
+        "/home/hong/delto_ws/install/sdformat_tools/lib/python3.10/site-packages",
+        "/home/hong/delto_ws/install/delto_3f_driver/local/lib/python3.10/dist-packages",
+        "/home/hong/delto_ws/build/delto_3f_description",
+        "/home/hong/delto_ws/install/delto_3f_description/lib/python3.10/site-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

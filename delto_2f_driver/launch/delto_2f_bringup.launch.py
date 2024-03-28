@@ -12,7 +12,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
     description_package = FindPackageShare('delto_description')
-    delto_driver_package = FindPackageShare('delto_3f_driver')
+    delto_driver_package = FindPackageShare('delto_2f_driver')
 
     # Initialize Arguments
     name = LaunchConfiguration("name")
@@ -23,13 +23,13 @@ def launch_setup(context, *args, **kwargs):
 
     launch_rviz = LaunchConfiguration("launch_rviz")
     
-    initial_joint_controllers = PathJoinSubstitution(
-            [delto_driver_package, "controller", "delto_3f_controller.yaml"])
+    # initial_joint_controllers = PathJoinSubstitution(
+    #         [delto_driver_package, "controller", "delto_2f_controller.yaml"])
 
 
     share_dir = get_package_share_directory('delto_description')
 
-    urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_3f.urdf')
+    urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_2f.urdf')
 
     with open(urdf_file, 'r') as file:
         robot_description_content = file.read()
@@ -44,12 +44,12 @@ def launch_setup(context, *args, **kwargs):
         default_value='True'
     )
 
-    delto_3f_control_node = Node(
-        package="controller_manager",
-        executable="ros2_control_node",
-        parameters=[robot_description, initial_joint_controllers],
-        output="screen",
-    )
+    # delto_2f_control_node = Node(
+    #     package="controller_manager",
+    #     executable="ros2_control_node",
+    #     parameters=[robot_description],
+    #     output="screen",
+    # )
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -73,10 +73,10 @@ def launch_setup(context, *args, **kwargs):
         )
 
 
-    delto_3f_driver = Node(
-        package="delto_3f_driver",
-        executable="delto_3f_driver.py",
-        name="delto_3f_driver",
+    delto_2f_driver = Node(
+        package="delto_2f_driver",
+        executable="delto_2f_driver.py",
+        name="delto_2f_driver",
         output="screen",
         emulate_tty=True,
         parameters=[
@@ -109,7 +109,7 @@ def launch_setup(context, *args, **kwargs):
     
     nodes_to_start = [
         # gui_arg,
-        delto_3f_driver,
+        delto_2f_driver,
         robot_state_publisher_node,
         delay_rviz2_spawner,
         rviz_node,
@@ -128,7 +128,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "name",
-            default_value="delto_3f"
+            default_value="delto_2f"
         )
     )
 
