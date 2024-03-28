@@ -8,7 +8,11 @@ Some of the new features are enabled by ROS2 and include
 decreased latency, improved security, and more flexibility regarding middleware configuration. 
 
 
-Check also [Delto Gripper Manual](https://www.tesollo.com/Community/?q=YToyOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjtzOjQ6InBhZ2UiO2k6MTt9&bmode=view&idx=18137982&t=board).
+Check also [Delto 3F Gripper Manual](https://www.tesollo.com/Community/?q=YToyOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjtzOjQ6InBhZ2UiO2k6MTt9&bmode=view&idx=18137982&t=board)
+
+
+Check also [Delto 2F Gripper Manual](https://www.tesollo.com/Community/?q=YToxOntzOjEyOiJrZXl3b3JkX3R5cGUiO3M6MzoiYWxsIjt9&bmode=view&idx=18137991&t=board)
+
 
 
 ## Build Status
