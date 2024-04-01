@@ -2,6 +2,11 @@
 
 <robot
   name="delto_description">
+
+    <material name="black">
+    <color rgba="0.196 0.196 0.196 1.0"/>
+    </material>
+    
   <link
     name="delto_base_link">
     <inertial>
@@ -22,9 +27,9 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <geometry>
+      <geometry>s
         <mesh
-          filename="package://delto_description/meshes/DG2F/delto_base_link.stl" />
+          filename="package://delto_description/meshes/DG2F/delto_base_link.dae" />
       </geometry>
       <material
         name="">
@@ -62,6 +67,8 @@
       <origin
         xyz="0.025 0 0"
         rpy="0 0 0" />
+
+      <material name="black"/>
       <geometry>
         <mesh
           filename="package://delto_description/meshes/DG2F/TIP.stl" />
@@ -89,7 +96,7 @@
     <limit effort="1000.0" lower="0.0" upper="0.025" velocity="0.5"/>
     <origin
       xyz="0 0 0.113"
-      rpy="1.5708 0 -3.1345" />
+      rpy="1.5708 0 -3.141597" />
     <parent
       link="delto_base_link" />
     <child
@@ -115,6 +122,7 @@
         izz="4.9988E-07" />
     </inertial>
     <visual>
+      <material name="black"/>
       <origin
         xyz="0.025 0 0"
         rpy="0 0 0" />

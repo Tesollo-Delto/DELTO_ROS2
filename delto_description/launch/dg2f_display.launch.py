@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 
 
 def generate_launch_description():
-    share_dir = get_package_share_directory('delto_3f_description')
+    share_dir = get_package_share_directory('delto_description')
 
     urdf_file = os.path.join(share_dir, 'urdf', 'delto_gripper_2f.urdf')
     with open(urdf_file, 'r') as file:
@@ -17,7 +17,7 @@ def generate_launch_description():
 
     params = {'robot_description': robot_description_content}
 
-    rviz_config_file = os.path.join(share_dir, 'config', 'display2.rviz')
+    rviz_config_file = os.path.join(share_dir, 'config', 'dg2f_display.rviz')
 
     gui_arg = DeclareLaunchArgument(
         name='gui',

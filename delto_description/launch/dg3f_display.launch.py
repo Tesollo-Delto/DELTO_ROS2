@@ -17,7 +17,7 @@ def generate_launch_description():
 
     params = {'robot_description': robot_description_content}
 
-    rviz_config_file = os.path.join(share_dir, 'config', 'display.rviz')
+    rviz_config_file = os.path.join(share_dir, 'config', 'dg3f_display.rviz')
 
     gui_arg = DeclareLaunchArgument(
         name='gui',
