@@ -27,7 +27,7 @@
       <origin
         xyz="0 0 0"
         rpy="0 0 0" />
-      <geometry>s
+      <geometry>
         <mesh
           filename="package://delto_description/meshes/DG2F/delto_base_link.dae" />
       </geometry>
@@ -47,8 +47,7 @@
       </geometry>
     </collision>
   </link>
-  <link
-    name="TIP1">
+  <link name="TIP1">
     <inertial>
       <origin
         xyz="-0.018892 0.020144 0.0081415"
@@ -104,8 +103,7 @@
     <axis
       xyz="-1 0 0" />
   </joint>
-  <link
-    name="TIP2">
+  <link name="TIP2">
     <inertial>
       <origin
         xyz="-0.018833 0.020144 0.0081415"

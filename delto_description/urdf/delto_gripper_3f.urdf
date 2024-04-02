@@ -22,7 +22,7 @@
          <inertia ixx="0.0009935903471030175" iyy="0.000980251548061173" izz="0.0003178199035240808" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="delto_base_link">
+      <visual>
          <origin xyz="0.00045499721796859983 -2.051648304165415e-06 -0.05218562175888181" rpy="5.671320207730568e-06 0.0032948722942074404 -0.00044870150924543735"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/delto_base_link.stl"/>
@@ -48,7 +48,7 @@
          <inertia ixx="1.924000000025899e-05" iyy="1.709411627342488e-05" izz="5.9478837263161295e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="F1_01">
+      <visual>
          <origin xyz="0.0018977016221143523 -1.0017682763976983e-06 -0.022983822146236326" rpy="-0.1443920950720977 1.9855029389503898e-05 1.5709191233325221"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_01.stl"/>
@@ -73,7 +73,7 @@
          <inertia ixx="7.164797732610912e-06" iyy="6.31301833122199e-06" izz="3.274183936167101e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="F1_02">
+      <visual>
          <origin xyz="0.010322007813576017 0.000267674195662055 0.013590600703218703" rpy="-0.03118104794815292 0.3757385725887219 -0.024334342208719002"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_02.stl"/>
@@ -97,7 +97,7 @@
          <inertia ixx="1.6912201686125405e-05" iyy="1.4940271596370447e-05" izz="6.505526717504149e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_03">
+      <visual>
          <origin xyz="0.019034639558839914 -0.0007611783816217545 0.00015734818842133856" rpy="1.5405533073968862 -0.0023628127138719535 1.5994547590929262"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_03.stl"/>
@@ -121,7 +121,7 @@
          <inertia ixx="1.0860820276783573e-05" iyy="9.902070548178027e-06" izz="5.330109175038405e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_04">
+      <visual>
          <origin xyz="0.011992289866897352 -0.0007726988011287212 -5.201111709052532e-06" rpy="1.5745317514920234 0.003601150001683928 1.6650413701206925"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_04.stl"/>
@@ -145,7 +145,7 @@
          <inertia ixx="1.5965708653714455e-06" iyy="1.2999999996018677e-06" izz="9.60129135026688e-07" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_tip_high">
+      <visual>
          <origin xyz="0.044959448417087294 -0.0004226309811080281 2.3018946871860735e-07" rpy="1.5708745579876908 -1.019986385419891e-05 1.5204133624130758"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_tip_high.stl"/>
@@ -168,7 +168,7 @@
          <inertia ixx="1.924000000025899e-05" iyy="1.709411627342488e-05" izz="5.9478837263161295e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="F2_01">
+      <visual>
          <origin xyz="0.0018977016221143523 -1.0017682763976983e-06 -0.022983822146236326" rpy="-0.1443920950720977 1.9855029389503898e-05 1.5709191233325221"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_01.stl"/>
@@ -192,7 +192,7 @@
          <inertia ixx="7.164797732610912e-06" iyy="6.31301833122199e-06" izz="3.274183936167101e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_02">
+      <visual>
          <origin xyz="0.010322007813576017 0.000267674195662055 0.013590600703218703" rpy="-0.03118104794815292 0.3757385725887219 -0.024334342208719002"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_02.stl"/>
@@ -217,7 +217,7 @@
          <inertia ixx="1.6912201686125405e-05" iyy="1.4940271596370447e-05" izz="6.505526717504149e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_03">
+      <visual>
          <origin xyz="0.019034639558839914 -0.0007611783816217545 0.00015734818842133856" rpy="1.5405533073968862 -0.0023628127138719535 1.5994547590929262"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_03.stl"/>
@@ -242,7 +242,7 @@
          <inertia ixx="1.0860820276783573e-05" iyy="9.902070548178027e-06" izz="5.330109175038405e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_04">
+      <visual>
          <origin xyz="0.011992289866897352 -0.0007726988011287212 -5.201111709052532e-06" rpy="1.5745317514920234 0.003601150001683928 1.6650413701206925"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_04.stl"/>
@@ -266,7 +266,7 @@
          <inertia ixx="1.5965708653714455e-06" iyy="1.2999999996018677e-06" izz="9.60129135026688e-07" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_tip_high">
+      <visual>
          <origin xyz="0.044959448417087294 -0.0004226309811080281 2.3018946871860735e-07" rpy="1.5708745579876908 -1.019986385419891e-05 1.5204133624130758"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_tip_high.stl"/>
@@ -289,7 +289,7 @@
          <inertia ixx="1.924000000025899e-05" iyy="1.709411627342488e-05" izz="5.9478837263161295e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
 
-      <visual name="link_01">
+      <visual>
          <origin xyz="0.0018977016221143523 -1.0017682763976983e-06 -0.022983822146236326" rpy="-0.1443920950720977 1.9855029389503898e-05 1.5709191233325221"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_01.stl"/>
@@ -311,7 +311,7 @@
          <mass value="0.025"/>
          <inertia ixx="7.164797732610912e-06" iyy="6.31301833122199e-06" izz="3.274183936167101e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
-      <visual name="link_02">
+      <visual>
          <origin xyz="0.010322007813576017 0.000267674195662055 0.013590600703218703" rpy="-0.03118104794815292 0.3757385725887219 -0.024334342208719002"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_02.stl"/>
@@ -334,7 +334,7 @@
          <mass value="0.051"/>
          <inertia ixx="1.6912201686125405e-05" iyy="1.4940271596370447e-05" izz="6.505526717504149e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
-      <visual name="link_03">
+      <visual>
          <origin xyz="0.019034639558839914 -0.0007611783816217545 0.00015734818842133856" rpy="1.5405533073968862 -0.0023628127138719535 1.5994547590929262"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_03.stl"/>
@@ -357,7 +357,7 @@
          <mass value="0.058"/>
          <inertia ixx="1.0860820276783573e-05" iyy="9.902070548178027e-06" izz="5.330109175038405e-06" ixy="0" ixz="0" iyz="0"/>
       </inertial>
-      <visual name="link_04">
+      <visual>
          <origin xyz="0.011992289866897352 -0.0007726988011287212 -5.201111709052532e-06" rpy="1.5745317514920234 0.003601150001683928 1.6650413701206925"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_04.stl"/>
@@ -381,7 +381,7 @@
          <mass value="0.013"/>
          <inertia ixx="1.5965708653714455e-06" iyy="1.2999999996018677e-06" izz="9.60129135026688e-07" ixy="0" ixz="0" iyz="0"/>
       </inertial>
-      <visual name="link_tip_high">
+      <visual>
          <origin xyz="0.044959448417087294 -0.0004226309811080281 2.3018946871860735e-07" rpy="1.5708745579876908 -1.019986385419891e-05 1.5204133624130758"/>
          <geometry>
             <mesh filename="package://delto_description/meshes/DG3F/link_tip_high.stl"/>
