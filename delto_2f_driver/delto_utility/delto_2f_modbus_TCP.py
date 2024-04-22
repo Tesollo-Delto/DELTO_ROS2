@@ -170,5 +170,7 @@ class Communication:
             response= self.client.write_coil(Delto2FCoils.GRASP.value,
                                     value= is_grasp,
                                     slave=self.slaveID)
+            
+            # print(is_grasp)
             if response.isError():
                 print("Failed to send TCP grasp command")
