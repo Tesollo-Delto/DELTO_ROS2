@@ -33,15 +33,10 @@ def main(args=None):
     executor = rclpy.executors.MultiThreadedExecutor(4)
     executor.add_node(moveit2)
     # executor.add_node(pub_node)
-    msg=Int32()
 
     #gripper initial position
-    gripper_pose= Float32Array()
-    data = [0.0, 0.0, 50.0, 80.0,
-                         -30.0, -0.0, 50.0, 80.0,
-                         30.0, 0.0, 50.0, 80.0]
-
-    gripper_pose.data = [degree*pi/180 for degree in data]
+    gripper_pose= Float32()
+    gripper_pose.data = 0.05
     gripper_pose_pub.publish(gripper_pose)
     time.sleep(1)
 
@@ -49,90 +44,108 @@ def main(args=None):
     thread = threading.Thread(target=executor.spin)
     thread.start()
 
-    joint_positions=[11.63 * pi/180, -67.16 * pi/180, 108.88 * pi/180,
-                     -134.13 * pi/180, -90.80*pi / 180 , 5.43 * pi/180] 
-    moveit2.set_joint_goal(joint_positions)
+    
+
+
+    joint_positions=[88.36 * pi/180, -77.14 * pi/180, -123.91 * pi/180,
+                     202.29 * pi/180,-63.60*  pi/180 , 90.0 * pi/180] 
+    moveit2.set_joint_goal(joint_positions, tolerance=0.01)
     # Plan and execute
-    res = moveit2.plan_kinematic_path()
-    # pose = moveit2.compute_fk(fk_link_names=['ee_link'])
-    # print(pose)
+    res = moveit2.plan_kinematic_path(allowed_planning_time=1.0,num_planning_attempts=150)
+    time.sleep(1)
     moveit2.execute()
-    # moveit2.robot_move()
-    print("joint goal1")
-    time.sleep(5)
+
+    joint_positions=[0 * pi/180, 0 * pi/180, 0 * pi/180,
+                     0 * pi/180, 0 * pi / 180 , 0 * pi/180] 
+    
+    moveit2.set_joint_goal(joint_positions)
+    res = moveit2.plan_kinematic_path(allowed_planning_time=1.0,num_planning_attempts=150)
+    time.sleep(1)
+    moveit2.execute()
+
+    
+    # time.sleep(5)
     
 
 
-    response = moveit2.compute_fk(fk_link_names=['ee_link'])
-    pose1 = response.pose_stamped[0].pose
-    pose2 = copy.deepcopy(pose1) 
-    pose2.position.z -= 0.2
+    # response = moveit2.compute_fk(fk_link_names=['ee_link'])
+    # pose1 = response.pose_stamped[0].pose
+    # pose2 = copy.deepcopy(pose1) 
+    # pose2.position.z -= 0.2
 
-    pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
-    pose2.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    # pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    # pose2.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
     
-    open = 0
-    grasp = 1
+    # open = 0
+    # grasp = 1
 
-    while(1): 
+    # response = moveit2.compute_fk(fk_link_names=['ee_link'])
+    # pose1 = response.pose_stamped[0].pose
+
+    # pose2 = copy.deepcopy(pose1) 
+    # pose2.position.z += 0.15
+    # pose2.position.x += 0.15
+
+    # moveit2.plan_kinematic_path()
+    # moveit2.execute()
+
+    # while(1): 
        
-        msg.data = open
-        # gripper_grasp_pub.publish(msg)
-        time.sleep(0.1)
+    #     msg.data = open
+    #     # gripper_grasp_pub.publish(msg)
+    #     time.sleep(0.1)
 
-        # position2 = [pose2.position.x, pose2.position.y, pose2.position.z]
-        # moveit2.set_pose_goal(position2, pose2.orientation)
+    #     # position2 = [pose2.position.x, pose2.position.y, pose2.position.z]
+    #     # moveit2.set_pose_goal(position2, pose2.orientation)
 
-        response = moveit2.compute_fk(fk_link_names=['ee_link'])
-        pose1 = response.pose_stamped[0].pose
-        pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
-        pose2 = copy.deepcopy(pose1) 
-        pose2.position.z -= 0.15
-        pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    #     response = moveit2.compute_fk(fk_link_names=['ee_link'])
+    #     pose1 = response.pose_stamped[0].pose
+    #     pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    #     pose2 = copy.deepcopy(pose1) 
+    #     pose2.position.z -= 0.15
+    #     pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
 
 
-        # moveit2.plan_kinematic_path()
-        # moveit2.execute()
+    #     # moveit2.plan_kinematic_path()
+    #     # moveit2.execute()
 
-        # Create a list of Pose objects
-        waypoints = [pose1, pose2]
+    #     # Create a list of Pose objects
+    #     waypoints = [pose1, pose2]
 
-        joint=[joint for joint in moveit2.get_joint_state().position]
-        moveit2.plan_cartesian_path(waypoints, joint)
-        moveit2.execute()
-        moveit2.robot_move()
-        print("cartesian path")
+    #     joint=[joint for joint in moveit2.get_joint_state().position]
+    #     moveit2.plan_cartesian_path(waypoints, joint)
+    #     moveit2.execute()
+    #     moveit2.robot_move()
+    #     print("cartesian path")
 
-        time.sleep(5)
-        msg.data = grasp
-        # gripper_grasp_pub.publish(msg)
-        time.sleep(1)
+    #     time.sleep(5)
+    #     # gripper_grasp_pub.publish(msg)
+    #     time.sleep(1)
 
-        response = moveit2.compute_fk(fk_link_names=['ee_link'])
-        pose1 = response.pose_stamped[0].pose
-        pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
-        pose2 = copy.deepcopy(pose1) 
-        pose2.position.z += 0.15
-        pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    #     response = moveit2.compute_fk(fk_link_names=['ee_link'])
+    #     pose1 = response.pose_stamped[0].pose
+    #     pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
+    #     pose2 = copy.deepcopy(pose1) 
+    #     pose2.position.z += 0.15
+    #     pose1.orientation = Quaternion(x=0.0, y=1.0,z=0.0, w=0.0)
 
-        # # print(response.pose_stamped[0].pose)
+    #     # # print(response.pose_stamped[0].pose)
 
-        # position2 = [pose2.position.x, pose2.position.y, pose2.position.z]
-        # moveit2.set_pose_goal(position2, pose2.orientation)
+    #     # position2 = [pose2.position.x, pose2.position.y, pose2.position.z]
+    #     # moveit2.set_pose_goal(position2, pose2.orientation)
 
-        # moveit2.plan_kinematic_path()
-        # moveit2.execute()
+    #     # moveit2.plan_kinematic_path()
+    #     # moveit2.execute()
 
-        waypoints = [pose2, pose1]
-        joint=[joint for joint in moveit2.get_joint_state().position]
-        moveit2.plan_cartesian_path(waypoints, joint)
-        moveit2.execute()
+    #     waypoints = [pose2, pose1]
+    #     joint=[joint for joint in moveit2.get_joint_state().position]
+    #     moveit2.plan_cartesian_path(waypoints, joint)
+    #     moveit2.execute()
 
-        # moveit2.robot_move()   
-        time.sleep(5)
-        msg.data = open
-        # gripper_grasp_pub.publish(msg)
-        time.sleep(1)
+    #     # moveit2.robot_move()   
+    #     time.sleep(5)
+    #     # gripper_grasp_pub.publish(msg)
+    #     time.sleep(1)
     
     rclpy.shutdown()
 

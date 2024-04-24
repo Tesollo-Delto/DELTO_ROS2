@@ -323,23 +323,23 @@ class MoveIt2Interface(Node):
             self.arm_base_link
         # self.kinematic_path_request.motion_plan_request.workspace_parameters.header.stamp = \
         # "Set during request"
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.x = -1.5
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.y = -1.5
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.z = -1.5
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.x = 1.5
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.y = 1.5
-        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.z = 1.5
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.x = -15
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.y = -15
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.min_corner.z = -15
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.x = 15
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.y = 15
+        self.kinematic_path_request.motion_plan_request.workspace_parameters.max_corner.z = 15
 
         self.kinematic_path_request.motion_plan_request.goal_constraints = \
             [Constraints()]
 
         self.kinematic_path_request.motion_plan_request.group_name = self.arm_group_name
 
-        self.kinematic_path_request.motion_plan_request.max_velocity_scaling_factor = 0.1
-        self.kinematic_path_request.motion_plan_request.max_acceleration_scaling_factor = 0.1
+        self.kinematic_path_request.motion_plan_request.max_velocity_scaling_factor = 0.5
+        self.kinematic_path_request.motion_plan_request.max_acceleration_scaling_factor = 0.5
         self.kinematic_path_request.motion_plan_request.cartesian_speed_end_effector_link = \
             self.arm_end_effector
-        self.kinematic_path_request.motion_plan_request.max_cartesian_speed = 0.1
+        self.kinematic_path_request.motion_plan_request.max_cartesian_speed = 0.5
 
     def set_max_velocity(self, scaling_factor):
         """
@@ -362,7 +362,7 @@ class MoveIt2Interface(Node):
 
     def plan_kinematic_path(self,
                             allowed_planning_time=5.0,
-                            num_planning_attempts=10) -> GetMotionPlan.Response:
+                            num_planning_attempts=50) -> GetMotionPlan.Response:
         """
         Call `plan_kinematic_path` service, with goal set using either `set_joint_goal()`,
         `set_position_goal()`, `set_orientation_goal()` or `set_pose_goal()`.

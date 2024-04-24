@@ -76,7 +76,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 		<joint name="shoulder_lift_joint" type="revolute">
 			<pose relative_to="shoulder_link">0 0.1198 0 0 1.5708 0</pose>
@@ -126,7 +126,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 		<joint name="elbow_joint" type="revolute">
 			<pose relative_to="upper_arm_link">0 -0.0925 0.24365 0 -0 0</pose>
@@ -176,7 +176,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 		<joint name="wrist_1_joint" type="revolute">
 			<pose relative_to="forearm_link">0 0 0.21325 0 1.5708 0</pose>
@@ -226,7 +226,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 		<joint name="wrist_2_joint" type="revolute">
 			<pose relative_to="wrist_1_link">0 0.08505 0 0 -0 0</pose>
@@ -276,7 +276,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 		<joint name="wrist_3_joint" type="revolute">
 			<pose relative_to="wrist_2_link">0 0 0.08535 0 -0 0</pose>
@@ -326,7 +326,7 @@
 					</mesh>
 				</geometry>
 			</visual>
-			<self_collide>1</self_collide>
+			<self_collide>0</self_collide>
 		</link>
 
 	
