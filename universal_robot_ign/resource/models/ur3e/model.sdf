@@ -352,6 +352,7 @@
         </geometry>
       </visual>
     </link>
+    
     <joint name='ee_fixed_joint' type='fixed'>
       <pose relative_to='wrist_3_link'>0 0.0922 0 0 -0 1.5708</pose>
       <parent>wrist_3_link</parent>

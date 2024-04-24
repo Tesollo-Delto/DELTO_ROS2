@@ -329,7 +329,7 @@
 			<self_collide>1</self_collide>
 		</link>
 
-    
+	
     <link name='delto_base_link'>
     <pose relative_to='ur3_delto_joint'>0 0 0 0 0 1.57</pose>
       <inertial>
@@ -487,11 +487,13 @@
       <child>base_link</child>
     </joint>
     
+	
 	<joint name='ee_fixed_joint' type='fixed'>
-      <pose relative_to='wrist_3_link'>0 0 0 0 -0 1.5708</pose>
+      <pose relative_to='wrist_3_link'>0 0.0922 0 0 -0 1.5708</pose>
       <parent>wrist_3_link</parent>
       <child>ee_link</child>
     </joint>
+	
     <link name='ee_link'>
       <inertial>
         <mass>0.001</mass>
@@ -504,10 +506,15 @@
           <izz>1.66667e-08</izz>
         </inertia>
       </inertial>
-
-      <self_collide>0</self_collide>
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>0.01 0.01 0.01</size>
+          </box>
+        </geometry>
+      </collision>
     </link>
-
+    
     <plugin name='ignition::gazebo::systems::JointPositionController' filename='ignition-gazebo-joint-position-controller-system'>
       <joint_name>shoulder_pan_joint</joint_name>
       <p_gain>1000</p_gain>
