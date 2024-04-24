@@ -40,7 +40,7 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time", default=False)
     pkg_universal_robot_ign = get_package_share_directory('universal_robot_ign')
     # URDF
-    robot_sdf_path=os.path.join(pkg_universal_robot_ign, 'resource', 'models', 'ur3e', 'model.sdf') 
+    robot_sdf_path=os.path.join(pkg_universal_robot_ign, 'resource', 'models', 'ur3', 'model.sdf') 
     urdf_generator = UrdfGenerator()
     urdf_generator.parse_from_sdf_file(robot_sdf_path)
     urdf_generator.remove_joint('world_ur3e_joint')
@@ -48,18 +48,18 @@ def generate_launch_description():
     robot_description = {"robot_description": robot_urdf_config}
 
     # SRDF
-    robot_srdf = load_file("universal_robot_ign","resource/ur3e_moveit_config/ur3e.srdf")
+    robot_srdf = load_file("universal_robot_ign","resource/ur3_moveit_config/ur3.srdf")
     robot_description_semantic = {"robot_description_semantic": robot_srdf}
 
     # Kinematics
-    kinematics = load_yaml("universal_robot_ign","resource/ur3e_moveit_config/kinematics.yaml")
+    kinematics = load_yaml("universal_robot_ign","resource/ur3_moveit_config/kinematics.yaml")
 
     # Joint limits
-    joint_limits_yaml = load_yaml("universal_robot_ign", "resource/ur3e_moveit_config/joint_limits.yaml")
+    joint_limits_yaml = load_yaml("universal_robot_ign", "resource/ur3_moveit_config/joint_limits.yaml")
     joint_limits = {"robot_description_planning": joint_limits_yaml}
 
     # Planning
-    ompl_yaml = load_yaml("universal_robot_ign","resource/ur3e_moveit_config/ompl_planning.yaml")
+    ompl_yaml = load_yaml("universal_robot_ign","resource/ur3_moveit_config/ompl_planning.yaml")
     planning = {"move_group": {
         "planning_plugin": "ompl_interface/OMPLPlanner",
         # "request_adapters": """default_planner_request_adapters/AddTimeParameterization default_planner_request_adapters/FixWorkspaceBounds default_planner_request_adapters/FixStartStateBounds default_planner_request_adapters/FixStartStateCollision default_planner_request_adapters/FixStartStatePathConstraints""",

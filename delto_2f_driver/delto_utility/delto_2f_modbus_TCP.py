@@ -75,21 +75,21 @@ class Communication:
     def set_open_position(self, value):
 
         
-        self.send_data(Delto2FHoldingRegisters.OPEN_POSITION.value, 1, [value],slave=self.slaveID) 
+        self.client.write_registers(Delto2FHoldingRegisters.OPEN_POSITION.value, values = [value],slave=self.slaveID) 
 
     def set_close_position(self, value):
             
             
-            self.send_data(Delto2FHoldingRegisters.CLOSE_POSITION.value, 1, [value],slave=self.slaveID)
+            self.client.write_registers(Delto2FHoldingRegisters.CLOSE_POSITION.value, values = [value],slave=self.slaveID)
 
     def set_low_force(self, value):
 
         
-        self.send_data(Delto2FHoldingRegisters.LOW_FORCE.value, 1, [value],slave=self.slaveID)
+        self.client.write_registers(Delto2FHoldingRegisters.LOW_FORCE.value, values = [value],slave=self.slaveID)
 
     def set_high_force(self, value):
 
-        response = self.client.write_registers(Delto2FHoldingRegisters.HIGH_FORCE.value,values= [value], slave=self.slaveID)
+        response = self.client.write_registers(Delto2FHoldingRegisters.HIGH_FORCE.value,values = [value], slave=self.slaveID)
         if response.isError():
             print("Failed to set high force")
         # # else:
@@ -102,6 +102,31 @@ class Communication:
     def get_low_force(self):
                 
                 return self.client.read_holding_registers(Delto2FHoldingRegisters.LOW_FORCE.value,1,slave=self.slaveID).registers[0]
+    
+    def get_open_position(self):
+        response = self.client.read_holding_registers(Delto2FHoldingRegisters.OPEN_POSITION.value,1,slave=self.slaveID)
+        if not response.isError():
+            return response.registers[0]
+        else:
+            print("Failed to get open position")
+            return None
+        
+    def get_close_position(self):
+        response = self.client.read_holding_registers(Delto2FHoldingRegisters.CLOSE_POSITION.value,1,slave=self.slaveID)
+        if not response.isError():
+            return response.registers[0]
+        else:
+            print("Failed to get close position")
+            return None
+    
+    def get_holding_data(self):
+
+        address_ =Delto2FHoldingRegisters.OPEN_POSITION.value
+        ## Position and Current
+        status = self.client.read_holding_registers(
+            address = address_, count = 4, slave=self.slaveID).registers
+
+        return status
     
     def set_ip(self,ip :str):
 

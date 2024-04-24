@@ -1,0 +1,150 @@
+<sdf version='1.9'>
+  <model name='delto_description'>
+    <link name='delto_base_link'>
+      <inertial>
+        <pose>-0.000297512898704039 0.0601358449140221 0.000405289272635231 0 0 0</pose>
+        <mass>0.14811829237101701</mass>
+        <inertia>
+          <ixx>0.000127380225676606</ixx>
+          <ixy>2.4503269576101199e-06</ixy>
+          <ixz>-4.42797188296029e-07</ixz>
+          <iyy>0.00013424939645262601</iyy>
+          <iyz>-1.2500531830166299e-07</iyz>
+          <izz>0.00012653013005572801</izz>
+        </inertia>
+      </inertial>
+      <collision name='delto_base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/delto_base_link.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='delto_base_link_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/delto_base_link.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.990196 1 1 1</diffuse>
+          <ambient>0.990196 1 1 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='Distance' type='prismatic'>
+      <pose relative_to='delto_base_link'>0 0 0.113 1.5708 0 3.141588307179587</pose>
+      <parent>delto_base_link</parent>
+      <child>TIP1</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0.025000000000000001</upper>
+          <effort>1000</effort>
+          <velocity>0.5</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='TIP1'>
+      <pose relative_to='Distance'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.018892 0.020144 0.008141499999999999 0 0 0</pose>
+        <mass>0.0050620999999999999</mass>
+        <inertia>
+          <ixx>5.5156e-07</ixx>
+          <ixy>1.1032e-07</ixy>
+          <ixz>-8.5307999999999999e-08</ixz>
+          <iyy>3.9644999999999998e-07</iyy>
+          <iyz>1.1084000000000001e-07</iyz>
+          <izz>4.9987999999999995e-07</izz>
+        </inertia>
+      </inertial>
+      <collision name='TIP1_collision'>
+        <pose>0.025 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/TIP.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='TIP1_visual'>
+        <pose>0.025 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/TIP.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.245 0.245 0.245 1</diffuse>
+          <ambient>0.245 0.245 0.245 1</ambient>
+        </material>
+      </visual>
+    </link>
+    <joint name='JOINT2' type='prismatic'>
+      <pose relative_to='delto_base_link'>0 0 0.113 1.5708 0 0.0070478</pose>
+      <parent>delto_base_link</parent>
+      <child>TIP2</child>
+      <axis>
+        <xyz>-1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0.025000000000000001</upper>
+          <effort>1000</effort>
+          <velocity>0.5</velocity>
+        </limit>
+        <dynamics>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
+    </joint>
+    <link name='TIP2'>
+      <pose relative_to='JOINT2'>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>-0.018833 0.020144 0.008141499999999999 0 0 0</pose>
+        <mass>0.0050620999999999999</mass>
+        <inertia>
+          <ixx>5.5156e-07</ixx>
+          <ixy>1.1032e-07</ixy>
+          <ixz>-8.5307999999999999e-08</ixz>
+          <iyy>3.9644999999999998e-07</iyy>
+          <iyz>1.1084000000000001e-07</iyz>
+          <izz>4.9987999999999995e-07</izz>
+        </inertia>
+      </inertial>
+      <collision name='TIP2_collision'>
+        <pose>0.025 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/TIP.stl</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name='TIP2_visual'>
+        <pose>0.025 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://delto_description/meshes/DG2F/TIP.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <diffuse>0.245 0.245 0.245 1</diffuse>
+          <ambient>0.245 0.245 0.245 1</ambient>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -62,6 +62,11 @@ target_link_libraries(DeltoController
     ignition-gazebo${IGN_GAZEBO_VER}::ignition-gazebo${IGN_GAZEBO_VER}
 )
 
+add_library(Dg2fController SHARED plugins/dg2f_controller/Dg2fController.cpp)
+
+target_link_libraries(Dg2fController
+    ignition-gazebo${IGN_GAZEBO_VER}::ignition-gazebo${IGN_GAZEBO_VER}
+)
 #install
 install( DIRECTORY
     ign launch resource
@@ -103,6 +108,11 @@ install(TARGETS joint_state_publisher  joint_controller
 install(TARGETS DeltoController 
     DESTINATION $ENV{HOME}/.ignition/gazebo/plugins
 )
+
+install(TARGETS Dg2fController 
+    DESTINATION $ENV{HOME}/.ignition/gazebo/plugins
+)
+
 
 # Install executable scripts
 install(PROGRAMS 

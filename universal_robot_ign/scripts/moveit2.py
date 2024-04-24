@@ -44,12 +44,12 @@ class MoveIt2Interface(Node):
         self.init_collision_objects()
         self.get_logger().info("ign_moveit2_py initialised successfuly")
 
-        self.add_collision_primitive( id="table",
-            primitive_type=SolidPrimitive.BOX,
-            dimensions=(5, 5 , 1.8),
-            pose=Pose(position=Point(x=0.5, y=0.5, z=-1.4)),
-            frame_id="world",
-        )
+        # self.add_collision_primitive( id="table",
+        #     primitive_type=SolidPrimitive.BOX,
+        #     dimensions=(5, 5 , 1.8),
+        #     pose=Pose(position=Point(x=0.5, y=0.5, z=-1.4)),
+        #     frame_id="world",
+        # )
 
 
     def init_robot(self):

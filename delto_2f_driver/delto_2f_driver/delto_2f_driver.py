@@ -41,6 +41,8 @@ class DeltoROSDriver(Node):
         self.electric_current = 0
         self.low_force = 0
         self.high_force = 0
+        self.open_position = 0
+        self.close_position = 0
 
         self.delto_client = delto_TCP.Communication()
         self.stop_thread = False
@@ -111,21 +113,21 @@ class DeltoROSDriver(Node):
 
     def set_open_position(self, position):
        
-         self.open_position = position
+        #  self.open_position = position
          self.delto_client.set_open_position(self.open_position)
 
     def set_close_position(self, position):
        
-        self.close_position = position
+        # self.close_position = position
         self.delto_client.set_close_position(self.close_position)
 
     def set_high_force(self, force):
-        self.high_force = force
+        # self.high_force = force
         self.delto_client.set_high_force(self.high_force)
         
 
     def set_low_force(self, force):
-        self.low_force = force
+        # self.low_force = force
         self.delto_client.set_low_force(self.low_force)
 
 
@@ -157,13 +159,17 @@ class DeltoROSDriver(Node):
             self.lock.release()
   
             # if len(data) != 5:
-            #     return
-            
+            #     return   
             self.current_position = float(data[0])
             self.electric_current = float(data[1])
 
-            self.high_force = self.delto_client.get_high_force()
-            self.low_force = self.delto_client.get_low_force()
+            holding_data = self.delto_client.get_holding_data()
+            # self.high_force = self.delto_client.get_high_force()
+            # self.low_force = self.delto_client.get_low_force()
+            self.open_posion = int(holding_data[0])
+            self.close_position = int(holding_data[1])
+            self.high_force = int(holding_data[2])
+            self.low_force = int(holding_data[3])
             # self.low_force = data[3]
 
             force_msg =Int32()
@@ -171,6 +177,12 @@ class DeltoROSDriver(Node):
             self.low_force_pub.publish(force_msg)
             force_msg.data = self.high_force
             self.high_force_pub.publish(force_msg)
+
+                # position_msg = Int32()
+                # position_msg.data = self.open_position
+                # self.open_position_pub.publish(position_msg)
+                # position_msg.data = self.close_position
+                # self.close_position_pub.publish(position_msg)
 
             self.joint_state_publisher()
 

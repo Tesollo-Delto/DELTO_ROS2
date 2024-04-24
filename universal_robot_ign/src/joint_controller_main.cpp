@@ -15,6 +15,7 @@ int main(int argc, char* argv[])
     ros_node->declare_parameter<std::vector<std::string>>("joint_names");
     ros_node->declare_parameter<std::vector<std::string>>("ign_joint_topics");
     ros_node->declare_parameter<int>("rate", 200);
+    
     joint_names = ros_node->get_parameter("joint_names").as_string_array();
     ign_joint_topics = ros_node->get_parameter("ign_joint_topics").as_string_array();
     update_rate = ros_node->get_parameter("rate").as_int();

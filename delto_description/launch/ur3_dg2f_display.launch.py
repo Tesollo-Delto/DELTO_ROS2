@@ -70,6 +70,10 @@ def generate_launch_description():
             " ",
         ])
     
+    # save new file urdf
+    with open(os.path.join(share_dir, 'urdf', 'ur3_dg2f.urdf'), 'w') as file:
+        file.write(robot_description_content)
+    
     params = {'robot_description': robot_description_content}
 
     rviz_config_file = os.path.join(share_dir, 'config', 'dg2f_display.rviz')
