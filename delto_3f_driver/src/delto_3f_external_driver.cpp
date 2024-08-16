@@ -210,8 +210,6 @@ void DeltoExternalDriver::execute_callback_test(const std::shared_ptr<GoalHandle
         else
         {
             //send success
-
-
             break;
         }
     }
@@ -261,16 +259,18 @@ void DeltoExternalDriver::timer_callback()
     std::vector<int> calcduty;
 
     calcduty.reserve(12);
+    
+    // duty 40% 이내 
 
     for (int i = 0; i < 12; i++)
     {
-        if (duty[i] > 70)
+        if (duty[i] > 40)
         {
-            duty[i] = 70;
+            duty[i] = 40;
         }
-        else if (duty[i] < -70)
+        else if (duty[i] < -40)
         {
-            duty[i] = -70;
+            duty[i] = -40;
         }
 
         calcduty[i] = int(duty[i] * 10.0);
