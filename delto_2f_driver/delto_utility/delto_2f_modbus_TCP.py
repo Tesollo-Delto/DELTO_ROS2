@@ -40,7 +40,7 @@ class Communication:
             self.slaveID = slaveID
        
         
-        self.client = ModbusTcpClient(ip, port)
+        self.client = ModbusTcpClient(host=ip, port=port)
         return self.client.connect()
     
     def disconnect(self):
@@ -50,16 +50,12 @@ class Communication:
         if self.client is not None:
             self.client.close()
     
-    def send_data(self,address,count,data,slave = None):
+    def send_data(self,address,count,data,slave=None):
 
         if data != []:
             with self.lock:
-                #singe write register
-                # if(count == 1):
-                #     self.client.write_register(address = address, count = count, value = data[-1], slave=slave)
-                # #multiple write register
                 if(count >= 1):
-                    self.client.write_registers(address = address, count = count, values = data, slave=slave)
+                    self.client.write_registers(address = address, values = data, slave=slave)
 
     def get_data(self):
         '''
