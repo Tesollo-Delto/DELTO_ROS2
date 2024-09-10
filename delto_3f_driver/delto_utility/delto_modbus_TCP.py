@@ -71,10 +71,10 @@ class Communication:
             with self.lock:
                 #singe write register
                 if(count == 1):
-                    self.client.write_register(address = address, count = count, values = data)
+                    self.client.write_register(address = address, values = data)
                 #multiple write register
                 elif(count > 1):
-                    self.client.write_registers(address = address, count = count, values = data)
+                    self.client.write_registers(address = address, values = data)
 
     def get_position(self):
         
@@ -240,7 +240,7 @@ class Communication:
             return
         
         ip = list(map(int,ip))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A, 4, ip)
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A.value, 4, ip)
 
     def set_subnet_mask(self,subnet_mask :str):
 
@@ -260,7 +260,7 @@ class Communication:
             return
         
         subnet_mask = list(map(int,subnet_mask))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A, 4, subnet_mask)
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value, 4, subnet_mask)
 
     def set_gate_way(self,gateway :str):
 
@@ -280,6 +280,14 @@ class Communication:
             return
         
         gateway = list(map(int,gateway))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A, 4, gateway)
+        self.send_data(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A.value, 4, gateway)
         
+'''
+change ip Example 
 
+    comm = Communication()
+    comm.connect('169.254.186.72',10000)
+    comm.set_ip('169.254.186.73')
+    comm.RomWrite()
+
+'''
