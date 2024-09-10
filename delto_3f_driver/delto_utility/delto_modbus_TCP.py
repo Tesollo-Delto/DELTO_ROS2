@@ -166,13 +166,13 @@ class Communication:
 
     def grasp_mode(self,mode):
         if(mode == 0):
-            self.Grasp(False)
+            self.grasp(False)
         else:
             self.client.write_register(address=Delto3FHoldingRegisters.GRASP_MODE.value,
                                     value=mode,
                                     slave=self.slaveID)
             
-            self.Grasp(True)
+            self.grasp(True)
 
     def get_grasp_mode(self):
 
