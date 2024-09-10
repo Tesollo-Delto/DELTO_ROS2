@@ -3,7 +3,7 @@ import numpy as np
 import math
 import crcmod.predefined
 
-dg_ip = '192.168.0.210'
+dg_ip = '169.254.186.72'
 dg_port = 10000
 crc16 = crcmod.predefined.mkCrcFun('crc-16')
 
@@ -29,7 +29,7 @@ class Communication:
         self.delto_socket =  socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         
     def connect(self,
-                ip : str = '210.186.0.72',
+                ip : str = '169.254.186.72',
                 port : int = 10000):
         self.delto_socket.connect((ip, port))
 
