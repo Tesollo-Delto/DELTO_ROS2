@@ -44,7 +44,7 @@ class Communication:
             
             return
         
-        self.client = ModbusTcpClient(ip, port)
+        self.client = ModbusTcpClient(host=ip, port=port)
         return self.client.connect()
     
     def disconnect(self):
@@ -224,8 +224,8 @@ class Communication:
         
         ip = list(map(int,ip))
 
-        self.client.write_register(address=Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A.value,
-                                    value=ip,
+        self.client.write_registers(address=Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A.value,
+                                    values=ip,
                                     slave=self.slaveID)
 
     def set_subnet_mask(self,subnet_mask :str):
@@ -246,8 +246,8 @@ class Communication:
             return
         
         subnet_mask = list(map(int,subnet_mask))
-        self.client.write_register(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value,
-                                    value=subnet_mask,
+        self.client.write_registers(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value,
+                                    values=subnet_mask,
                                     slave=self.slaveID)
 
     def set_gate_way(self,gateway :str):
@@ -268,8 +268,8 @@ class Communication:
             return
         
         gateway = list(map(int,gateway))
-        self.client.write_register(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A.value,
-                                    value=gateway,
+        self.client.write_registers(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A.value,
+                                    values=gateway,
                                     slave=self.slaveID)
 
         
