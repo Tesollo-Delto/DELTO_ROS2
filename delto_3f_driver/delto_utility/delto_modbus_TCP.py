@@ -57,7 +57,7 @@ class Communication:
                                          sys._getframe().f_code.co_name)            
             return
         
-        # self.client.di()
+        self.client.close()  
 
     def send_data(self,address,count,data):
 
