@@ -217,7 +217,7 @@ class Communication:
         self.client.write_register(address = Delto3FHoldingRegisters.MOTION_STEP.value,
                                     value = step, slave = self.slaveID)
 
-    def RomWrite(self):
+    def rom_Write(self):
         self.client.write_coil(address = Delto3FCoils.EEPROM_WRITE.value,
                                value = True,
                                slave = self.slaveID)
@@ -296,6 +296,8 @@ change ip Example
     comm = Communication()
     comm.connect('169.254.186.72',10000)
     comm.set_ip('169.254.186.73')
-    comm.RomWrite()
+    comm.rom_Write()
+
+    The changed IP is applied only after restarting the power.
 
 '''
