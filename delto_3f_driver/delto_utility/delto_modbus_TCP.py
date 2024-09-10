@@ -59,23 +59,6 @@ class Communication:
         
         self.client.close()  
 
-    def send_data(self,address,count,data):
-
-        if self.dummy:
-            rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": " +
-                                         sys._getframe().f_code.co_name)          
-            return
-        
-        if data != []:
-            with self.lock:
-                #singe write register
-                if(count == 1):
-                    self.client.write_register(address = address, values = data)
-                #multiple write register
-                elif(count > 1):
-                    self.client.write_registers(address = address, values = data)
-
     def get_position(self):
         
         if self.dummy:
@@ -217,7 +200,7 @@ class Communication:
         self.client.write_register(address = Delto3FHoldingRegisters.MOTION_STEP.value,
                                     value = step, slave = self.slaveID)
 
-    def rom_Write(self):
+    def rom_write(self):
         self.client.write_coil(address = Delto3FCoils.EEPROM_WRITE.value,
                                value = True,
                                slave = self.slaveID)
@@ -296,7 +279,7 @@ change ip Example
     comm = Communication()
     comm.connect('169.254.186.72',10000)
     comm.set_ip('169.254.186.73')
-    comm.rom_Write()
+    comm.rom_write()
 
     The changed IP is applied only after restarting the power.
 
