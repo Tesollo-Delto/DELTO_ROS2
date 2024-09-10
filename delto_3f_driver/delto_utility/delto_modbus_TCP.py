@@ -135,7 +135,7 @@ class Communication:
         with self.lock:
 
             intPosion = list(map(lambda x : struct.unpack('H', struct.pack('h',int((x*10))))[0],position))
-            self.client.write_registers(address = 72, values = intPosion,slave=self.slaveID)
+            self.client.write_registers(address = 72, values =intPosion,slave=self.slaveID)
 
     def get_pgain(self):
         if self.dummy:
@@ -185,7 +185,7 @@ class Communication:
         if(mode == 0):
             self.Grasp(False)
         else:
-            self.client.write_register(address=int(Delto3FHoldingRegisters.GRASP_MODE.value),
+            self.client.write_register(address=Delto3FHoldingRegisters.GRASP_MODE.value,
                                     value=mode,
                                     slave=self.slaveID)
             
@@ -240,7 +240,10 @@ class Communication:
             return
         
         ip = list(map(int,ip))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A.value, 4, ip)
+
+        self.client.write_register(address=Delto3FHoldingRegisters.ETHERNET_IP_CLASS_A.value,
+                                    value=ip,
+                                    slave=self.slaveID)
 
     def set_subnet_mask(self,subnet_mask :str):
 
@@ -260,7 +263,9 @@ class Communication:
             return
         
         subnet_mask = list(map(int,subnet_mask))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value, 4, subnet_mask)
+        self.client.write_register(Delto3FHoldingRegisters.ETHERNET_SUBNET_MASK_A.value,
+                                    value=subnet_mask,
+                                    slave=self.slaveID)
 
     def set_gate_way(self,gateway :str):
 
@@ -280,7 +285,10 @@ class Communication:
             return
         
         gateway = list(map(int,gateway))
-        self.send_data(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A.value, 4, gateway)
+        self.client.write_register(Delto3FHoldingRegisters.ETHERNET_GATEWAY_A.value,
+                                    value=gateway,
+                                    slave=self.slaveID)
+
         
 '''
 change ip Example 
