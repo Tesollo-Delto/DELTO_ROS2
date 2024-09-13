@@ -57,7 +57,7 @@ class Communication:
                                          sys._getframe().f_code.co_name)            
             return
         
-        self.client.close()  
+        #self.client.close()  
 
     def get_position(self):
         
@@ -232,7 +232,7 @@ class Communication:
 
         if self.dummy:
             rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                         ": "
+                                         ": " +
                                          sys._getframe().f_code.co_name)            
             return
         
