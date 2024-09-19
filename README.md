@@ -124,13 +124,6 @@ ros2 launch delto_description dg3f_display.launch.py
 ros2 launch delto_description dg2f_display.launch.py
 ```
 
-
-## Ignition Gazebo Simulation
-
-```bash
-ros2 launch inivation_gazebo delto_3f_ign.launch.py
-```
-
 ## MoveIt! ur3 with Delto Gripper
 
 It is a simple example of how to use the MoveIt! with Delto Gripper and ur3 (robot arm).
