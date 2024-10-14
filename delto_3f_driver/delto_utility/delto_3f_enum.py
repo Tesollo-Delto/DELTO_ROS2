@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class GraspMode(Enum):
     """Enumeration of the grasp mode"""
     GRASP = 1
@@ -9,9 +10,13 @@ class GraspMode(Enum):
     PARALLEL_GRASP = 5
     ENVELOP_GRASP = 6
 
+
 """Enumeration of the Delto 3f"""
+
+
 class Delto3F(Enum):
-    MOTOR_NUM = 12   
+    MOTOR_NUM = 12
+
 
 class Delto3FCoils(Enum):
     """Enumeration of coils addresses of the Delto 3f"""
@@ -19,6 +24,7 @@ class Delto3FCoils(Enum):
     GRASP = 1
     JOINT_CUSTOM_MODE = 2
     EEPROM_WRITE = 3
+
 
 class Delto3FHoldingRegisters(Enum):
     """Enumeration of the holding registers addresses of the Delto 3f"""
@@ -108,6 +114,24 @@ class Delto3FHoldingRegisters(Enum):
     MOTOR10_TARGET_POSITION = 81
     MOTOR11_TARGET_POSITION = 82
     MOTOR12_TARGET_POSITION = 83
+    
+    # The following is accessible from firmware version 1.5 or higher.
+    MOTOR1_FIXED_POSITION = 96
+    MOTOR2_FIXED_POSITION = 97
+    MOTOR3_FIXED_POSITION = 98
+    MOTOR4_FIXED_POSITION = 99
+    MOTOR5_FIXED_POSITION = 100
+    MOTOR6_FIXED_POSITION = 101
+    MOTOR7_FIXED_POSITION = 102
+    MOTOR8_FIXED_POSITION = 103
+    MOTOR9_FIXED_POSITION = 104
+    MOTOR10_FIXED_POSITION = 105
+    MOTOR11_FIXED_POSITION = 106
+    MOTOR12_FIXED_POSITION = 107
+
+    SAVE_TARGET_POSITION = 108
+    TORQUE_LIMIT = 109
+
 
 class Delto3FInputRegisters(Enum):
     """Enumeration of the input registers addresses of the Delto 3f"""
