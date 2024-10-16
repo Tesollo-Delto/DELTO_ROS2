@@ -16,7 +16,7 @@ from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 
-from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray
+from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Inst16MultiArray
 from ros_gz_interfaces.msg import Float32Array
 
 from sensor_msgs.msg import JointState
@@ -47,6 +47,7 @@ class DeltoROSDriver(Node):
         self.joint_state_list = [0]*12
         self.current_joint_state = [0]*12
         self.target_joint_state = [0]*12
+        self.fixed_joint_state = [0]*12
 
         self.joint_state_feedback = JointTrajectoryPoint()
         self.vel = []
@@ -76,12 +77,12 @@ class DeltoROSDriver(Node):
         self.grasp_mode_sub = self.create_subscription(
             Float32MultiArray, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
         # self.grasp_mode_sub2 = self.create_subscription(
-        #     Float32Array, 'gripper/target_joint', callback=self.targejoint_callback, qos_profile=qos_profile)
+        #     Float32Array, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
         self.joint_state_timer = self.create_timer(
             1/self.publish_rate, self.timer_callback)
         
         self.fixed_joint_sub = self.create_subscription(
-            Float32MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
+            Inst16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
 
     # Connect to the delto gripper
     def connect(self) -> bool:
@@ -230,12 +231,10 @@ class DeltoROSDriver(Node):
         if len(msg.data) != 12:
             self.get_logger().error("Invalid fixed joint state")
             return
-
-        msg.data = [self._rad2deg(x) for x in msg.data]
-
         self.fixed_joint_state = msg.data
-        print("fixed_joint_state: ", self.target_joint_state)
-        self.delto_client.fix_position(self.target_joint_state)
+        
+        # print("fixed_joint_state: ", self.fixed_joint_state)
+        self.delto_client.fix_position(self.fixed_joint_state)
             
     def waypointMove(self, waypointList, threshold):
         self.stop_thread = False
