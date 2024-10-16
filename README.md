@@ -124,27 +124,7 @@ ros2 launch delto_description dg3f_display.launch.py
 ros2 launch delto_description dg2f_display.launch.py
 ```
 
-## MoveIt! ur3 with Delto Gripper
+## Feature Requests and Bug Reports
 
-It is a simple example of how to use the MoveIt! with Delto Gripper and ur3 (robot arm).
+If you have any feature requests, modification suggestions, or encounter any bugs, please create an issue on GitHub or contact the maintainer at khc@tesollo.com.
 
-before run the moveit, you should run the delto driver, ur_robot_driver.
-
-
-```bash
-ros2 launch delto_3f_driver ur_delto_bringup.launch.py delto_ip:=X.X.X.X
-```
-open your robot driver launch file and change the robot_ip to your robot ip address.
-
-```bash
-ros2 launch ur_robot_driver ur3.launch.py
-  robot_ip:=x.x.x.x
-```
-
-```bash
-ros2 launch ur_moveit_config ur_moveit.launch.py ur_type:=ur3 description_package:=delto_3f_description moveit_config_package:=ur_delto_moveit_config
-```
-
-```bash
-ros2 launch ur_pick_and_place pick_and_place.launch.py
-```
