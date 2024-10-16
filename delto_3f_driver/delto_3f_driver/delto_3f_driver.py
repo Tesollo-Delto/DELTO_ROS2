@@ -16,7 +16,7 @@ from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
 from rclpy.qos import QoSProfile, QoSReliabilityPolicy
 
-from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Inst16MultiArray
+from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Int16MultiArray
 from ros_gz_interfaces.msg import Float32Array
 
 from sensor_msgs.msg import JointState
@@ -82,7 +82,7 @@ class DeltoROSDriver(Node):
             1/self.publish_rate, self.timer_callback)
         
         self.fixed_joint_sub = self.create_subscription(
-            Inst16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
+            Int16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
 
     # Connect to the delto gripper
     def connect(self) -> bool:
