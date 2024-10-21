@@ -43,10 +43,6 @@ Check also [Delto 2F Gripper](https://en.tesollo.com/DG-2F)
 
   - `delto_2f_driver` - Delto Gripper 2F ROS2 driver
 
-  - `universal_robot_ign` - example Gazebo Ignition (Simulation) for Delto3F, UR3.
-
-  - `ur_pick_and_place_moveit` - example MoveIt! pick and place application for Delto Gripper and UR3.
-
 Some physical measurements (like PID Gain, inertia) may not be accurate. Adjustments may be necessary for a perfect simulation or operation.
 
 
