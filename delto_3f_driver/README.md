@@ -46,6 +46,12 @@ send_msg.data = gripper_cmd
 
 ```bash
 ros2 launch delto_3f_driver delto_3f_driver.launch.py
+
+```
+
+```bash
+ros2 run delto_3f_driver delto_3f_driver.py --ros-args -p ip:=192.168.0.112 -p port:=502 -p slaveID:=255
+
 ```
 
 ## external control
