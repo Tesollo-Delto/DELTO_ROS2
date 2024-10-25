@@ -37,7 +37,7 @@ def launch_setup(context, *args, **kwargs):
     robot_description = {"robot_description": robot_description_content}
 
     rviz_config_file = PathJoinSubstitution(
-        [description_package, "config", "display.rviz"]
+        [description_package, "config", "dg3f_display.rviz"]
     )
     gui_arg = DeclareLaunchArgument(
         name='gui',
