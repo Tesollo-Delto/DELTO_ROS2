@@ -2,7 +2,7 @@
 
 DeltoExternalDriver::DeltoExternalDriver() : Node("delto_3f_driver"), publish_rate(500.0)
 {
-    this->declare_parameter<std::string>("ip", "192.168.0.210");
+    this->declare_parameter<std::string>("ip", "169.254.186.72");
     this->declare_parameter<int>("port", 10000);
     this->declare_parameter<int>("slaveID", 1);
     this->declare_parameter<bool>("dummy", false);
@@ -16,7 +16,6 @@ DeltoExternalDriver::DeltoExternalDriver() : Node("delto_3f_driver"), publish_ra
     //     cancel_callback=self.cancel_callback,
 
     // )
-
     // rclcpp::Service<control_msgs::action::FollowJointTrajectory>::SharedPtr follow_joint_trajectory_server;
 
     follow_joint_trajectory_server = rclcpp_action::create_server<FollowJointTrajectory>(
