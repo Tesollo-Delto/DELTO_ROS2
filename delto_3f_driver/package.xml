@@ -19,6 +19,7 @@
   <depend>rclcpp</depend>
   <depend>control_msgs</depend>
   <depend>trajectory_msgs</depend>
+  <depend>boost</depend>
 
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
