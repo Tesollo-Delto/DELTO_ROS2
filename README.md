@@ -110,7 +110,7 @@ make new joint (robot_arm_end_link - gripper_base_link)
  ...
   
 ```
-## visualizing the robot arm with delto gripper
+## visualizing delto gripper
 
 ```bash
 ros2 launch delto_description dg3f_display.launch.py
@@ -118,6 +118,14 @@ ros2 launch delto_description dg3f_display.launch.py
 
 ```bash
 ros2 launch delto_description dg2f_display.launch.py
+```
+
+```bash
+ros2 launch delto_description dg2f_display.launch.py
+```
+
+```bash
+ros2 launch delto_3f_driver delto_3f_bringup.launch.py delto_ip:=192.168.0.100 delto_port:=502
 ```
 
 ## Feature Requests and Bug Reports
