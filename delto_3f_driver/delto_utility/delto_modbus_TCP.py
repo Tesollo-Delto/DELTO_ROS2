@@ -26,7 +26,7 @@ class Communication:
     def __init__(self, dummy=False):
         self.client = None
         self.slaveID = 0
-        self.dummy = dummy
+        self.dummy = dummy 
         self.lock = threading.Lock()
 
     def __del__(self):
@@ -70,17 +70,22 @@ class Communication:
 
             return status
 
-        status = []
-
+        #status = []
+        status = self.client.read_input_registers(
+            address=Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value,
+            count=Delto3F.MOTOR_NUM.value,
+            slave=self.slaveID).registers
+                
         for i in range(Delto3F.MOTOR_NUM.value):
-            stats = self.client.read_input_registers(
-                address=Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value + i,
-                count=1,
-                slave=self.slaveID).registers
-
+            # stats = self.client.read_input_registers(
+            #     address=Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value + i,
+            #     count=1,
+            #     slave=self.slaveID).registers
+            status[i] = (status[i] if status[i] < 32768 else status[i] - 65536)/10.0
             # unsigned 8bit to singed 8 bit
-            status.append(struct.unpack('h', struct.pack('H', stats[0]))[0]/10)
-
+            # stats = (stats[0] if stats[0] < 32768 else stats[0] - 65536)/10.0
+            # status.append(struct.unpack('h', struct.pack('H', stats[0]))[0]/10)
+            # status.append(stats)
         return status
 
     def get_high_force(self):

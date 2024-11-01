@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from delto_utility import delto_modbus_TCP as delto_TCP
+# from delto_utility import delto_modbus_TCP as delto_TCP
 import math
 import time
 import threading
 import sys
 import os
+import time
 
 import rclpy
 
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
+#Duration rcl
+from rclpy.duration import Duration 
 
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy, QoSHistoryPolicy
 
 from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Int16MultiArray
 from ros_gz_interfaces.msg import Float32Array
@@ -26,6 +29,8 @@ from control_msgs.action import FollowJointTrajectory
 import rclpy
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from delto_utility import delto_modbus_TCP as delto_TCP
+
 
 
 class DeltoROSDriver(Node):
@@ -39,15 +44,21 @@ class DeltoROSDriver(Node):
             reliability=QoSReliabilityPolicy.RELIABLE
         )
 
+        fast_qos = QoSProfile(
+            reliability=QoSReliabilityPolicy.RELIABLE,
+            depth=1,
+            lifespan=Duration(seconds=1),
+            history=QoSHistoryPolicy.KEEP_LAST)
+        
         self.declare_parameter('ip', "169.254.186.62")
         self.declare_parameter('port', 10000)
         self.declare_parameter('slaveID', 1)
         self.declare_parameter('dummy', False)
 
-        self.joint_state_list = [0]*12
-        self.current_joint_state = [0]*12
-        self.target_joint_state = [0]*12
-        self.fixed_joint_state = [0]*12
+        self.joint_state_list = [0.0]*12
+        self.current_joint_state = [0.0]*12
+        self.target_joint_state = [0.0]*12
+        self.fixed_joint_state = [0.0]*12
 
         self.joint_state_feedback = JointTrajectoryPoint()
         self.vel = []
@@ -56,7 +67,10 @@ class DeltoROSDriver(Node):
         self.lock = threading.Lock()
 
         # Too high frequency will cause blocking sub/pub
-        self.publish_rate = 20
+        self.publish_rate = 100
+        print('publish late : '+str(self.publish_rate))
+        
+        
         self.is_dummy = False  # bool(self.get_parameter('dummy').value)
 
         # Action Server
@@ -70,7 +84,7 @@ class DeltoROSDriver(Node):
         )
 
         self.joint_state_pub = self.create_publisher(
-            JointState, 'gripper/joint_states', qos_profile)
+            JointState, 'gripper/joint_states', fast_qos)
         self.grasp_sub = self.create_subscription(
             Int32, 'gripper/cmd', callback=self.grasp_callback, qos_profile=qos_profile)
 
@@ -80,7 +94,8 @@ class DeltoROSDriver(Node):
         #     Float32Array, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
         self.joint_state_timer = self.create_timer(
             1/self.publish_rate, self.timer_callback)
-        
+        self.read_joint_timer = self.create_timer(
+            1/self.publish_rate, self.read_joint_callback)
         self.fixed_joint_sub = self.create_subscription(
             Int16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
 
@@ -97,7 +112,13 @@ class DeltoROSDriver(Node):
                                          self.get_parameter('slaveID').value)
 
     # Publish joint state
-
+    def read_joint_callback(self):
+        # self.current_joint_stat
+        position_tmp = self.get_position()
+        # print("position_tmp: ", position_tmp)
+        self.current_joint_state = [float(self._deg2rad(x)) for x in position_tmp]
+        # print("current_joint_state: ", self.current_joint_state)
+        
     def joint_state_publisher(self):
 
         joint_state_msg = JointState()
@@ -107,13 +128,9 @@ class DeltoROSDriver(Node):
                                 'F2M1', 'F2M2', 'F2M3', 'F2M4',
                                 'F3M1', 'F3M2', 'F3M3', 'F3M4']
 
-        position = self.get_position()
-
-        joint_state_msg.position = [self._deg2rad(x) for x in position]
+        joint_state_msg.position = self.current_joint_state
         self.joint_state_feedback.positions = joint_state_msg.position
-
         self.joint_state_pub.publish(joint_state_msg)
-
     # Get current position
     def get_position(self):
 
