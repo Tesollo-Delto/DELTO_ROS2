@@ -315,7 +315,7 @@ class Communication:
 change ip Example 
 
     comm = Communication()
-    comm.connect('169.254.186.72',10000)
+    comm.connect('169.254.186.72',502)
     comm.set_ip('169.254.186.73')
     comm.rom_write()
 
