@@ -31,7 +31,10 @@ class Communication:
 
     def __del__(self):
         self.disconnect()
-
+        
+    def write_registers(self, address, values):
+        self.client.write_registers(address=address, values=values, slave=self.slaveID)
+        
     def connect(self, ip, port, slaveID=1):
         '''
         Connect to Delto Gripper

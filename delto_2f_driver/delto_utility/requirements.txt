@@ -1,0 +1,2 @@
+pymodbus==3.6.6
+rclpy==3.3.12

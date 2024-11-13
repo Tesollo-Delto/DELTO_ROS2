@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# from delto_utility import delto_modbus_TCP as delto_TCP
 import math
 import time
 import threading
@@ -12,21 +11,15 @@ import time
 import rclpy
 
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
-#Duration rcl
 from rclpy.duration import Duration 
-
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy, QoSHistoryPolicy
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
-from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Int16MultiArray
-from ros_gz_interfaces.msg import Float32Array
-
+from std_msgs.msg import Int32, Bool, Float32MultiArray, Int16MultiArray
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectoryPoint
 from control_msgs.action import FollowJointTrajectory
-
-import rclpy
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from delto_utility import delto_modbus_TCP as delto_TCP
@@ -65,7 +58,8 @@ class DeltoROSDriver(Node):
         self.delto_client = delto_TCP.Communication()
         self.stop_thread = False
         self.lock = threading.Lock()
-
+        self.is_connected = False
+        
         # Too high frequency will cause blocking sub/pub
         self.publish_rate = 100
         print('publish late : '+str(self.publish_rate))
@@ -86,18 +80,20 @@ class DeltoROSDriver(Node):
         self.joint_state_pub = self.create_publisher(
             JointState, 'gripper/joint_states', fast_qos)
         self.grasp_sub = self.create_subscription(
-            Int32, 'gripper/cmd', callback=self.grasp_callback, qos_profile=qos_profile)
-
+            Bool, 'gripper/grasp', callback=self.grasp_callback, qos_profile=qos_profile)
+        self.write_register_sub = self.create_subscription(
+            Int16MultiArray, 'gripper/write_register', self.write_register_callback, qos_profile=qos_profile)
         self.grasp_mode_sub = self.create_subscription(
+            Int32, 'gripper/grasp_mode', callback=self.grasp_mode_callback, qos_profile=qos_profile)
+        self.target_joint_sub = self.create_subscription(
             Float32MultiArray, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
-        # self.grasp_mode_sub2 = self.create_subscription(
-        #     Float32Array, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
+
         self.joint_state_timer = self.create_timer(
             1/self.publish_rate, self.timer_callback)
         self.read_joint_timer = self.create_timer(
             1/self.publish_rate, self.read_joint_callback)
         self.fixed_joint_sub = self.create_subscription(
-            Int16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
+            Int16MultiArray, 'gripper/fixed_joint', self.fixed_joint_callback, qos_profile=qos_profile)
 
     # Connect to the delto gripper
     def connect(self) -> bool:
@@ -113,11 +109,11 @@ class DeltoROSDriver(Node):
 
     # Publish joint state
     def read_joint_callback(self):
-        # self.current_joint_stat
         position_tmp = self.get_position()
-        # print("position_tmp: ", position_tmp)
         self.current_joint_state = [float(self._deg2rad(x)) for x in position_tmp]
-        # print("current_joint_state: ", self.current_joint_state)
+        
+    def write_register_callback(self, msg):
+        self.delto_client.write_registers(msg.data[0], msg.data[1:])
         
     def joint_state_publisher(self):
 
@@ -181,6 +177,7 @@ class DeltoROSDriver(Node):
         print('FollowJointTrajectory callback...')
         print(goal_handle.request.trajectory)
         goal = goal_handle.request.trajectory.points.copy()
+        
         # download planned path from ros moveit
         self.joint_state_list = []
 
@@ -193,7 +190,6 @@ class DeltoROSDriver(Node):
         if self.joint_state_list:
 
             # print("joint_state_list: ", self.joint_state_list)
-
             # add first and last point to the trajectory
             new_array = [self.joint_state_list[0]]
 
@@ -332,7 +328,6 @@ def main(args=None):
     executor = MultiThreadedExecutor(num_threads=8)
     executor.add_node(delto_driver)
     executor.spin()
-
     executor.shutdown()
 
 
