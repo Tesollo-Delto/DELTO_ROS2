@@ -145,6 +145,8 @@ class Communication:
         return pGain
 
     def set_pgain(self, pGain: list[int]):
+        # print("setPGain", pGain)
+        pGain = list(pGain)
         print("setPGain", pGain)
         self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
                                     values=pGain, slave=self.slaveID)
@@ -164,7 +166,7 @@ class Communication:
         return dGain
 
     def set_dgain(self, dGain: list[int]):
-        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN,
+        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN.value,
                                     values=dGain,
                                     slave=self.slaveID)
 
@@ -318,7 +320,7 @@ class Communication:
 change ip Example 
 
     comm = Communication()
-    comm.connect('169.254.186.72',10000)
+    comm.connect('169.254.186.72',502)
     comm.set_ip('169.254.186.73')
     comm.rom_write()
 

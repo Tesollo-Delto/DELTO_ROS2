@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="delto_gripper_5f">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import delto_gripper_5f urdf file -->
+    <xacro:include filename="$(find delto_description)/urdf/delto_gripper_5f.urdf" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="delto_gripper_5f.ros2_control.xacro" />
+
+
+    <!-- <xacro:delto_gripper_5f_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
+
+</robot>

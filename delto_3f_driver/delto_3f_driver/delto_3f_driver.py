@@ -94,13 +94,40 @@ class DeltoROSDriver(Node):
             1/self.publish_rate, self.read_joint_callback)
         self.fixed_joint_sub = self.create_subscription(
             Int16MultiArray, 'gripper/fixed_joint', self.fixed_joint_callback, qos_profile=qos_profile)
+        self.set_gain_sub = self.create_subscription(
+            Int16MultiArray, 'gripper/request/gain', self.set_gain_callback, qos_profile=qos_profile)
+        self.gain_pub = self.create_publisher(
+            Int16MultiArray, 'gripper/response/gain', qos_profile=qos_profile)
 
     # Connect to the delto gripper
+    def set_gain_callback(self, msg):
+        # if len(msg.data) != 24:
+        #     print(msg.data)
+        #     self.get_logger().error("Invalid gain {0}".format(msg.data.size))
+            
+        #     return
+        self.delto_client.set_pgain(msg.data[0:12])
+        self.delto_client.set_dgain(msg.data[12:24])
+        pgain=self.delto_client.get_pgain()
+        dgain=self.delto_client.get_dgain()
+        #append pgain and dgain
+        data= []
+        data.extend(pgain)
+        data.extend(dgain)
+        print(data) 
+        msg = Int16MultiArray()
+        msg.data = data
+        
+        self.gain_pub.publish(msg)
+        
+        
+        
     def connect(self) -> bool:
 
         if self.is_dummy:
             print("Dummy mode")
             return True
+
 
         print("Connecting to the delto gripper...")
         return self.delto_client.connect(self.get_parameter('ip').value,
@@ -158,7 +185,7 @@ class DeltoROSDriver(Node):
         with self.lock:
             print('check {}'.format(grasp.data))
             self.get_logger().info('check {}'.format(grasp.data))
-            self.delto_client.grasp_mode(grasp.data)
+            self.delto_client.grasp(grasp.data)
 
     def timer_callback(self):
         self.joint_state_publisher()
