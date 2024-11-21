@@ -3,10 +3,13 @@
     <xacro:macro name="delto_gripper_5f_ros2_control" params="name initial_positions_file">
         <xacro:property name="initial_positions" value="${load_yaml(initial_positions_file)['initial_positions']}"/>
 
-        <ros2_control name="${name}" type="system">
+        <ros2_control name="delto_5f_driver" type="system">
             <hardware>
                 <!-- By default, set up controllers for simulation. This won't work on real hardware -->
-                <plugin>mock_components/GenericSystem</plugin>
+                <!-- <plugin>mock_components/GenericSystem</plugin> -->
+                <plugin>delto_5f_driver/SystemInterface</plugin>
+                <param name="delto_ip">"192.168.1.176"</param>
+                <param name="delto_port">"502"</param>
             </hardware>
             <joint name="j_1_1">
                 <command_interface name="position"/>

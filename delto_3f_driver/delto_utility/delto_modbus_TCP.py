@@ -142,6 +142,8 @@ class Communication:
         return pGain
 
     def set_pgain(self, pGain: list[int]):
+        # print("setPGain", pGain)
+        pGain = list(pGain)
         print("setPGain", pGain)
         self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
                                     values=pGain, slave=self.slaveID)
@@ -161,7 +163,7 @@ class Communication:
         return dGain
 
     def set_dgain(self, dGain: list[int]):
-        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN,
+        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN.value,
                                     values=dGain,
                                     slave=self.slaveID)
 

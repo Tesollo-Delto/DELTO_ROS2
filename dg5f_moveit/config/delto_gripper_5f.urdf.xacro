@@ -9,6 +9,6 @@
     <xacro:include filename="delto_gripper_5f.ros2_control.xacro" />
 
 
-    <xacro:delto_gripper_5f_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+    <!-- <xacro:delto_gripper_5f_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/> -->
 
 </robot>

@@ -20,9 +20,7 @@
         <joint name="j_1_2"/>
         <joint name="j_1_3"/>
         <joint name="j_1_4"/>
-        <chain base_link="link_d" tip_link="l_1_tip"/>
-    </group>
-    <group name="F2">
+
         <link name="link_d"/>
         <link name="l_2_1"/>
         <link name="l_2_2"/>
@@ -33,9 +31,7 @@
         <joint name="j_2_2"/>
         <joint name="j_2_3"/>
         <joint name="j_2_4"/>
-        <chain base_link="link_d" tip_link="l_2_tip"/>
-    </group>
-    <group name="F3">
+
         <link name="l_3_1"/>
         <link name="l_3_2"/>
         <link name="l_3_3"/>
@@ -45,9 +41,7 @@
         <joint name="j_3_2"/>
         <joint name="j_3_3"/>
         <joint name="j_3_4"/>
-        <chain base_link="link_d" tip_link="l_3_tip"/>
-    </group>
-    <group name="F4">
+
         <link name="l_4_1"/>
         <link name="l_4_2"/>
         <link name="l_4_3"/>
@@ -57,9 +51,7 @@
         <joint name="j_4_2"/>
         <joint name="j_4_3"/>
         <joint name="j_4_4"/>
-        <chain base_link="link_d" tip_link="l_4_tip"/>
-    </group>
-    <group name="F5">
+
         <link name="l_5_1"/>
         <link name="l_5_2"/>
         <link name="l_5_3"/>
@@ -78,30 +70,7 @@
         <joint name="j_1_3" value="0"/>
         <joint name="j_1_4" value="0"/>
     </group_state>
-    <group_state name="home_f2" group="F2">
-        <joint name="j_2_1" value="0"/>
-        <joint name="j_2_2" value="0"/>
-        <joint name="j_2_3" value="0"/>
-        <joint name="j_2_4" value="0"/>
-    </group_state>
-    <group_state name="home_f3" group="F3">
-        <joint name="j_3_1" value="0"/>
-        <joint name="j_3_2" value="0"/>
-        <joint name="j_3_3" value="0"/>
-        <joint name="j_3_4" value="0"/>
-    </group_state>
-    <group_state name="home_f4" group="F4">
-        <joint name="j_4_1" value="0"/>
-        <joint name="j_4_2" value="0"/>
-        <joint name="j_4_3" value="0"/>
-        <joint name="j_4_4" value="0"/>
-    </group_state>
-    <group_state name="home_f5" group="F5">
-        <joint name="j_5_1" value="0"/>
-        <joint name="j_5_2" value="0"/>
-        <joint name="j_5_3" value="0"/>
-        <joint name="j_5_4" value="0"/>
-    </group_state>
+
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="l_1_1" link2="l_1_2" reason="Adjacent"/>
     <disable_collisions link1="l_1_1" link2="l_1_3" reason="Never"/>
