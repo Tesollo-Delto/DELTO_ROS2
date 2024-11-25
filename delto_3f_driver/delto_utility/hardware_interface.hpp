@@ -14,7 +14,7 @@
 #include "rclcpp_lifecycle/state.hpp"
 #include "std_msgs/msg/bool.hpp"
 
-namespace delto_3f
+namespace delto3F
 {
 constexpr char HW_IF_CURRENT[] = "current";
 

@@ -83,7 +83,7 @@ private:
     int joint_publish_count;
     sensor_msgs::msg::JointState joint_state;
 
-    void connect();
+   // void connect();
 };
 
 #endif // DELTO_EXTERNAL_DRIVER_HPP

@@ -1,0 +1,9 @@
+<library path="delto_3f_driver">
+  <class name="delto_3f_driver/SystemInterface"
+         type="delto_3f_driver::SystemInterface"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      A ROS2-control SystemInterface for delto_3f_driver
+    </description>
+  </class>
+</library>
