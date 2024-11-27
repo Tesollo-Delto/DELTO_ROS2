@@ -5,7 +5,7 @@
 import os
 import sys
 # sys.path.insert(0, os.path.abspath('.'))   # Default path
-# sys.path.insert(0, os.path.abspath('../..'))   # 필자의 path
+# sys.path.insert(0, os.path.abspath('../..')) 
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '../..'))
 
 # delto_3f_driver 패키지 경로 추가

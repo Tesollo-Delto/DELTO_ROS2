@@ -85,6 +85,14 @@ void Communication::send_duty(std::vector<int>& duty)
                                           0x0A, 0x00, 0x00,
                                           0x0B, 0x00, 0x00,
                                           0x0C, 0x00, 0x00};
+    
+
+    //print duty
+    // for (auto d: duty)
+    // {
+    //        std::cout << d << " ";
+    // }
+    // std::cout << std::endl;
 
     for (size_t i = 0; i < 12; ++i) 
     {
