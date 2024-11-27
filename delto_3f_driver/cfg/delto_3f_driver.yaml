@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 100  # Joint state pub rate
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -10,8 +10,8 @@ controller_manager:
 
 delto_3f_controller:
   ros__parameters:
-    # state_publish_rate: 100.0  # 50Hz에서 500Hz로 변경
-    # action_monitor_rate: 100.0  # 20Hz에서 500Hz로 변경
+    state_publish_rate: 500.0  # 50Hz에서 500Hz로 변경
+    action_monitor_rate: 500.0  # 20Hz에서 500Hz로 변경
     allow_partial_joints_goal: True
     joints:
       - F1M1

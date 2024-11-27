@@ -22,12 +22,11 @@ namespace delto_3f_driver
         {
             return CallbackReturn::ERROR;
         }
-          positions.resize(info_.joints.size(), 0.0);
-          velocities.resize(info_.joints.size(), 0.0);
+        positions.resize(info_.joints.size(), 0.0);
+        velocities.resize(info_.joints.size(), 0.0);
         
-          position_commands.resize(info_.joints.size(), 0.0);
+        position_commands.resize(info_.joints.size(), 0.0);
 
-        // device_file = info.hardware_parameters["device_file"];
         delto_ip = info.hardware_parameters.at("delto_ip");
         delto_port = std::stoi(info.hardware_parameters.at("delto_port"));
 
@@ -76,12 +75,6 @@ hardware_interface::SystemInterface::CallbackReturn SystemInterface::on_deactiva
   
   return CallbackReturn::SUCCESS;
 }
-// CallbackReturn SystemInterface::on_deactivate(
-//   const rclcpp_lifecycle::State & previous_state)
-// {
-//   RCLCPP_INFO(rclcpp::get_logger("SystemInterface"), "Deactivated driver");
-//   return CallbackReturn::SUCCESS;
-// }
 
     std::vector<hardware_interface::StateInterface> SystemInterface::export_state_interfaces()
 {
@@ -207,10 +200,10 @@ SystemInterface::return_type SystemInterface::write(
   std::vector<int> int_duty(_duty.size());
 
   for (size_t i = 0; i < _duty.size(); ++i) {
-    int_duty[i] = static_cast<int>(_duty[i]);
+    int_duty[i] = static_cast<int>(_duty[i]*10);
   }
 
-  // 계산된 _duty를 send_duty로 전달
+  // 계산된 _duty를 send_duty로 전달 100.0 => 1000
   delto_client->send_duty(int_duty);  // calc_duty 대신 _duty를 사용
 
   return hardware_interface::return_type::OK;  // return 문 추가

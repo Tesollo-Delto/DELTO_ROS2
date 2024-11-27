@@ -31,7 +31,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "p_gain", 
-            default_value="3.0", 
+            default_value="1.0", 
             description="P gain for gripper"
         )
     )
@@ -40,7 +40,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "d_gain", 
-            default_value="3.0", 
+            default_value="0.2", 
             description="D gain for gripper"
         )
     )
