@@ -10,4 +10,6 @@ documentation for details.
    :maxdepth: 2
    :caption: Contents:
 
+   introduce
+   rqt_dg3f_publisher
    modules

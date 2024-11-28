@@ -98,11 +98,31 @@ class DeltoROSDriver(Node):
             Int16MultiArray, 'gripper/request/gain', self.set_gain_callback, qos_profile=qos_profile)
         self.gain_pub = self.create_publisher(
             Int16MultiArray, 'gripper/response/gain', qos_profile=qos_profile)
+        
+        self.load_pose_sub = self.create_subscription(
+            Int32, 'gripper/load_pose', self.load_pose_callback, qos_profile=qos_profile)
+        self.save_pose_sub = self.create_subscription(
+            Int32, 'gripper/save_pose', self.save_pose_callback, qos_profile=qos_profile)
 
         self.reconnect_timer = self.create_timer(3.0, self.reconnect_callback)
         self.reconnect_attempts = 0
         self.max_reconnect_attempts = 10
     
+    def load_pose_callback(self, msg):
+        
+        if msg.data < 1 or msg.data > 30:
+            self.get_logger().error("pose index out of range")
+            
+        self.delto_client.load_pose(msg.data[0])
+        
+    def save_pose_callback(self, msg):
+        
+        if msg.data< 1 or msg.data > 30:
+            self.get_logger().error("pose index out of range")
+            return
+        
+        self.delto_client.save_pose(msg.data[0])
+        
     def reconnect_callback(self):
         if not self.is_connected:
             if self.reconnect_attempts < self.max_reconnect_attempts:

@@ -1,8 +1,8 @@
 delto\_utility package
 ======================
 
-Submodules
-----------
+.. Submodules
+.. ----------
 
 delto\_utility.delto\_3f\_enum module
 -------------------------------------

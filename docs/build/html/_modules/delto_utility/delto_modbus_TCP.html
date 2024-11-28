@@ -41,6 +41,7 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../introduce.html">Delto 3F Gripper</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../modules.html">delto_3f_driver</a></li>
 </ul>
 
@@ -104,7 +105,10 @@
 
     <span class="k">def</span> <span class="fm">__del__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
-
+        
+    <span class="k">def</span> <span class="nf">write_registers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">values</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">values</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
+        
 <div class="viewcode-block" id="Communication.connect">
 <a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.connect">[docs]</a>
     <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">slaveID</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
@@ -139,8 +143,6 @@
 
         <span class="c1"># self.client.close()</span>
 
-<div class="viewcode-block" id="Communication.get_position">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_position">[docs]</a>
     <span class="k">def</span> <span class="nf">get_position</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
@@ -167,33 +169,24 @@
             <span class="c1"># stats = (stats[0] if stats[0] &lt; 32768 else stats[0] - 65536)/10.0</span>
             <span class="c1"># status.append(struct.unpack(&#39;h&#39;, struct.pack(&#39;H&#39;, stats[0]))[0]/10)</span>
             <span class="c1"># status.append(stats)</span>
-        <span class="k">return</span> <span class="n">status</span></div>
+        <span class="k">return</span> <span class="n">status</span>
 
-
-<div class="viewcode-block" id="Communication.get_high_force">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_high_force">[docs]</a>
     <span class="k">def</span> <span class="nf">get_high_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="n">high_force</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">read_input_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FInputRegisters</span><span class="o">.</span><span class="n">HIGH_FORCE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                           <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                                           <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span><span class="o">.</span><span class="n">registers</span>
-        <span class="k">return</span> <span class="n">high_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">high_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-
-<div class="viewcode-block" id="Communication.get_low_force">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_low_force">[docs]</a>
     <span class="k">def</span> <span class="nf">get_low_force</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="n">low_force</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">read_input_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FInputRegisters</span><span class="o">.</span><span class="n">LOW_FORCE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                          <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                                          <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span><span class="o">.</span><span class="n">registers</span>
-        <span class="k">return</span> <span class="n">low_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+        <span class="k">return</span> <span class="n">low_force</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
-
-<div class="viewcode-block" id="Communication.set_position">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_position">[docs]</a>
     <span class="k">def</span> <span class="nf">set_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">position</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]):</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">):</span>
@@ -215,11 +208,8 @@
             <span class="n">intPosion</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">struct</span><span class="o">.</span><span class="n">unpack</span><span class="p">(</span>
                 <span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">struct</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="s1">&#39;h&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">((</span><span class="n">x</span><span class="o">*</span><span class="mi">10</span><span class="p">))))[</span><span class="mi">0</span><span class="p">],</span> <span class="n">position</span><span class="p">))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span>
-                <span class="n">address</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">intPosion</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                <span class="n">address</span><span class="o">=</span><span class="mi">72</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">intPosion</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.get_pgain">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_pgain">[docs]</a>
     <span class="k">def</span> <span class="nf">get_pgain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
             <span class="n">rclpy</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">rclpy</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span>
@@ -232,19 +222,15 @@
             <span class="n">pGain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">read_holding_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTOR1_PGAIN</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                        <span class="n">count</span><span class="o">=</span><span class="n">Delto3F</span><span class="o">.</span><span class="n">MOTOR_NUM</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                        <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span><span class="o">.</span><span class="n">registers</span>
-        <span class="k">return</span> <span class="n">pGain</span></div>
+        <span class="k">return</span> <span class="n">pGain</span>
 
-
-<div class="viewcode-block" id="Communication.set_pgain">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_pgain">[docs]</a>
     <span class="k">def</span> <span class="nf">set_pgain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pGain</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
+        <span class="c1"># print(&quot;setPGain&quot;, pGain)</span>
+        <span class="n">pGain</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pGain</span><span class="p">)</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;setPGain&quot;</span><span class="p">,</span> <span class="n">pGain</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTOR1_PGAIN</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                    <span class="n">values</span><span class="o">=</span><span class="n">pGain</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                    <span class="n">values</span><span class="o">=</span><span class="n">pGain</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.get_dgain">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_dgain">[docs]</a>
     <span class="k">def</span> <span class="nf">get_dgain</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
             <span class="n">rclpy</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">get_logger</span><span class="p">()</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">rclpy</span><span class="o">.</span><span class="n">Node</span><span class="o">.</span><span class="n">get_name</span><span class="p">()</span> <span class="o">+</span>
@@ -257,27 +243,18 @@
             <span class="n">dGain</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">read_holding_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTOR1_DGAIN</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                        <span class="n">count</span><span class="o">=</span><span class="n">Delto3F</span><span class="o">.</span><span class="n">MOTOR_NUM</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                                        <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span><span class="o">.</span><span class="n">registers</span>
-        <span class="k">return</span> <span class="n">dGain</span></div>
+        <span class="k">return</span> <span class="n">dGain</span>
 
-
-<div class="viewcode-block" id="Communication.set_dgain">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_dgain">[docs]</a>
     <span class="k">def</span> <span class="nf">set_dgain</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dGain</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTOR1_DGAIN</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTOR1_DGAIN</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                     <span class="n">values</span><span class="o">=</span><span class="n">dGain</span><span class="p">,</span>
-                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.set_free">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_free">[docs]</a>
     <span class="k">def</span> <span class="nf">set_free</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isFree</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_coil</span><span class="p">(</span>
-            <span class="n">address</span><span class="o">=</span><span class="n">Delto3FCoils</span><span class="o">.</span><span class="n">JOINT_CUSTOM_MODE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">isFree</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+            <span class="n">address</span><span class="o">=</span><span class="n">Delto3FCoils</span><span class="o">.</span><span class="n">JOINT_CUSTOM_MODE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="n">isFree</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.grasp_mode">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.grasp_mode">[docs]</a>
     <span class="k">def</span> <span class="nf">grasp_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">mode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">grasp</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
@@ -286,11 +263,8 @@
                                        <span class="n">value</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span>
                                        <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">grasp</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grasp</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.get_grasp_mode">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.get_grasp_mode">[docs]</a>
     <span class="k">def</span> <span class="nf">get_grasp_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
@@ -298,21 +272,15 @@
                                                     <span class="n">count</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                                     <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span><span class="o">.</span><span class="n">registers</span>
 
-        <span class="k">return</span> <span class="n">mode</span></div>
+        <span class="k">return</span> <span class="n">mode</span>
 
-
-<div class="viewcode-block" id="Communication.grasp">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.grasp">[docs]</a>
     <span class="k">def</span> <span class="nf">grasp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">isGrasp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">):</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Grasp&quot;</span><span class="p">,</span> <span class="n">isGrasp</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_coil</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FCoils</span><span class="o">.</span><span class="n">GRASP</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                    <span class="n">value</span><span class="o">=</span><span class="n">isGrasp</span><span class="p">,</span>
-                                   <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                   <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.set_step">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_step">[docs]</a>
     <span class="k">def</span> <span class="nf">set_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">step</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="p">(</span><span class="n">step</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">):</span>
@@ -321,19 +289,13 @@
             <span class="n">step</span> <span class="o">=</span> <span class="mi">32767</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_register</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">MOTION_STEP</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
-                                   <span class="n">value</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                   <span class="n">value</span><span class="o">=</span><span class="n">step</span><span class="p">,</span> <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.rom_write">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.rom_write">[docs]</a>
     <span class="k">def</span> <span class="nf">rom_write</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_coil</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FCoils</span><span class="o">.</span><span class="n">EEPROM_WRITE</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                <span class="n">value</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                               <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                               <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.set_ip">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_ip">[docs]</a>
     <span class="k">def</span> <span class="nf">set_ip</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ip</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
@@ -355,11 +317,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">address</span><span class="o">=</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">ETHERNET_IP_CLASS_A</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                     <span class="n">values</span><span class="o">=</span><span class="n">ip</span><span class="p">,</span>
-                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.set_subnet_mask">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_subnet_mask">[docs]</a>
     <span class="k">def</span> <span class="nf">set_subnet_mask</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">subnet_mask</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
@@ -380,11 +339,8 @@
         <span class="n">subnet_mask</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">subnet_mask</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">ETHERNET_SUBNET_MASK_A</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                     <span class="n">values</span><span class="o">=</span><span class="n">subnet_mask</span><span class="p">,</span>
-                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
+                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
-
-<div class="viewcode-block" id="Communication.set_gate_way">
-<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.set_gate_way">[docs]</a>
     <span class="k">def</span> <span class="nf">set_gate_way</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">gateway</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
@@ -405,8 +361,7 @@
         <span class="n">gateway</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">gateway</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="o">.</span><span class="n">write_registers</span><span class="p">(</span><span class="n">Delto3FHoldingRegisters</span><span class="o">.</span><span class="n">ETHERNET_GATEWAY_A</span><span class="o">.</span><span class="n">value</span><span class="p">,</span>
                                     <span class="n">values</span><span class="o">=</span><span class="n">gateway</span><span class="p">,</span>
-                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span></div>
-
+                                    <span class="n">slave</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">slaveID</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Communication.fix_position">
 <a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_modbus_TCP.Communication.fix_position">[docs]</a>
@@ -449,7 +404,7 @@
 <span class="sd">change ip Example </span>
 
 <span class="sd">    comm = Communication()</span>
-<span class="sd">    comm.connect(&#39;169.254.186.72&#39;,10000)</span>
+<span class="sd">    comm.connect(&#39;169.254.186.72&#39;,502)</span>
 <span class="sd">    comm.set_ip(&#39;169.254.186.73&#39;)</span>
 <span class="sd">    comm.rom_write()</span>
 
