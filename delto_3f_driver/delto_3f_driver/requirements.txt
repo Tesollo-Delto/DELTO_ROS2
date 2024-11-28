@@ -1,0 +1,6 @@
+control_msgs==4.4.0
+rclpy==3.3.12
+ros_gz_interfaces==0.244.13
+sensor_msgs==4.2.3
+std_msgs==4.2.3
+trajectory_msgs==4.2.3

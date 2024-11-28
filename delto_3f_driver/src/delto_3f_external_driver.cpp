@@ -56,17 +56,17 @@ DeltoExternalDriver::DeltoExternalDriver() : Node("delto_3f_driver"), publish_ra
 
     delto_client = std::make_unique<DeltoTCP::Communication>(delto_ip, delto_port);
 
-    connect();
+    delto_client->connect();
 
     prev_time = this->get_clock()->now();
 }
 
 DeltoExternalDriver::~DeltoExternalDriver() {}
 
-void DeltoExternalDriver::connect()
-{
-    delto_client->connect();
-}
+// void DeltoExternalDriver::connect()
+// {
+//     delto_client->connect();
+// }
 
 std::vector<double> DeltoExternalDriver::get_position()
 {
@@ -311,13 +311,13 @@ std::vector<double> DeltoExternalDriver::Torque2Duty(std::vector<double> tq_u)
 
         duty[i] = 100.0 * v / 11.1;
 
-        if (duty[i] > 100.0)
+        if (duty[i] > 70.0)
         {
-            duty[i] = 100.0;
+            duty[i] = 70.0;
         }
-        else if (duty[i] < -100.0)
+        else if (duty[i] < -70.0)
         {
-            duty[i] = -100.0;
+            duty[i] = -70.0;
         }
     }
 

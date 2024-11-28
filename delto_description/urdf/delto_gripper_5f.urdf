@@ -1,0 +1,709 @@
+<?xml version="1.0" ?>
+
+<robot name="delto_gripper_5f">
+  <material name="silver">
+    <color rgba="0.8 0.8 0.8 1"/>
+  </material>
+
+  <link name="dummy_link"/>
+
+  <joint name="dummy_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <parent link="dummy_link"/>
+    <child link="link_d"/>
+  </joint>
+  
+  <link name="link_d">
+    <inertial>
+      <mass value="0.5" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/base_link.STL" />
+      </geometry>
+      <material name="silver"/>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+
+  <!--finger 1-->
+  <link name="l_1_1">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_1.STL" />
+      </geometry>
+      <material name="silver"/>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+      
+  <joint name="j_1_1" type="revolute">
+    <origin xyz="-0.0184 0.0191 0.0866" rpy="0.0 0.0 0.0" />
+    <parent link="link_d" />
+    <child link="l_1_1" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.261799" upper="1.0472" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_1_2">
+    <inertial>
+      <mass value="0.01" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_2.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_1_2" type="revolute">
+    <origin xyz="0.0405 0.0 0.0" rpy="0.0 0.0 0.0" />
+    <parent link="l_1_1" />
+    <child link="l_1_2" />
+    <axis xyz="0 0 -1" />
+    <limit lower="-0.0" upper="1.91986" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_1_3">
+    <inertial>
+      <mass value="0.02" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_3.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_1_3" type="revolute">
+    <origin xyz="0.0 0.031 0.0" rpy="0.0 0.0 0.0" />
+    <parent link="l_1_2" />
+    <child link="l_1_3" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_1_4">
+    <inertial>
+      <mass value="0.02" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_4.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_1_4" type="revolute">
+    <origin xyz="0.0 0.0388 0.0" rpy="0.0 0.0 0.0" />
+    <parent link="l_1_3" />
+    <child link="l_1_4" />
+    <axis xyz="1 0 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_1_tip">
+    <inertial>
+      <mass value="0.01" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_tip.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_1_tip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_1_tip" type="fixed">
+    <origin xyz="0.0 0.0248 0.0" rpy="0.0 0.0 0.0" />
+    <parent link="l_1_4" />
+    <child link="l_1_tip" />
+  </joint>
+
+  <!--finger 2-->
+  <link name="l_2_1">
+    <inertial>
+      <mass value="0.02" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_1.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_2_1" type="revolute">
+    <origin xyz="-0.0071 0.02702 0.1409" rpy="0.0 0.0 0.0" />
+    <parent link="link_d" />
+    <child link="l_2_1" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.523599" upper="0.261799" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_2_2">
+    <inertial>
+      <mass value="0.02" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_2.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_2_2" type="revolute">
+    <origin xyz="0.0171 0.0 0.0272" rpy="0.0 0.0 0.0" />
+    <parent link="l_2_1" />
+    <child link="l_2_2" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.0" upper="1.74533" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_2_3">
+    <inertial>
+      <mass value="0.02" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_3.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_2_3" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_2_2" />
+    <child link="l_2_3" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_2_4">
+    <inertial>
+      <mass value="0.01" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_4.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_2_4" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_2_3" />
+    <child link="l_2_4" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_2_tip">
+    <inertial>
+      <mass value="0.01" />
+<inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_tip.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_2_tip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_2_tip" type="fixed">
+    <origin xyz="0.0 0.0 0.014" rpy="0.0 0.0 0.0" />
+    <parent link="l_2_4" />
+    <child link="l_2_tip" />
+  </joint>
+
+  <!--finger 3-->
+  <link name="l_3_1">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>s
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_1.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_3_1" type="revolute">
+    <origin xyz="-0.0071 0.00402 0.1449" rpy="0.0 0.0 0.0" />
+    <parent link="link_d" />
+    <child link="l_3_1" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.523599" upper="0.523599" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_3_2">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_2.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_3_2" type="revolute">
+    <origin xyz="0.0171 0.0 0.0272" rpy="0.0 0.0 0.0" />
+    <parent link="l_3_1" />
+    <child link="l_3_2" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.0" upper="1.74533" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_3_3">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_3.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_3_3" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_3_2" />
+    <child link="l_3_3" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_3_4">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_4.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_3_4" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_3_3" />
+    <child link="l_3_4" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_3_tip">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_tip.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_3_tip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_3_tip" type="fixed">
+    <origin xyz="0.0 0.0 0.014" rpy="0.0 0.0 0.0" />
+    <parent link="l_3_4" />
+    <child link="l_3_tip" />
+  </joint>
+
+  <!--finger 4-->
+  <link name="l_4_1">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_1.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_4_1" type="revolute">
+    <origin xyz="-0.0071 -0.01898 0.1369" rpy="0.0 0.0 0.0" />
+    <parent link="link_d" />
+    <child link="l_4_1" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.261799" upper="0.523599" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_4_2">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_2.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_4_2" type="revolute">
+    <origin xyz="0.0171 0.0 0.0272" rpy="0.0 0.0 0.0" />
+    <parent link="l_4_1" />
+    <child link="l_4_2" />
+    <axis xyz="0 1 0" />
+    <limit lower="-0.0" upper="1.74533" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_4_3">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_3.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_4_3" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_4_2" />
+    <child link="l_4_3" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_4_4">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_4.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_4_4" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_4_3" />
+    <child link="l_4_4" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_4_tip">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_tip.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_4_tip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_4_tip" type="fixed">
+    <origin xyz="0.0 0.0 0.014" rpy="0.0 0.0 0.0" />
+    <parent link="l_4_4" />
+    <child link="l_4_tip" />
+  </joint>
+
+  <!--finger 5-->
+  <link name="l_5_1">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_1.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_5_1" type="revolute">
+    <origin xyz="0.0103 -0.01498 0.093" rpy="0.0 0.0 0.0" />
+    <parent link="link_d" />
+    <child link="l_5_1" />
+    <axis xyz="0 0 1" />
+    <limit lower="-0.0" upper="0.785398" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_5_2">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_2.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_5_2" type="revolute">
+    <origin xyz="0.0 -0.0284 0.0381" rpy="0.0 0.0 0.0" />
+    <parent link="l_5_1" />
+    <child link="l_5_2" />
+    <axis xyz="1 0 0" />
+    <limit lower="-0.0" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_5_3">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_3.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_5_3" type="revolute">
+    <origin xyz="0.0 0.0 0.031" rpy="0.0 0.0 0.0" />
+    <parent link="l_5_2" />
+    <child link="l_5_3" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_5_4">
+    <inertial>
+      <mass value="0.02" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_4.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_5_4" type="revolute">
+    <origin xyz="0.0 0.0 0.0388" rpy="0.0 0.0 0.0" />
+    <parent link="l_5_3" />
+    <child link="l_5_4" />
+    <axis xyz="0 1 0" />
+    <limit lower="-1.5708" upper="1.5708" effort="100.0" velocity="3.141592653589793"/>  <!-- effort="100.0" velocity="3.141592653589793" -->
+  </joint>
+
+  <link name="l_5_tip">
+    <inertial>
+      <mass value="0.01" />
+      <inertia ixx="0.000001" iyy="0.000001" izz="0.000001" ixy="0" ixz="0" iyz="0"/>
+    </inertial>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_tip.STL" />
+      </geometry>
+    <material name="silver"/>
+</visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <mesh filename="package://delto_description/meshes/DG5F/l_5_tip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint name="j_5_tip" type="fixed">
+    <origin xyz="0.0 0.0 0.0248" rpy="0.0 0.0 0.0" />
+    <parent link="l_5_4" />
+    <child link="l_5_tip" />
+  </joint>
+</robot>
+

@@ -132,7 +132,6 @@ class Delto3FHoldingRegisters(Enum):
     SAVE_TARGET_POSITION = 108
     TORQUE_LIMIT = 109
 
-
 class Delto3FInputRegisters(Enum):
     """Enumeration of the input registers addresses of the Delto 3f"""
     PRODUCT_ID = 0

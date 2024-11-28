@@ -1,0 +1,311 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Delto 3F Gripper &mdash; delto 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="RQT DG3F Publisher" href="rqt_dg3f_publisher.html" />
+    <link rel="prev" title="delto documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            delto
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Delto 3F Gripper</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#technical-specifications">Technical Specifications</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#joint-configuration">Joint Configuration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#control-system">Control System</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#software-interface">Software Interface</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#applications">Applications</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#performance-metrics">Performance Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation-setup">Installation &amp; Setup</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#requirements">Requirements</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#quick-start">Quick Start</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#support-documentation">Support &amp; Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#contact-information">Contact Information</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="rqt_dg3f_publisher.html">RQT DG3F Publisher</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">delto_3f_driver</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">delto</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Delto 3F Gripper</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/introduce.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="delto-3f-gripper">
+<h1>Delto 3F Gripper<a class="headerlink" href="#delto-3f-gripper" title="Link to this heading"></a></h1>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Link to this heading"></a></h2>
+<figure class="align-center">
+<a class="reference internal image-reference" href="_images/dg3f.png"><img alt="_images/dg3f.png" src="_images/dg3f.png" style="width: 600px;" />
+</a>
+</figure>
+<p>The Delto 3F gripper is an advanced three-fingered robotic gripper designed for versatile manipulation tasks. With its anthropomorphic design and sophisticated control system, it provides exceptional dexterity and precision in grasping various objects.</p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><dl class="simple">
+<dt><strong>Multi-Joint Control</strong></dt><dd><ul>
+<li><p>12 joints in total (4 joints per finger)</p></li>
+<li><p>Individual joint angle Control</p></li>
+<li><p>position feedback</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>High Precision</strong></dt><dd><ul>
+<li><p>Advanced PD control system</p></li>
+<li><p>Adjustable gains for each joint</p></li>
+<li><p>Position accuracy of ±0.1 degrees</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><strong>Monitoring</strong></dt><dd><ul>
+<li><p>Joint angle visualization</p></li>
+<li><p>Current vs target position comparison</p></li>
+<li><p>Integrated RViz support</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="technical-specifications">
+<h2>Technical Specifications<a class="headerlink" href="#technical-specifications" title="Link to this heading"></a></h2>
+<section id="joint-configuration">
+<h3>Joint Configuration<a class="headerlink" href="#joint-configuration" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Finger</span> <span class="mi">1</span> <span class="o">&amp;</span> <span class="mi">2</span> <span class="o">&amp;</span> <span class="mi">3</span><span class="p">:</span>
+    <span class="o">-</span> <span class="n">Joint</span> <span class="mi">1</span>
+    <span class="o">-</span> <span class="n">Joint</span> <span class="mi">2</span>
+    <span class="o">-</span> <span class="n">Joint</span> <span class="mi">3</span>
+    <span class="o">-</span> <span class="n">Joint</span> <span class="mi">4</span>
+</pre></div>
+</div>
+</section>
+<section id="control-system">
+<h3>Control System<a class="headerlink" href="#control-system" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p><strong>Communication</strong>: ROS 2 interface</p></li>
+<li><p><strong>Input Voltage</strong>: 24V DC</p></li>
+<li><p><strong>Control Method</strong>: Position control with PD/PID gains</p></li>
+</ul>
+</section>
+</section>
+<section id="software-interface">
+<h2>Software Interface<a class="headerlink" href="#software-interface" title="Link to this heading"></a></h2>
+<p>The gripper can be controlled through:</p>
+<ol class="arabic simple">
+<li><dl class="simple">
+<dt>RQT Plugin Interface</dt><dd><ul class="simple">
+<li><p>joint control</p></li>
+<li><p>Visual feedback</p></li>
+<li><p>Gain tuning interface</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>ROS 2 Topics</dt><dd><ul class="simple">
+<li><p>Direct command interface</p></li>
+<li><p>ros2_control interface</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</section>
+<section id="applications">
+<h2>Applications<a class="headerlink" href="#applications" title="Link to this heading"></a></h2>
+<p>The Delto 3F gripper is suitable for:</p>
+<ul class="simple">
+<li><dl class="simple">
+<dt>Research and Development</dt><dd><ul>
+<li><p>Robot manipulation studies</p></li>
+<li><p>Grasping algorithm development</p></li>
+<li><p>Human-robot interaction research</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Industrial Applications</dt><dd><ul>
+<li><p>Precision assembly</p></li>
+<li><p>Object manipulation</p></li>
+<li><p>Quality control inspection</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>Educational Purposes</dt><dd><ul>
+<li><p>Robotics education</p></li>
+<li><p>Control system demonstrations</p></li>
+<li><p>Programming exercises</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+<section id="performance-metrics">
+<h2>Performance Metrics<a class="headerlink" href="#performance-metrics" title="Link to this heading"></a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Maximum</span> <span class="n">Payload</span><span class="p">:</span> <span class="mi">10</span><span class="n">kg</span>
+<span class="n">Position</span> <span class="n">Resolution</span><span class="p">:</span> <span class="mf">0.1</span> <span class="n">degrees</span>
+</pre></div>
+</div>
+</section>
+<section id="installation-setup">
+<h2>Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading"></a></h2>
+<section id="requirements">
+<h3>Requirements<a class="headerlink" href="#requirements" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>ROS 2 (Humble)</p></li>
+<li><p>Ubuntu 22.04</p></li>
+<li><p>Python 3.8+</p></li>
+</ul>
+</section>
+<section id="quick-start">
+<h3>Quick Start<a class="headerlink" href="#quick-start" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Install the package</span>
+<span class="n">cd</span> <span class="o">~/</span><span class="n">ros2_ws</span><span class="o">/</span><span class="n">src</span>
+<span class="n">git</span> <span class="n">clone</span> <span class="o">&lt;</span><span class="n">repository_url</span><span class="o">&gt;</span>
+<span class="n">colcon</span> <span class="n">build</span>
+<span class="c1"># Launch the gripper control</span>
+<span class="n">ros2</span> <span class="n">launch</span> <span class="n">delto_3f_gripper</span> <span class="n">bringup</span><span class="o">.</span><span class="n">launch</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="support-documentation">
+<h2>Support &amp; Documentation<a class="headerlink" href="#support-documentation" title="Link to this heading"></a></h2>
+<p>For more information:</p>
+<ul class="simple">
+<li><p><a class="reference external" href="https://en.tesollo.com/DG-3F">User Manual</a></p></li>
+<li><p>Coming soon: API Documentation</p></li>
+</ul>
+</section>
+<section id="contact-information">
+<h2>Contact Information<a class="headerlink" href="#contact-information" title="Link to this heading"></a></h2>
+<p>For technical support and inquiries:</p>
+<dl class="field-list simple">
+<dt class="field-odd">Email<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="mailto:khc&#37;&#52;&#48;tesollo&#46;com">khc<span>&#64;</span>tesollo<span>&#46;</span>com</a></p>
+</dd>
+<dt class="field-even">Website<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://www.en.tesollo.com/">https://www.en.tesollo.com/</a></p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This documentation is maintained by Tesollo.
+Last updated: November 2024</p>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<figure class="align-center">
+<a class="reference internal image-reference" href="_images/tesollo_logo.png"><img alt="_images/tesollo_logo.png" src="_images/tesollo_logo.png" style="width: 600px;" />
+</a>
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="delto documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="rqt_dg3f_publisher.html" class="btn btn-neutral float-right" title="RQT DG3F Publisher" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hongcheol.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

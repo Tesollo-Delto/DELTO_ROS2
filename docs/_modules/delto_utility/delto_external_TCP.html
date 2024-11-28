@@ -1,0 +1,213 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>delto_utility.delto_external_TCP &mdash; delto 0.0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=d45e8c67"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            delto
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">delto_3f_driver</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">delto</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">delto_utility.delto_external_TCP</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for delto_utility.delto_external_TCP</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">socket</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">crcmod.predefined</span>
+
+<span class="n">dg_ip</span> <span class="o">=</span> <span class="s1">&#39;169.254.186.72&#39;</span>
+<span class="n">dg_port</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="n">crc16</span> <span class="o">=</span> <span class="n">crcmod</span><span class="o">.</span><span class="n">predefined</span><span class="o">.</span><span class="n">mkCrcFun</span><span class="p">(</span><span class="s1">&#39;crc-16&#39;</span><span class="p">)</span>
+
+<span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span> 
+<span class="n">q_dot</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+<span class="n">q_d</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span> <span class="c1">#deired q </span>
+<span class="n">pre_q</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span> 
+
+<span class="c1">#pd controller gain</span>
+<span class="n">kp</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+<span class="n">kd</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+
+<span class="n">tq_u</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+<span class="n">duty</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+
+
+<span class="n">tcp_data_send</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x03\x28\x01\x00\x00\x02\x00\x00\x03\x00\x00\x04\x00\x00\x05\x00\x00\x06\x00\x00\x07\x00\x00\x08\x00\x00\x09\x00\x00\x0A\x00\x00\x0B\x00\x00\x0C\x00\x00</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">tcp_crc_send</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x50\xee</span><span class="s1">&#39;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Communication">
+<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_external_TCP.Communication">[docs]</a>
+<span class="k">class</span> <span class="nc">Communication</span><span class="p">:</span>
+    
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delto_socket</span> <span class="o">=</span>  <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+        
+<div class="viewcode-block" id="Communication.connect">
+<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_external_TCP.Communication.connect">[docs]</a>
+    <span class="k">def</span> <span class="nf">connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                <span class="n">ip</span> <span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;169.254.186.72&#39;</span><span class="p">,</span>
+                <span class="n">port</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10000</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delto_socket</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">ip</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="Communication.get_position_rad">
+<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_external_TCP.Communication.get_position_rad">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_position_rad</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="n">raw_finger_pos</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">delto_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x01\x05\xEE\xD2\xDC</span><span class="s1">&#39;</span><span class="p">)</span> <span class="c1">#CALL position, current position &amp; current data</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">delto_socket</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">1024</span><span class="p">)</span>
+        
+        <span class="c1">#(int(duty[i]) &gt;&gt; 8) &amp; 0x00FF</span>
+    
+        <span class="c1">#finger-1</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">4</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">9</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">14</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">18</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">19</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+
+        <span class="c1">#finger-2</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">23</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">24</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">28</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">29</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">33</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">34</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">38</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">39</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+       
+        <span class="c1">#finger-3</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">43</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">44</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">48</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">49</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">53</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">54</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+        <span class="n">raw_finger_pos</span><span class="p">[</span><span class="mi">2</span><span class="p">][</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">int16</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_combine_msg</span><span class="p">(</span><span class="n">msg</span><span class="p">[</span><span class="mi">58</span><span class="p">],</span><span class="n">msg</span><span class="p">[</span><span class="mi">59</span><span class="p">]))</span><span class="o">/</span><span class="mi">10</span>
+
+        <span class="c1">#raw data(degree) to radian</span>
+        <span class="c1">#raw_finger_pos = 16bit int -180~+180 (smallest unit 0.1)</span>
+        <span class="c1">#radian(q) = 0 is zero position</span>
+
+        <span class="n">tmp_q</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="mi">12</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">):</span>
+                <span class="c1">#print(i,j)</span>
+                <span class="n">tmp_q</span><span class="p">[(</span><span class="n">i</span><span class="o">*</span><span class="mi">4</span><span class="p">)</span><span class="o">+</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">raw_finger_pos</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span><span class="o">*</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tmp_q</span></div>
+
+
+    <span class="k">def</span> <span class="nf">_combine_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">data1</span><span class="p">,</span> <span class="n">data2</span><span class="p">):</span>
+        <span class="n">combined_msgs</span> <span class="o">=</span> <span class="n">data1</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span> <span class="o">|</span> <span class="n">data2</span>  
+        <span class="k">if</span> <span class="n">combined_msgs</span> <span class="o">&gt;=</span> <span class="mh">0x8000</span><span class="p">:</span>  
+            <span class="n">combined_msgs</span> <span class="o">-=</span> <span class="mh">0x10000</span> 
+        <span class="k">return</span> <span class="n">combined_msgs</span>
+
+<div class="viewcode-block" id="Communication.send_duty">
+<a class="viewcode-back" href="../../delto_utility.html#delto_utility.delto_external_TCP.Communication.send_duty">[docs]</a>
+    <span class="k">def</span> <span class="nf">send_duty</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">duty</span> <span class="p">:</span> <span class="nb">list</span><span class="p">):</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="p">:</span>
+
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
+
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">15</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">16</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">4</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
+
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">27</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>
+            <span class="n">tcp_data_send</span><span class="p">[</span><span class="n">i</span><span class="o">*</span><span class="mi">3</span><span class="o">+</span><span class="mi">28</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">duty</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">8</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span>  
+                
+        <span class="n">crc</span> <span class="o">=</span> <span class="n">crc16</span><span class="p">(</span><span class="n">tcp_data_send</span><span class="p">)</span>
+
+        <span class="n">tcp_crc_send</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">crc</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span> <span class="c1">#crc_l</span>
+        <span class="n">tcp_crc_send</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">crc</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x00FF</span> <span class="c1">#crc_h</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">delto_socket</span><span class="o">.</span><span class="n">send</span><span class="p">(</span><span class="n">tcp_data_send</span> <span class="o">+</span> <span class="n">tcp_crc_send</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, hongcheol.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

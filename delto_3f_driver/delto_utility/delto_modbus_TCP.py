@@ -26,11 +26,15 @@ class Communication:
     def __init__(self, dummy=False):
         self.client = None
         self.slaveID = 0
-        self.dummy = dummy 
+        self.dummy = dummy
         self.lock = threading.Lock()
 
     def __del__(self):
         self.disconnect()
+
+    def write_registers(self, address, values):
+        self.client.write_registers(
+            address=address, values=values, slave=self.slaveID)
 
     def connect(self, ip, port, slaveID=1):
         '''
@@ -70,18 +74,19 @@ class Communication:
 
             return status
 
-        #status = []
+        # status = []
         status = self.client.read_input_registers(
             address=Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value,
             count=Delto3F.MOTOR_NUM.value,
             slave=self.slaveID).registers
-                
+
         for i in range(Delto3F.MOTOR_NUM.value):
             # stats = self.client.read_input_registers(
             #     address=Delto3FInputRegisters.MOTOR1_CURRENT_POSITION.value + i,
             #     count=1,
             #     slave=self.slaveID).registers
-            status[i] = (status[i] if status[i] < 32768 else status[i] - 65536)/10.0
+            status[i] = (status[i] if status[i] <
+                         32768 else status[i] - 65536)/10.0
             # unsigned 8bit to singed 8 bit
             # stats = (stats[0] if stats[0] < 32768 else stats[0] - 65536)/10.0
             # status.append(struct.unpack('h', struct.pack('H', stats[0]))[0]/10)
@@ -142,6 +147,8 @@ class Communication:
         return pGain
 
     def set_pgain(self, pGain: list[int]):
+        # print("setPGain", pGain)
+        pGain = list(pGain)
         print("setPGain", pGain)
         self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_PGAIN.value,
                                     values=pGain, slave=self.slaveID)
@@ -161,7 +168,7 @@ class Communication:
         return dGain
 
     def set_dgain(self, dGain: list[int]):
-        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN,
+        self.client.write_registers(address=Delto3FHoldingRegisters.MOTOR1_DGAIN.value,
                                     values=dGain,
                                     slave=self.slaveID)
 
@@ -310,12 +317,28 @@ class Communication:
             self.client.write_registers(
                 address=Delto3FHoldingRegisters.MOTOR1_FIXED_POSITION.value, values=position, slave=self.slaveID)
 
+    def load_pose(self, pose_index: int):
+        """_summary_
+        accessible from firmware version 1.5 or higher
+        """
+        with self.lock:
+            self.client.write_coil(
+                address=Delto3FHoldingRegisters.MOTION_LOAD.value, value=pose_index, slave=self.slaveID)
+
+    def save_pose(self, pose_index: int):
+        """_summary_
+        accessible from firmware version 1.5 or higher
+        """
+        with self.lock:
+            self.client.write_coil(
+                address=Delto3FHoldingRegisters.SAVE_TARGET_POSE.value, value=pose_index, slave=self.slaveID)
+
 
 '''
 change ip Example 
 
     comm = Communication()
-    comm.connect('169.254.186.72',10000)
+    comm.connect('169.254.186.72',502)
     comm.set_ip('169.254.186.73')
     comm.rom_write()
 

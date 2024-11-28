@@ -1,0 +1,48 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Joint state pub rate
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    delto_3f_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+delto_3f_controller:
+  ros__parameters:
+    state_publish_rate: 500.0  # 50Hz에서 500Hz로 변경
+    action_monitor_rate: 500.0  # 20Hz에서 500Hz로 변경
+    allow_partial_joints_goal: True
+    joints:
+      - F1M1
+      - F1M2
+      - F1M3
+      - F1M4
+      - F2M1
+      - F2M2
+      - F2M3
+      - F2M4
+      - F3M1
+      - F3M2
+      - F3M3
+      - F3M4 
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+joint_state_broadcaster:
+  ros__parameters:
+    joints:
+      - F1M1
+      - F1M2
+      - F1M3
+      - F1M4
+      - F2M1
+      - F2M2
+      - F2M3
+      - F2M4
+      - F3M1
+      - F3M2
+      - F3M3
+      - F3M4

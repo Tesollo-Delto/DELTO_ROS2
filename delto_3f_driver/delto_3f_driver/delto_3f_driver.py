@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# from delto_utility import delto_modbus_TCP as delto_TCP
 import math
 import time
 import threading
@@ -12,21 +11,15 @@ import time
 import rclpy
 
 from rclpy.action import ActionServer, CancelResponse, GoalResponse
-#Duration rcl
 from rclpy.duration import Duration 
-
 from rclpy.node import Node
 from rclpy.executors import MultiThreadedExecutor
-from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy, QoSHistoryPolicy
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
-from std_msgs.msg import String, Int8, Int32, Bool, Float32MultiArray, Int16MultiArray
-from ros_gz_interfaces.msg import Float32Array
-
+from std_msgs.msg import Int32, Bool, Float32MultiArray, Int16MultiArray
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectoryPoint
 from control_msgs.action import FollowJointTrajectory
-
-import rclpy
 
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from delto_utility import delto_modbus_TCP as delto_TCP
@@ -65,14 +58,15 @@ class DeltoROSDriver(Node):
         self.delto_client = delto_TCP.Communication()
         self.stop_thread = False
         self.lock = threading.Lock()
-
+        self.is_connected = False
+        
         # Too high frequency will cause blocking sub/pub
         self.publish_rate = 100
         print('publish late : '+str(self.publish_rate))
         
         
         self.is_dummy = False  # bool(self.get_parameter('dummy').value)
-
+        self.is_connected = False
         # Action Server
         self.jcm_action_server = ActionServer(
             self,
@@ -86,20 +80,95 @@ class DeltoROSDriver(Node):
         self.joint_state_pub = self.create_publisher(
             JointState, 'gripper/joint_states', fast_qos)
         self.grasp_sub = self.create_subscription(
-            Int32, 'gripper/cmd', callback=self.grasp_callback, qos_profile=qos_profile)
-
+            Bool, 'gripper/grasp', callback=self.grasp_callback, qos_profile=qos_profile)
+        self.write_register_sub = self.create_subscription(
+            Int16MultiArray, 'gripper/write_register', self.write_register_callback, qos_profile=qos_profile)
         self.grasp_mode_sub = self.create_subscription(
+            Int32, 'gripper/grasp_mode', callback=self.grasp_mode_callback, qos_profile=qos_profile)
+        self.target_joint_sub = self.create_subscription(
             Float32MultiArray, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
-        # self.grasp_mode_sub2 = self.create_subscription(
-        #     Float32Array, 'gripper/target_joint', callback=self.target_joint_callback, qos_profile=qos_profile)
+
         self.joint_state_timer = self.create_timer(
             1/self.publish_rate, self.timer_callback)
         self.read_joint_timer = self.create_timer(
             1/self.publish_rate, self.read_joint_callback)
         self.fixed_joint_sub = self.create_subscription(
-            Int16MultiArray, 'gripper/fixed_joint', self.grasp_callback, qos_profile=qos_profile)
+            Int16MultiArray, 'gripper/fixed_joint', self.fixed_joint_callback, qos_profile=qos_profile)
+        self.set_gain_sub = self.create_subscription(
+            Int16MultiArray, 'gripper/request/gain', self.set_gain_callback, qos_profile=qos_profile)
+        self.gain_pub = self.create_publisher(
+            Int16MultiArray, 'gripper/response/gain', qos_profile=qos_profile)
+        
+        self.load_pose_sub = self.create_subscription(
+            Int32, 'gripper/load_pose', self.load_pose_callback, qos_profile=qos_profile)
+        self.save_pose_sub = self.create_subscription(
+            Int32, 'gripper/save_pose', self.save_pose_callback, qos_profile=qos_profile)
 
+        self.reconnect_timer = self.create_timer(3.0, self.reconnect_callback)
+        self.reconnect_attempts = 0
+        self.max_reconnect_attempts = 10
+    
+    def load_pose_callback(self, msg):
+        
+        if msg.data < 1 or msg.data > 30:
+            self.get_logger().error("pose index out of range")
+            
+        self.delto_client.load_pose(msg.data[0])
+        
+    def save_pose_callback(self, msg):
+        
+        if msg.data< 1 or msg.data > 30:
+            self.get_logger().error("pose index out of range")
+            return
+        
+        self.delto_client.save_pose(msg.data[0])
+        
+    def reconnect_callback(self):
+        if not self.is_connected:
+            if self.reconnect_attempts < self.max_reconnect_attempts:
+                self.get_logger().info(f"Attempting to reconnect (attempt {self.reconnect_attempts + 1}/{self.max_reconnect_attempts})")
+                
+                try: 
+                    self.connect()
+                    self.reconnect_attempts += 1
+                    
+                    if self.is_connected:
+                        self.get_logger().info("Reconnected successfully")
+                        self.reconnect_attempts = 0
+                        
+                except Exception as e:
+                    self.get_logger().error(f"Failed to reconnect: {e}")
+                    self.reconnect_attempts += 1
+            else:
+                self.get_logger().error("Maximum reconnect attempts reached. Shutting down.")
+                self.destroy_node()
+        else:
+            self.reconnect_attempts = 0
+            
     # Connect to the delto gripper
+    def set_gain_callback(self, msg):
+        
+        if len(msg.data) != 24:
+            print(msg.data)
+            self.get_logger().error("Invalid gain {0}".format(msg.data.size))    
+            return
+        
+        self.delto_client.set_pgain(msg.data[0:12])
+        self.delto_client.set_dgain(msg.data[12:24])
+        pgain=self.delto_client.get_pgain()
+        dgain=self.delto_client.get_dgain()
+        #append pgain and dgain
+        data= []
+        data.extend(pgain)
+        data.extend(dgain)
+        print(data) 
+        msg = Int16MultiArray()
+        msg.data = data
+        
+        self.gain_pub.publish(msg)
+        
+        
+        
     def connect(self) -> bool:
 
         if self.is_dummy:
@@ -107,17 +176,38 @@ class DeltoROSDriver(Node):
             return True
 
         print("Connecting to the delto gripper...")
-        return self.delto_client.connect(self.get_parameter('ip').value,
+        is_connected = self.delto_client.connect(self.get_parameter('ip').value,
                                          self.get_parameter('port').value,
                                          self.get_parameter('slaveID').value)
-
+        self.is_connected = is_connected
+        
+        return is_connected
+        
     # Publish joint state
     def read_joint_callback(self):
-        # self.current_joint_stat
-        position_tmp = self.get_position()
-        # print("position_tmp: ", position_tmp)
-        self.current_joint_state = [float(self._deg2rad(x)) for x in position_tmp]
-        # print("current_joint_state: ", self.current_joint_state)
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        try:
+            position_tmp = self.get_position()
+            self.current_joint_state = [float(self._deg2rad(x)) for x in position_tmp]
+        except Exception as e:
+            self.get_logger().error("Failed to read joint state: {0}".format(e))
+            self.is_connected = False
+            return
+        
+    def write_register_callback(self, msg):
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        try:
+            self.delto_client.write_registers(msg.data[0], msg.data[1:])
+        except Exception as e:
+            self.get_logger().error("Failed to write register: {0}".format(e))
+            self.is_connected = False
+            return
         
     def joint_state_publisher(self):
 
@@ -137,6 +227,10 @@ class DeltoROSDriver(Node):
         if self.is_dummy:
             return self.current_joint_state
 
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
         status = self.delto_client.get_position()
         return status
 
@@ -145,27 +239,72 @@ class DeltoROSDriver(Node):
         if self.is_dummy:
             self.current_joint_state = position
             return
-
-        self.delto_client.set_position(position)
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        try:
+            self.delto_client.set_position(position)
+            
+        except Exception as e:
+            self.get_logger().error("Failed to set position: {0}".format(e))
+            self.is_connected = False
+            return
 
     def set_motion_step(self, step):
 
         if self.is_dummy:
             return
-
-        self.delto_client.set_step(step)
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        try:
+            self.delto_client.set_step(step)
+        except Exception as e:
+            self.get_logger().error("Failed to set motion step: {0}".format(e))
+            self.is_connected = False
+            return
 
     def grasp_mode_callback(self, mode: Int32):
-        self.delto_client.grasp_mode(mode.data)
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        try:
+            self.delto_client.grasp_mode(mode.data)
+        except Exception as e:
+            self.get_logger().error("Failed to set grasp mode: {0}".format(e))
+            self.is_connected = False
+            return
 
     def grasp_callback(self, grasp: Bool):
-        with self.lock:
-            print('check {}'.format(grasp.data))
-            self.get_logger().info('check {}'.format(grasp.data))
-            self.delto_client.grasp_mode(grasp.data)
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        try:
+            self.delto_client.grasp(grasp.data)
+        except Exception as e:
+            self.get_logger().error("Failed to grasp: {0}".format(e))
+            self.is_connected = False
+            return
 
     def timer_callback(self):
-        self.joint_state_publisher()
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        if self.is_connected:
+            self.joint_state_publisher()
+        else:
+            self.get_logger().error("Connection lost")
+
 
     def goal_callback(self, goal_request):
         self.get_logger().info('Received goal')
@@ -181,6 +320,7 @@ class DeltoROSDriver(Node):
         print('FollowJointTrajectory callback...')
         print(goal_handle.request.trajectory)
         goal = goal_handle.request.trajectory.points.copy()
+        
         # download planned path from ros moveit
         self.joint_state_list = []
 
@@ -193,7 +333,6 @@ class DeltoROSDriver(Node):
         if self.joint_state_list:
 
             # print("joint_state_list: ", self.joint_state_list)
-
             # add first and last point to the trajectory
             new_array = [self.joint_state_list[0]]
 
@@ -237,21 +376,38 @@ class DeltoROSDriver(Node):
             self.get_logger().error("Invalid target joint state")
             return
 
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
         msg.data = [self._rad2deg(x) for x in msg.data]
 
         self.target_joint_state = msg.data
-        print("target_joint_state: ", self.target_joint_state)
-        self.delto_client.set_position(self.target_joint_state)
+        # print("target_joint_state: ", self.target_joint_state)
+        try:
+            self.delto_client.set_position(self.target_joint_state)
+        except Exception as e:
+            self.get_logger().error("Failed to set target joint state: {0}".format(e))
+            self.is_connected = False
+            return
 
     def fixed_joint_callback(self, msg):
 
         if len(msg.data) != 12:
             self.get_logger().error("Invalid fixed joint state")
             return
-        self.fixed_joint_state = msg.data
         
-        # print("fixed_joint_state: ", self.fixed_joint_state)
-        self.delto_client.fix_position(self.fixed_joint_state)
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
+        self.fixed_joint_state = msg.data
+        try:
+            self.delto_client.fix_position(self.fixed_joint_state)
+        except Exception as e:
+            self.get_logger().error("Failed to set fixed joint state: {0}".format(e))
+            self.is_connected = False
+            return
             
     def waypointMove(self, waypointList, threshold):
         self.stop_thread = False
@@ -260,6 +416,11 @@ class DeltoROSDriver(Node):
         self.waypoint_thread.start()
 
     def stop_motion(self):
+        
+        if self.is_connected == False:
+            self.get_logger().error("Connection lost")
+            return
+        
         self.delto_client.set_position(self.delto_client.get_position())
         self.stop_thread = True
 
@@ -320,11 +481,7 @@ def main(args=None):
     connect = delto_driver.connect()
 
     if connect == False:
-        delto_driver.get_logger().error("network connection failed.")
-        return
-
-    if not (delto_driver.is_dummy):
-        delto_driver.delto_client.set_free(False)
+        delto_driver.get_logger().error("Init network connection failed.")
 
     time.sleep(0.1)
     delto_driver.get_logger().info("delto_driver initialized")
@@ -332,7 +489,6 @@ def main(args=None):
     executor = MultiThreadedExecutor(num_threads=8)
     executor.add_node(delto_driver)
     executor.spin()
-
     executor.shutdown()
 
 
