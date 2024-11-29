@@ -129,8 +129,8 @@ For technical support and inquiries:
 
 |
 
-.. figure:: /resource/tesollo_logo.png
-   :width: 600px
-   :align: center
+.. .. figure:: /resource/tesollo_logo.png
+..    :width: 600px
+..    :align: center
 
-|
+.. |

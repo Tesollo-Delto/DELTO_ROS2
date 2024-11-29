@@ -304,16 +304,8 @@ class Communication:
                                          " position size is not 12")
             return
 
-        for i in list:
-            if i != 0 or i != 1:
-                rclpy.Node.get_logger().info(rclpy.Node.get_name() +
-                                             ": " +
-                                             sys._getframe().f_code.co_name +
-                                             "value is not 0 or 1")
-                return
-
         with self.lock:
-
+            # print(position)
             self.client.write_registers(
                 address=Delto3FHoldingRegisters.MOTOR1_FIXED_POSITION.value, values=position, slave=self.slaveID)
 
@@ -322,7 +314,7 @@ class Communication:
         accessible from firmware version 1.5 or higher
         """
         with self.lock:
-            self.client.write_coil(
+            self.client.write_register(
                 address=Delto3FHoldingRegisters.MOTION_LOAD.value, value=pose_index, slave=self.slaveID)
 
     def save_pose(self, pose_index: int):
@@ -330,7 +322,7 @@ class Communication:
         accessible from firmware version 1.5 or higher
         """
         with self.lock:
-            self.client.write_coil(
+            self.client.write_register(
                 address=Delto3FHoldingRegisters.SAVE_TARGET_POSE.value, value=pose_index, slave=self.slaveID)
 
 

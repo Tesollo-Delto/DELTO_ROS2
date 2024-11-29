@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<robot
+  name="delto_description">
+
+    <material name="black">
+    <color rgba="0.196 0.196 0.196 1.0"/>
+    </material>
+    
+  <link
+    name="delto_base_link">
+    <inertial>
+      <origin
+        xyz="-0.000297512898704039 0.0601358449140221 0.000405289272635231"
+        rpy="0 0 0" />
+      <mass
+        value="0.148118292371017" />
+      <inertia
+        ixx="0.000127380225676606"
+        ixy="2.45032695761012E-06"
+        ixz="-4.42797188296029E-07"
+        iyy="0.000134249396452626"
+        iyz="-1.25005318301663E-07"
+        izz="0.000126530130055728" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/delto_base_link.dae" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/delto_base_link.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <link name="TIP1">
+    <inertial>
+      <origin
+        xyz="-0.018892 0.020144 0.0081415"
+        rpy="0 0 0" />
+      <mass
+        value="0.0050621" />
+      <inertia
+        ixx="5.5156E-07"
+        ixy="1.1032E-07"
+        ixz="-8.5308E-08"
+        iyy="3.9645E-07"
+        iyz="1.1084E-07"
+        izz="4.9988E-07" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0.025 0 0"
+        rpy="0 0 0" />
+
+      <material name="black"/>
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/TIP.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.025 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/TIP.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="Distance"
+    type="prismatic">
+
+    <limit effort="1000.0" lower="0.0" upper="0.025" velocity="0.5"/>
+    <origin
+      xyz="0 0 0.113"
+      rpy="1.5708 0 -3.141597" />
+    <parent
+      link="delto_base_link" />
+    <child
+      link="TIP1" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link name="TIP2">
+    <inertial>
+      <origin
+        xyz="-0.018833 0.020144 0.0081415"
+        rpy="0 0 0" />
+
+      <mass
+        value="0.0050621" />
+      <inertia
+        ixx="5.5156E-07"
+        ixy="1.1032E-07"
+        ixz="-8.5308E-08"
+        iyy="3.9645E-07"
+        iyz="1.1084E-07"
+        izz="4.9988E-07" />
+    </inertial>
+    <visual>
+      <material name="black"/>
+      <origin
+        xyz="0.025 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/TIP.stl" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0.025 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="meshes/DG2F/TIP.stl" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="JOINT2"
+    type="prismatic">
+    
+    <limit effort="1000.0" lower="0.0" upper="0.025" velocity="0.5"/>
+    <mimic
+      joint="Distance"
+      multiplier="1"/>
+    <origin
+      xyz="0 0 0.113"
+      rpy="1.5708 0 0.0070478" />
+    <parent
+      link="delto_base_link" />
+    <child
+      link="TIP2" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+</robot>

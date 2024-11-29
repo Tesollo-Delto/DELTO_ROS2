@@ -51,7 +51,7 @@ class DeltoROSDriver(Node):
         self.joint_state_list = [0.0]*12
         self.current_joint_state = [0.0]*12
         self.target_joint_state = [0.0]*12
-        self.fixed_joint_state = [0.0]*12
+        self.fixed_joint_state = [0]*12
 
         self.joint_state_feedback = JointTrajectoryPoint()
         self.vel = []
@@ -104,16 +104,16 @@ class DeltoROSDriver(Node):
         self.save_pose_sub = self.create_subscription(
             Int32, 'gripper/save_pose', self.save_pose_callback, qos_profile=qos_profile)
 
-        self.reconnect_timer = self.create_timer(3.0, self.reconnect_callback)
+        self.reconnect_timer = self.create_timer(1.0, self.reconnect_callback)
         self.reconnect_attempts = 0
-        self.max_reconnect_attempts = 10
+        self.max_reconnect_attempts = 100
     
     def load_pose_callback(self, msg):
         
         if msg.data < 1 or msg.data > 30:
             self.get_logger().error("pose index out of range")
             
-        self.delto_client.load_pose(msg.data[0])
+        self.delto_client.load_pose(msg.data)
         
     def save_pose_callback(self, msg):
         
@@ -121,7 +121,7 @@ class DeltoROSDriver(Node):
             self.get_logger().error("pose index out of range")
             return
         
-        self.delto_client.save_pose(msg.data[0])
+        self.delto_client.save_pose(msg.data)
         
     def reconnect_callback(self):
         if not self.is_connected:
@@ -185,8 +185,11 @@ class DeltoROSDriver(Node):
         
     # Publish joint state
     def read_joint_callback(self):
+        if self.reconnect_attempts > 1:
+            return
+        
         if self.is_connected == False:
-            self.get_logger().error("Connection lost")
+            # self.get_logger().error("(read_joint_callback) Connection lost")
             return
         try:
             position_tmp = self.get_position()
@@ -228,7 +231,7 @@ class DeltoROSDriver(Node):
             return self.current_joint_state
 
         if self.is_connected == False:
-            self.get_logger().error("Connection lost")
+            self.get_logger().error("(get_position) Connection lost")
             return
         
         status = self.delto_client.get_position()
@@ -248,7 +251,7 @@ class DeltoROSDriver(Node):
             self.delto_client.set_position(position)
             
         except Exception as e:
-            self.get_logger().error("Failed to set position: {0}".format(e))
+            self.get_logger().error("(set_position) Failed to set position: {0}".format(e))
             self.is_connected = False
             return
 
@@ -296,14 +299,12 @@ class DeltoROSDriver(Node):
 
     def timer_callback(self):
         
-        if self.is_connected == False:
+        if not self.is_connected and self.reconnect_attempts <= 1:
             self.get_logger().error("Connection lost")
             return
         
         if self.is_connected:
             self.joint_state_publisher()
-        else:
-            self.get_logger().error("Connection lost")
 
 
     def goal_callback(self, goal_request):
@@ -392,23 +393,25 @@ class DeltoROSDriver(Node):
             return
 
     def fixed_joint_callback(self, msg):
-
         if len(msg.data) != 12:
             self.get_logger().error("Invalid fixed joint state")
             return
-        
+    
         if self.is_connected == False:
             self.get_logger().error("Connection lost")
             return
-        
-        self.fixed_joint_state = msg.data
+    
+    # Int16MultiArray의 data를 리스트로 변환
+        self.fixed_joint_state = list(msg.data)
+        print(self.fixed_joint_state)
+    
         try:
             self.delto_client.fix_position(self.fixed_joint_state)
         except Exception as e:
             self.get_logger().error("Failed to set fixed joint state: {0}".format(e))
             self.is_connected = False
             return
-            
+    
     def waypointMove(self, waypointList, threshold):
         self.stop_thread = False
         self.waypoint_thread = threading.Thread(
