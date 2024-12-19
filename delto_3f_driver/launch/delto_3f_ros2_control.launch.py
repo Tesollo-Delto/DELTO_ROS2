@@ -99,7 +99,7 @@ def generate_launch_description():
         output="screen",
     )
 
-    # Delto 5F Controller
+    # Delto 3F Controller
     delto_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
