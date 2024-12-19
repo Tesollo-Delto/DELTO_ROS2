@@ -43,7 +43,7 @@ private:
     std::vector<double> get_position();
     void execute_callback(const std::shared_ptr<GoalHandleFollowJointTrajectory> goal_handle);
     void execute_callback_test(const std::shared_ptr<GoalHandleFollowJointTrajectory> goal_handle);
-
+    
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_state_pub;
     rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr grasp_sub;
     rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr grasp_mode_sub;

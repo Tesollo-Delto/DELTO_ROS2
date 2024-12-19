@@ -41,6 +41,18 @@ static const uint8_t REFLECT_BIT_ORDER_TABLE[256] = {
     0x1F, 0x9F, 0x5F, 0xDF, 0x3F, 0xBF, 0x7F, 0xFF
 };
 
+//constexpr std::size_t TOTAL_PACKET_SIZE = 64;
+constexpr uint8_t EXPECTED_CMD = 0x01;
+constexpr uint8_t EXPECTED_LENGTH = 0x40;
+constexpr std::size_t MOTOR_COUNT = 12;
+constexpr std::size_t BYTES_PER_MOTOR = 5; // ID + PosL + PosH + CurL + CurH
+constexpr std::size_t MOTORS_DATA_SIZE = MOTOR_COUNT * BYTES_PER_MOTOR; // 60바이트
+constexpr std::size_t HEADER_SIZE = 2; // CMD(1) + Length(1)
+constexpr std::size_t CRC_SIZE = 2;
+constexpr std::size_t TOTAL_PACKET_SIZE = HEADER_SIZE + MOTORS_DATA_SIZE + CRC_SIZE;
+constexpr double POSITION_SCALE = (M_PI / 1800.0); 
+constexpr double CURRENT_SCALE = 1.0;
+
 class DeltoRecievedData
 {
     public:
@@ -63,6 +75,7 @@ namespace DeltoTCP
         void connect();
         DeltoRecievedData get_data();
         void send_duty(std::vector<int>& duty);
+        bool read_full_packet(boost::asio::ip::tcp::socket &socket, std::array<uint8_t, TOTAL_PACKET_SIZE> &buffer);
     private:
         std::string ip_;
         int port_;

@@ -55,7 +55,8 @@ private:
   std::shared_ptr<rclcpp::Node> m_node;
   std::unique_ptr<DeltoTCP::Communication> delto_client;
 
-  std::vector<double> position_commands;
+  // std::vector<double> position_commands;
+  std::vector<double> effort_commands;
   std::vector<double> positions;
   std::vector<double> velocities;
   

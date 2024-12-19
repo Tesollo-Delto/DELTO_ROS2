@@ -31,7 +31,7 @@ joint_trajectory_controller:
             - F3M3
             - F3M4
         command_interfaces:
-            - position
+            - effort
         state_interfaces:
             - position
             - velocity

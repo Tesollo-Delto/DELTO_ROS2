@@ -22,66 +22,66 @@
 
         <!-- Finger 1 joints -->
         <joint name="F1M1">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F1M2">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F1M3">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F1M4">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
 
         <!-- Finger 2 joints -->
         <joint name="F2M1">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F2M2">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F2M3">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F2M4">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
 
         <!-- Finger 3 joints -->
         <joint name="F3M1">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F3M2">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F3M3">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>
         <joint name="F3M4">
-            <command_interface name="position"/>
+            <command_interface name="effort"/>
             <state_interface name="position"/>
             <state_interface name="velocity"/>
         </joint>

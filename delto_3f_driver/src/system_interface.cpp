@@ -25,7 +25,7 @@ namespace delto_3f_driver
         positions.resize(info_.joints.size(), 0.0);
         velocities.resize(info_.joints.size(), 0.0);
         
-        position_commands.resize(info_.joints.size(), 0.0);
+        effort_commands.resize(info_.joints.size(), 0.0);
 
         delto_ip = info.hardware_parameters.at("delto_ip");
         delto_port = std::stoi(info.hardware_parameters.at("delto_port"));
@@ -38,14 +38,17 @@ namespace delto_3f_driver
 
         for (const hardware_interface::ComponentInfo & joint : info_.joints) {
             
-            if (joint.command_interfaces.size() != 1) {
+            // if (joint.command_interfaces.size() != 1) {
+            // RCLCPP_ERROR(
+            //     rclcpp::get_logger("SystemInterface"), "Joint '%s' needs a command interface.",
+            //     joint.name.c_str());
+            //     return CallbackReturn::ERROR;
+            //     }
             RCLCPP_ERROR(
-                rclcpp::get_logger("SystemInterface"), "Joint '%s' needs a command interface.",
-                joint.name.c_str());
-                return CallbackReturn::ERROR;
-                }
+                rclcpp::get_logger("SystemInterface"), " '%d' needs a %s command interface.",
+                joint.command_interfaces.size(), joint.command_interfaces[0].name.c_str());
 
-            if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION) {
+            if (joint.command_interfaces[0].name != hardware_interface::HW_IF_EFFORT) {
             RCLCPP_ERROR(
                 rclcpp::get_logger("SystemInterface"), "Joint '%s' needs a %s command interface.",
                 joint.name.c_str(), hardware_interface::HW_IF_POSITION);
@@ -80,13 +83,16 @@ hardware_interface::SystemInterface::CallbackReturn SystemInterface::on_deactiva
 {
     std::vector<hardware_interface::StateInterface> state_interfaces;
     state_interfaces.reserve(info_.joints.size() * 2);  // position, velocity
-
+    std::mutex mutex;
+    
+      mutex.lock();
     for (size_t i = 0; i < info_.joints.size(); i++) {
         state_interfaces.emplace_back(hardware_interface::StateInterface(
             info_.joints[i].name, hardware_interface::HW_IF_POSITION, &positions[i]));
         state_interfaces.emplace_back(hardware_interface::StateInterface(
             info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &velocities[i]));
     }
+    mutex.unlock();
 
     return state_interfaces;
 }
@@ -98,7 +104,7 @@ std::vector<hardware_interface::CommandInterface> SystemInterface::export_comman
 
     for (size_t i = 0; i < info_.joints.size(); i++) {
         command_interfaces.emplace_back(hardware_interface::CommandInterface(
-            info_.joints[i].name, hardware_interface::HW_IF_POSITION, &position_commands[i]));
+            info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &effort_commands[i]));
     }
 
     return command_interfaces;
@@ -152,8 +158,12 @@ SystemInterface::return_type SystemInterface::read(
 
       if (received_data.joint.size() != 12)
       {
+        std::cerr << "Received data size is not 12" << std::endl;
         return return_type::ERROR;
       }
+
+      //std::cout << "Received data size is 12" << std::endl;
+      //std:: cout << "Received data: " << received_data.joint[0] << std::endl;
       
       new_positions = received_data.joint;
     }
@@ -171,16 +181,21 @@ SystemInterface::return_type SystemInterface::read(
 
     // 2. 속도 계산
     double dt = period.seconds();
+    //std::cout << dt;
     for (size_t i = 0; i < positions.size(); ++i) {
       if (dt > 0 && !std::isnan(positions[i])) {
-        velocities[i] = (new_positions[i] - positions[i]) / dt;
+        double velocities_raw = (new_positions[i] - positions[i]) / dt;
+        // low pass filter
+        double alpha = 0.5;
+        velocities[i] = alpha * velocities[i] + (1.0 - alpha) * velocities_raw; 
+
       } else {
         velocities[i] = 0.0;
       }
       
       positions[i] = new_positions[i];
     }
-
+    //std::cout<<velocities[0]<<std::endl;
     return return_type::OK;
   }
   catch(const std::exception& e) {
@@ -193,16 +208,29 @@ SystemInterface::return_type SystemInterface::write(
   [[maybe_unused]] const rclcpp::Time & time, [[maybe_unused]] const rclcpp::Duration & period)
 {
  // JointControl을 통해 제어 입력 계산
-  std::vector<double> u = JointControl(position_commands, positions, velocities, p_gain, d_gain);
-  
+  // std::vector<double> u = JointControl(position_commands, positions, velocities, p_gain, d_gain);
+  std::vector<double> u = effort_commands;
+
+  // for(auto effort:effort_commands)
+  // {
+  //   std::cout << effort << " ";
+  // }
+  // std::cout << std::endl;
   // calc_duty를 통해 duty값 계산
   std::vector<double> _duty = calc_duty(u);
   std::vector<int> int_duty(_duty.size());
 
-  for (size_t i = 0; i < _duty.size(); ++i) {
+  for (size_t i = 0; i < _duty.size(); ++i) 
+  {
     int_duty[i] = static_cast<int>(_duty[i]*10);
   }
 
+  // std:: cout << "duty : ";
+  // for(int i=0; i<int_duty.size(); i++)
+  // {
+  //   std::cout<<"duty"<< i << int_duty[i] << " ";
+  // }
+  // std::cout << std::endl;
   // 계산된 _duty를 send_duty로 전달 100.0 => 1000
   delto_client->send_duty(int_duty);  // calc_duty 대신 _duty를 사용
 
@@ -218,8 +246,10 @@ std::vector<double> SystemInterface::JointControl(std::vector<double> target_joi
 
     std::vector<double> tq_u(12, 0.0);
 
+    //std::cout << "kp[0] " << kp[0] << "kd[0] " <<kd[0] <<  target_joint_state[0] <<" "<<current_joint_state[0]<<" "<< joint_dot[0] << std::endl;
     for (int i = 0; i < 12; ++i)
     {
+        
         tq_u[i] = kp[i] * (target_joint_state[i] - current_joint_state[i]) - (kd[i] * joint_dot[i]);
     }
     return tq_u;
@@ -232,10 +262,11 @@ std::vector<double> SystemInterface::calc_duty(std::vector<double> tq_u)
 
     for (int i = 0; i < 12; ++i)
     {
-        double v = 14.1 / 0.8 * tq_u[i];
+        double v = 13.875 / 1.15 * tq_u[i];
 
         duty[i] = 100.0 * v / 11.1;
-
+        
+        //clamp -100 ~ 100
         if (duty[i] > 100.0)
         {
             duty[i] = 100.0;
