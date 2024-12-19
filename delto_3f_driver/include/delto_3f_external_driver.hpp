@@ -34,11 +34,6 @@ private:
     void targetjoint_callback(const std_msgs::msg::Float32MultiArray::SharedPtr msg);
   
     std::vector<double> Torque2Duty(std::vector<double> tq_u);
-    std::vector<double> JointControl(std::vector<double> target_joint_state,
-                                        std::vector<double> current_joint_state,
-                                        std::vector<double> joint_dot,
-                                        std::vector<double> kp,
-                                        std::vector<double> kd);
                                         
     std::vector<double> get_position();
     void execute_callback(const std::shared_ptr<GoalHandleFollowJointTrajectory> goal_handle);
